@@ -1,0 +1,22 @@
+# Tests van de componenten. Nu nog een placeholder die slaagt.
+# Elk component dat tests krijgt, voegt hier een eigen job toe
+# (pytest voor pipeline/, pgTAP voor db/, Vitest voor web/).
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Placeholder
+        run: echo "Nog geen tests. Componenten voegen hier hun eigen job toe."
