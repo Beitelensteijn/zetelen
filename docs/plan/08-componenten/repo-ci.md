@@ -1,6 +1,6 @@
 # Component: repo-ci
 
-Status: niet gestart (22 oktober 2026)
+Status: klaar (23 oktober 2026)
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`
 
 ## Doel
@@ -40,6 +40,24 @@ Geen andere componenten. Extern: GitHub.
 ## Aandachtspunten
 
 - Maak ook het onderhoudspad voor de 60-dagenregel van GitHub Actions in dit component zichtbaar (zie component `bewaking`)
+
+## Gebouwd (23 oktober 2026)
+
+- `.github/workflows/secret-scan.yml`: gitleaks 8.30.1 (vaste versie, checksum gecontroleerd) bij elke push en pull request. Scant de volledige historie die bereikbaar is vanaf de gescande commit, niet alle branches, zodat een fout op een andere branch `main` niet rood kleurt. Gevonden sleutels worden in het log gemaskeerd
+- `.github/workflows/ci.yml`: placeholder die slaagt. Elk component voegt hier een eigen job toe voor zijn tests
+- `README.md`: een alinea over het project en de datastroom
+- `.github/pull_request_template.md`: checklist met bron, definitie, beide invalshoeken, geen geheimen en tests
+- `docs/onderhoud.md`: runbook met het onderhoudspad voor de 60-dagenregel (controleren met `gh workflow list --all`, heractiveren met `gh workflow enable`). De vaste maatregel kiest component `bewaking`
+
+Afwijking van de interface: de mapindeling (`pipeline/`, `db/`, `web/`, `content/`) is niet aangemaakt, omdat git geen lege mappen bewaart. Elk component maakt zijn eigen map aan.
+
+Niet in dit component: het tweede criterium van E1-S1 (schrijfrol alleen als GitHub Actions secret, anon-sleutel alleen als Vercel environment variable). Dat volgt bij de koppelingen (`../09-koppelingen.md`) en component `ingest`.
+
+## Getest (23 oktober 2026)
+
+- Lokaal: scan op de historie van `main`, geen sleutels gevonden. Scan op een losse repo met een nepsleutel, wel gevonden
+- Op GitHub: testbranch `test/nepsleutel` met een nepsleutel in het formaat van een GitHub-token. De secret scan faalde (regel `github-pat`, sleutel gemaskeerd in het log). Op `main` slaagden de secret scan en de CI. De testbranch is daarna lokaal en op GitHub verwijderd
+- README beschrijft de datastroom in een alinea
 
 ## Schatting
 
