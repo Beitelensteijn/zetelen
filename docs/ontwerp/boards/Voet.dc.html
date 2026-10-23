@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Voet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--lijn:#2A3A63;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+</style>
+</helmet>
+<footer style="border-top:1px solid var(--lijn);background:var(--nacht-950);color:var(--tekst);font-family:var(--sans)">
+<div style="max-width:1240px;margin:0 auto;padding:48px 32px 40px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:12px">
+<span style="font-family:var(--serif);font-size:26px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:0.14em">Sitenaam</span>
+<p style="margin:0;max-width:440px;font-size:15px;line-height:1.6;color:var(--tekst-zacht)">Een onafhankelijk project van [EIGEN NAAM]. Geen organisatie, geen partij.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--tekst-zacht)">
+<span>Bron: Tweede Kamer open data</span>
+<span>Laatst ververst: [DATUM]</span>
+<a href="Methodiek.dc.html" style="display:inline-flex;align-items:center;min-height:44px;color:var(--koper)">Methodiek</a>
+</div>
+</div>
+<div style="border-top:1px solid var(--lijn);padding-top:20px">
+<span style="font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Voorbeelddata. Geen actuele zetelverdeling en geen echte cohesiewaarden.</span>
+</div>
+</div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":330}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Zaal, boog en tabel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--nacht-900:#0B1226;--nacht-800:#111B36;--nacht-700:#1A2748;--lijn:#2A3A63;--lijn-licht:#566AA6;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--goud:#E3B76A;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+button:focus-visible,a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.kz{container-type:inline-size}
+.seat{transition:background-color 320ms ease,border-color 160ms ease}
+.glow{transition:left 600ms ease,top 600ms ease}
+.mono{font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums lining-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;pointer-events:none}
+.ro-c{position:absolute;left:50%;top:74%;width:25%;transform:translate(-50%,-50%)}
+.ro-b{position:absolute;left:50%;top:80%;width:32%;transform:translate(-50%,-50%);background:rgba(11,18,38,0.86);border:1px solid #2A3A63;border-radius:8px;padding:14px 12px;box-sizing:border-box}
+.bl{position:absolute;transform:translate(-50%,-50%);font-family:'DM Mono',ui-monospace,monospace;font-size:clamp(9px,1.25cqw,13px);color:#A9B4CC;white-space:nowrap;pointer-events:none}
+@container (max-width:640px){
+.ro-c,.ro-b{position:static;transform:none;width:auto;margin-top:12px;padding:16px 0 0;border:0;border-top:1px solid #2A3A63;border-radius:0;background:transparent}
+.bl{display:none}
+}
+@media (prefers-reduced-motion:reduce){.seat,.glow{transition:none!important}}
+</style>
+</helmet>
+<div class="kz" style="position:relative;color:var(--tekst);font-family:var(--sans);display:flex;flex-direction:column;gap:24px;min-width:0;width:100%">
+
+<sc-if value="{{showSegment}}" hint-placeholder-val="{{true}}">
+<div role="group" aria-label="Weergave" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:1100px;width:100%;margin:0 auto">
+<span class="mono" style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht);margin-right:8px">Weergave</span>
+<sc-for list="{{views}}" as="v" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{v.on}}" onClick="{{v.pick}}" style="min-height:44px;padding:0 20px;border-radius:999px;border:1px solid {{v.bd}};background:{{v.bg}};color:var(--tekst);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer">{{v.label}}</button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{showStage}}" hint-placeholder-val="{{true}}">
+<div style="position:relative;width:100%;max-width:1100px;margin:0 auto">
+
+<sc-if value="{{isZaal}}" hint-placeholder-val="{{true}}">
+<div role="img" aria-label="{{zaalLabel}}" style="position:relative;width:100%;aspect-ratio:1000 / 630">
+<div aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden">
+<div class="glow" style="position:absolute;left:{{glowX}}%;top:{{glowY}}%;width:60%;aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(208,138,85,0.24),rgba(208,138,85,0))"></div>
+</div>
+<sc-for list="{{seats}}" as="s" hint-placeholder-count="150">
+<button type="button" tabindex="-1" aria-hidden="true" class="seat" onClick="{{s.pick}}" onMouseEnter="{{s.enter}}" onMouseLeave="{{leave}}" style="position:absolute;left:{{s.l}}%;top:{{s.t}}%;width:3%;aspect-ratio:1;padding:0;margin:0;border-radius:50%;box-sizing:border-box;background:{{s.bg}};border:{{s.bw}}px solid {{s.bc}};transition-delay:{{s.delay}}ms;cursor:pointer"></button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isBoog}}" hint-placeholder-val="{{false}}">
+<div role="img" aria-label="{{boogLabel}}" style="position:relative;width:100%;aspect-ratio:1000 / 560">
+<sc-for list="{{links}}" as="l" hint-placeholder-count="16">
+<div aria-hidden="true" style="position:absolute;left:{{l.x}}%;top:calc({{l.y}}% - {{l.h2}}cqw);width:{{l.w}}%;height:{{l.h}}cqw;background:{{l.bg}};transform:rotate({{l.a}}deg);transform-origin:0 50%;border-radius:2px;pointer-events:none"></div>
+</sc-for>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="17">
+<button type="button" tabindex="-1" aria-hidden="true" class="seat" onClick="{{n.pick}}" onMouseEnter="{{n.enter}}" onMouseLeave="{{leave}}" style="position:absolute;left:{{n.l}}%;top:{{n.t}}%;width:{{n.w}}%;aspect-ratio:1;padding:0;margin:0;border-radius:50%;box-sizing:border-box;background:{{n.bg}};border:{{n.bw}}px solid {{n.bc}};cursor:pointer"></button>
+</sc-for>
+<sc-for list="{{nodes}}" as="n" hint-placeholder-count="17">
+<span class="bl" aria-hidden="true" style="left:{{n.lx}}%;top:{{n.ly}}%">{{n.a}}</span>
+</sc-for>
+</div>
+</sc-if>
+
+<div class="ro {{roClass}}" aria-hidden="true">
+<span class="mono" style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">{{ro.label}}</span>
+<div style="display:flex;align-items:baseline;justify-content:center;gap:6px">
+<span style="font-family:var(--serif);font-size:clamp(44px,5.6cqw,68px);line-height:1;font-weight:400;font-variant-numeric:tabular-nums lining-nums;color:{{ro.bigColor}}">{{ro.big}}</span>
+<span class="mono" style="font-size:14px;color:var(--tekst-zacht)">{{ro.suffix}}</span>
+</div>
+<span style="font-family:var(--serif);font-style:italic;font-size:clamp(15px,1.8cqw,21px);line-height:1.25;color:var(--tekst)">{{ro.name}}</span>
+<span class="mono" style="font-size:12px;line-height:1.4;color:var(--tekst-zacht)">{{ro.sub}}</span>
+</div>
+
+<p class="sr" aria-live="polite">{{srTekst}}</p>
+
+</div>
+</sc-if>
+
+<sc-if value="{{isTabel}}" hint-placeholder-val="{{false}}">
+<div style="max-width:1100px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+<div style="overflow-x:auto;border:1px solid var(--lijn);border-radius:8px;background:var(--nacht-900)">
+<div role="table" aria-label="Cohesie tussen fracties, in procenten van de gezamenlijke stemmingen" style="min-width:1160px;padding:8px 0">
+<div role="row" style="display:grid;grid-template-columns:200px repeat(17,56px);gap:2px;align-items:stretch;padding-right:8px">
+<div role="columnheader" style="position:sticky;left:0;z-index:2;background:var(--nacht-900);padding:0 12px;display:flex;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Fractie</div>
+<sc-for list="{{cols}}" as="c" hint-placeholder-count="17">
+<div role="columnheader" aria-sort="{{c.aria}}" style="display:flex">
+<button type="button" onClick="{{c.pick}}" title="Sorteer op {{c.a}}" style="flex:1;min-height:44px;padding:0;border:0;border-bottom:2px solid {{c.bd}};background:transparent;color:{{c.fg}};font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer">{{c.a}}</button>
+</div>
+</sc-for>
+</div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="17">
+<div role="row" style="display:grid;grid-template-columns:200px repeat(17,56px);gap:2px;align-items:stretch;padding-right:8px;margin-top:2px">
+<div role="rowheader" style="position:sticky;left:0;z-index:1;background:{{r.hb}};border-left:3px solid {{r.hl}};display:flex">
+<button type="button" onClick="{{r.pick}}" style="flex:1;min-height:40px;display:flex;align-items:center;gap:10px;padding:0 10px;border:0;background:transparent;color:var(--tekst);text-align:left;cursor:pointer;font-family:var(--sans);font-size:13px"><span class="mono" style="width:44px;font-size:12px;font-weight:500;flex:none">{{r.a}}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tekst-zacht)">{{r.name}}</span></button>
+</div>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="17">
+<div role="cell" title="{{c.title}}" style="min-height:40px;display:flex;align-items:center;justify-content:center;border-radius:4px;background:{{c.bg}};color:{{c.fg}};box-shadow:{{c.ring}};font-family:var(--mono);font-size:13px;font-weight:500;font-variant-numeric:tabular-nums lining-nums">{{c.txt}}<span class="sr">{{c.sr}}</span></div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Kies een kolomkop om de rijen te sorteren. Kies een fractie om haar te markeren.</span>
+</div>
+</sc-if>
+
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px 40px;max-width:1100px;width:100%;margin:0 auto">
+<div style="display:flex;flex-direction:column;gap:6px;flex:0 1 300px;min-width:200px">
+<span class="mono" style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Cohesie met de gekozen fractie</span>
+<div style="height:10px;border-radius:5px;background:linear-gradient(90deg,#2B2F6B 0%,#3E7CB1 33.33%,#7FB7C9 66.67%,#F2D38B 100%);border:1px solid var(--lijn-licht);box-sizing:border-box"></div>
+<div class="mono" style="display:flex;justify-content:space-between;font-size:11px;color:var(--tekst-zacht)"><span>0%</span><span>50%</span><span>100%</span></div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;min-height:32px">
+<span aria-hidden="true" style="width:22px;height:14px;border-radius:3px;background:repeating-linear-gradient(45deg,#8A97BD 0,#8A97BD 1px,#111B36 1px,#111B36 4px);border:1px solid var(--lijn-licht);box-sizing:border-box"></span>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Te weinig stemmingen</span>
+</div>
+<div style="display:flex;align-items:center;gap:10px;min-height:32px">
+<span aria-hidden="true" style="width:14px;height:14px;border-radius:50%;background:var(--koper);border:1.5px solid var(--goud);box-sizing:border-box"></span>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Gekozen fractie</span>
+</div>
+</div>
+
+<div role="group" aria-label="Kies een fractie" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:6px;max-width:1100px;width:100%;margin:0 auto">
+<sc-for list="{{kiezer}}" as="f" hint-placeholder-count="17">
+<button type="button" aria-pressed="{{f.on}}" title="{{f.name}}" onClick="{{f.pick}}" onMouseEnter="{{f.enter}}" onMouseLeave="{{leave}}" onFocus="{{f.enter}}" onBlur="{{leave}}" style="display:grid;grid-template-columns:14px 50px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:46px;padding:0 12px;text-align:left;border-radius:6px;border:1px solid {{f.bd}};background:{{f.bg}};color:var(--tekst);cursor:pointer;font-family:var(--sans)">
+<span aria-hidden="true" style="width:14px;height:14px;border-radius:50%;background:{{f.sw}};border:1px solid #566AA6;box-sizing:border-box"></span>
+<span class="mono" style="font-size:13px;font-weight:500">{{f.a}}</span>
+<span style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tekst-zacht)">{{f.name}}</span>
+<span aria-hidden="true" class="mono" style="font-size:13px;color:var(--tekst)">{{f.pct}}</span>
+<span class="sr">{{f.srv}}</span>
+</button>
+</sc-for>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"weergave":{"editor":"enum","default":"zaal","options":["zaal","boog","tabel"]},"segment":{"editor":"boolean","default":true},"periode":{"editor":"enum","default":"zp","options":["zp","jaar","kw"]},"$preview":{"width":1200,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const P = this.props || {};
+    const KOPER = '#D08A55', GOUD = '#E3B76A', TEKST = '#E8ECF5', LIJNL = '#566AA6';
+    const HATCH = 'repeating-linear-gradient(45deg,#8A97BD 0,#8A97BD 1px,#111B36 1px,#111B36 4px)';
+    const SC = [[43, 47, 107], [62, 124, 177], [127, 183, 201], [242, 211, 139]];
+    const toHex = (c) => '#' + c.map((x) => Math.round(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+    const lin = (u) => { u = u / 255; return u <= 0.04045 ? u / 12.92 : Math.pow((u + 0.055) / 1.055, 2.4); };
+    const lumi = (c) => 0.2126 * lin(c[0]) + 0.7152 * lin(c[1]) + 0.0722 * lin(c[2]);
+    const scaleRGB = (v) => {
+      const t = Math.max(0, Math.min(100, v)) / 100 * 3;
+      const k = Math.min(2, Math.floor(t));
+      const f = t - k;
+      return SC[k].map((x, i) => x + (SC[k + 1][i] - x) * f);
+    };
+    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const rnd = (x) => { const s = Math.sin(x * 12.9898) * 43758.5453; return s - Math.floor(s); };
+
+    // Voorbeelddata: zetelaantallen, stemmingen en posities zijn illustratief
+    const FR = [
+      { k: 'd66', a: 'D66', name: 'Democraten 66', z: 26, n: 2310, p: 0.30 },
+      { k: 'vvd', a: 'VVD', name: 'Volkspartij voor Vrijheid en Democratie', z: 22, n: 2310, p: 0.62 },
+      { k: 'pro', a: 'PRO', name: 'PRO', z: 20, n: 2310, p: 0.10 },
+      { k: 'pvv', a: 'PVV', name: 'Partij voor de Vrijheid', z: 19, n: 2310, p: 0.97 },
+      { k: 'cda', a: 'CDA', name: 'Christen-Democratisch Appèl', z: 18, n: 2310, p: 0.50 },
+      { k: 'ja21', a: 'JA21', name: 'JA21', z: 9, n: 2310, p: 0.84 },
+      { k: 'fvd', a: 'FVD', name: 'Forum voor Democratie', z: 7, n: 2310, p: 1.0 },
+      { k: 'gm', a: 'GM', name: 'Groep Markuszower', z: 7, n: 520, p: 0.92 },
+      { k: 'bbb', a: 'BBB', name: 'BoerBurgerBeweging', z: 3, n: 2310, p: 0.72 },
+      { k: 'cu', a: 'CU', name: 'ChristenUnie', z: 3, n: 2310, p: 0.45 },
+      { k: 'denk', a: 'DENK', name: 'DENK', z: 3, n: 2310, p: 0.15 },
+      { k: 'pvdd', a: 'PvdD', name: 'Partij voor de Dieren', z: 3, n: 2310, p: 0.02 },
+      { k: 'sgp', a: 'SGP', name: 'Staatkundig Gereformeerde Partij', z: 3, n: 2310, p: 0.78 },
+      { k: 'sp', a: 'SP', name: 'Socialistische Partij', z: 3, n: 2310, p: 0.05 },
+      { k: '50plus', a: '50PLUS', name: '50PLUS', z: 2, n: 2310, p: 0.40 },
+      { k: 'lk', a: 'LK', name: 'Lid Keijzer', z: 1, n: 64, p: 0.80 },
+      { k: 'volt', a: 'Volt', name: 'Volt', z: 1, n: 2310, p: 0.20 }
+    ].map((f, i) => Object.assign({ i: i }, f));
+    const H = FR.slice().sort((a, b) => a.p - b.p);
+
+    const PF = { zp: 1, jaar: 0.5, kw: 0.15 };
+    const pf = PF[P.periode] || 1;
+    const seed = P.periode === 'jaar' ? 1 : (P.periode === 'kw' ? 2 : 0);
+
+    const sel = FR.find((f) => f.k === st.sel) || FR[0];
+    const hov = FR.find((f) => f.k === st.hov) || null;
+    const view = st.view || P.weergave || 'zaal';
+    const showSegment = !(P.segment === false || P.segment === 'false');
+
+    const coh = (a, b) => {
+      const i = Math.min(a.i, b.i), j = Math.max(a.i, b.i);
+      const d = Math.abs(a.p - b.p);
+      const v = Math.round(Math.max(3, Math.min(97, 97 - 90 * Math.pow(d, 0.95) + (rnd(i * 17 + j * 3 + seed * 29) - 0.5) * 12)));
+      const n = Math.round(Math.min(a.n, b.n) * pf * (0.8 + 0.2 * rnd(i * 5 + j * 11 + seed * 7 + 1)));
+      return { v: v, n: n, low: n < 60 };
+    };
+
+    const info = {};
+    FR.forEach((f) => {
+      if (f.k === sel.k) {
+        info[f.k] = { sel: true, low: false, v: null, n: Math.round(f.n * pf), fill: KOPER };
+      } else {
+        const c = coh(sel, f);
+        info[f.k] = { sel: false, low: c.low, v: c.v, n: c.n, fill: c.low ? HATCH : toHex(scaleRGB(c.v)) };
+      }
+    });
+
+    const pickF = {}, enterF = {};
+    FR.forEach((f) => {
+      pickF[f.k] = () => this.setState({ sel: f.k });
+      enterF[f.k] = () => this.setState({ hov: f.k });
+    });
+    const leave = () => this.setState({ hov: null });
+
+    // Zaal: 150 zetels in zes rijen, hoefijzer van 220 graden
+    const rows = [[150, 13], [205, 18], [260, 23], [315, 27], [370, 32], [425, 37]];
+    const raw = [];
+    rows.forEach((rw) => {
+      for (let k = 0; k < rw[1]; k++) {
+        const th = 200 - (k + 0.5) * 220 / rw[1];
+        const rad = th * Math.PI / 180;
+        raw.push({ x: 500 + rw[0] * Math.cos(rad), y: 455 - rw[0] * Math.sin(rad), th: th, r: rw[0] });
+      }
+    });
+    raw.sort((a, b) => (b.th - a.th) || (a.r - b.r));
+    let ptr = 0;
+    const cent = {};
+    H.forEach((f) => {
+      let sx = 0, sy = 0;
+      for (let q = 0; q < f.z; q++) { const s = raw[ptr++]; s.fk = f.k; sx += s.x; sy += s.y; }
+      cent[f.k] = { x: sx / f.z, y: sy / f.z };
+    });
+    const cs = cent[sel.k];
+    let dmax = 1;
+    raw.forEach((s) => { s.d = Math.hypot(s.x - cs.x, s.y - cs.y); if (s.d > dmax) dmax = s.d; });
+    const seats = raw.map((s) => {
+      const inf = info[s.fk];
+      const isHov = hov && hov.k === s.fk;
+      return {
+        l: ((s.x - 15) / 10).toFixed(2),
+        t: ((s.y - 15) / 6.3).toFixed(2),
+        bg: inf.fill,
+        bw: isHov ? 2 : (inf.sel ? 1.5 : 1),
+        bc: isHov ? TEKST : (inf.sel ? GOUD : LIJNL),
+        delay: inf.sel ? 0 : Math.round(s.d / dmax * 280),
+        pick: pickF[s.fk],
+        enter: enterF[s.fk]
+      };
+    });
+
+    // Boog: fracties als knopen op een halve cirkel, lijndikte is de cohesie
+    const N = H.length;
+    const nodesRaw = H.map((f, m) => {
+      const th = Math.PI * (1 - m / (N - 1));
+      const d = 26 + 9 * Math.sqrt(f.z);
+      return { f: f, th: th, x: 500 + 410 * Math.cos(th), y: 480 - 410 * Math.sin(th), d: d };
+    });
+    const sn = nodesRaw.find((n) => n.f.k === sel.k);
+    const links = nodesRaw.filter((n) => n.f.k !== sel.k).map((n) => {
+      const inf = info[n.f.k];
+      const dx = n.x - sn.x, dy = n.y - sn.y;
+      const th = inf.low ? 1.2 : (1.5 + inf.v / 100 * 7.5);
+      return {
+        x: (sn.x / 10).toFixed(2), y: (sn.y / 5.6).toFixed(2),
+        w: (Math.hypot(dx, dy) / 10).toFixed(2),
+        h: (th / 10).toFixed(3), h2: (th / 20).toFixed(3),
+        a: (Math.atan2(dy, dx) * 180 / Math.PI).toFixed(2),
+        bg: inf.low ? 'repeating-linear-gradient(90deg,#8A97BD 0,#8A97BD 4px,rgba(138,151,189,0) 4px,rgba(138,151,189,0) 9px)' : 'rgba(208,138,85,0.62)'
+      };
+    });
+    const nodes = nodesRaw.map((n) => {
+      const inf = info[n.f.k];
+      const isHov = hov && hov.k === n.f.k;
+      const lr = 410 + n.d / 2 + 22;
+      return {
+        a: n.f.a,
+        l: ((n.x - n.d / 2) / 10).toFixed(2), t: ((n.y - n.d / 2) / 5.6).toFixed(2), w: (n.d / 10).toFixed(2),
+        lx: ((500 + lr * Math.cos(n.th)) / 10).toFixed(2), ly: ((480 - lr * Math.sin(n.th)) / 5.6).toFixed(2),
+        bg: inf.fill,
+        bw: isHov ? 2 : (inf.sel ? 1.5 : 1),
+        bc: isHov ? TEKST : (inf.sel ? GOUD : LIJNL),
+        pick: pickF[n.f.k], enter: enterF[n.f.k]
+      };
+    });
+
+    // Tabel: matrix fractie tegen fractie, sorteerbaar
+    const sortF = FR.find((f) => f.k === st.sort) || null;
+    let rowOrder = FR.slice();
+    if (sortF) {
+      const key = (f) => (f.k === sortF.k ? 101 : coh(f, sortF).v);
+      rowOrder.sort((a, b) => key(b) - key(a));
+    }
+    const cols = FR.map((f) => ({
+      a: f.a,
+      aria: sortF && sortF.k === f.k ? 'descending' : 'none',
+      fg: f.k === sel.k ? KOPER : TEKST,
+      bd: f.k === sel.k ? KOPER : 'transparent',
+      pick: () => this.setState({ sort: sortF && sortF.k === f.k ? null : f.k })
+    }));
+    const trows = rowOrder.map((r) => ({
+      a: r.a, name: r.name,
+      hb: r.k === sel.k ? '#1A2748' : '#0B1226',
+      hl: r.k === sel.k ? KOPER : 'transparent',
+      pick: pickF[r.k],
+      cells: FR.map((c) => {
+        const ring = (r.k === sel.k || c.k === sel.k) ? 'inset 0 0 0 1.5px #D08A55' : 'none';
+        if (c.k === r.k) return { txt: '', bg: '#070B18', fg: TEKST, ring: ring, sr: 'dezelfde fractie', title: r.name };
+        const x = coh(r, c);
+        const rgb = scaleRGB(x.v);
+        return {
+          txt: x.low ? '' : String(x.v),
+          bg: x.low ? HATCH : toHex(rgb),
+          fg: lumi(rgb) < 0.179 ? '#FFFFFF' : '#000000',
+          ring: ring,
+          sr: x.low ? 'te weinig stemmingen' : x.v + ' procent',
+          title: r.a + ' en ' + c.a + (x.low ? ': te weinig stemmingen' : ': ' + x.v + '% van ' + fmt(x.n) + ' stemmingen')
+        };
+      })
+    }));
+
+    // Uitleesvak (tooltip)
+    const shown = hov || sel;
+    const nm = shown.a === shown.name ? shown.name : shown.a + ' · ' + shown.name;
+    let ro;
+    if (shown.k === sel.k) {
+      ro = { label: 'Gekozen fractie', big: String(sel.z), suffix: sel.z === 1 ? 'zetel' : 'zetels', bigColor: KOPER, name: nm, sub: fmt(info[sel.k].n) + ' stemmingen in deze periode' };
+    } else {
+      const inf = info[shown.k];
+      ro = inf.low
+        ? { label: 'Cohesie met ' + sel.a, big: '–', suffix: '', bigColor: TEKST, name: nm, sub: 'Te weinig stemmingen (n = ' + inf.n + ')' }
+        : { label: 'Cohesie met ' + sel.a, big: String(inf.v), suffix: '%', bigColor: TEKST, name: nm, sub: 'Gebaseerd op ' + fmt(inf.n) + ' stemmingen' };
+    }
+
+    const kiezer = FR.map((f) => {
+      const inf = info[f.k];
+      return {
+        a: f.a, name: f.name,
+        on: inf.sel,
+        bg: inf.sel ? '#1A2748' : '#0B1226',
+        bd: inf.sel ? KOPER : '#2A3A63',
+        sw: inf.fill,
+        pct: inf.sel ? 'gekozen' : (inf.low ? '–' : inf.v + '%'),
+        srv: f.z + (f.z === 1 ? ' zetel, ' : ' zetels, ') + (inf.sel ? 'gekozen fractie' : (inf.low ? 'te weinig stemmingen' : 'cohesie ' + inf.v + ' procent')),
+        pick: pickF[f.k], enter: enterF[f.k]
+      };
+    });
+
+    const views = [['zaal', 'Zaal'], ['boog', 'Boog'], ['tabel', 'Tabel']].map((v) => ({
+      label: v[1], on: view === v[0],
+      bg: view === v[0] ? '#1A2748' : 'transparent',
+      bd: view === v[0] ? KOPER : '#2A3A63',
+      pick: () => this.setState({ view: v[0] })
+    }));
+
+    return {
+      showSegment: showSegment,
+      showStage: view !== 'tabel',
+      isZaal: view === 'zaal', isBoog: view === 'boog', isTabel: view === 'tabel',
+      views: views, seats: seats, links: links, nodes: nodes, cols: cols, rows: trows, kiezer: kiezer, ro: ro, leave: leave,
+      roClass: view === 'boog' ? 'ro-b' : 'ro-c',
+      glowX: (cs.x / 10).toFixed(2), glowY: (cs.y / 6.3).toFixed(2),
+      zaalLabel: 'Zaal met 150 zetels. ' + sel.name + ' is gekozen. De overige zetels zijn gekleurd naar cohesie met deze fractie.',
+      boogLabel: 'Boog met 17 fracties. ' + sel.name + ' is gekozen. De dikte van de lijnen toont de cohesie.',
+      srTekst: sel.name + ' gekozen, ' + sel.z + (sel.z === 1 ? ' zetel.' : ' zetels.')
+    };
+  }
+}
+</script>
+</body>
+</html>

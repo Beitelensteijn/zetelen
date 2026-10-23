@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Fractiepagina</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--nacht-900:#0B1226;--nacht-800:#111B36;--nacht-700:#1A2748;--lijn:#2A3A63;--lijn-licht:#566AA6;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--goud:#E3B76A;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+a{color:#D08A55}
+button:focus-visible,a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.mono{font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums lining-nums}
+</style>
+</helmet>
+<div style="position:relative;background:var(--nacht-950);color:var(--tekst);font-family:var(--sans);min-width:0;overflow:hidden">
+<svg aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0.03;pointer-events:none;mix-blend-mode:screen"><filter id="korrel-fr"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#korrel-fr)"></rect></svg>
+
+<dc-import name="Nav" actief="fracties" hint-size="100%,69px"></dc-import>
+
+<main style="position:relative">
+<section style="background:radial-gradient(ellipse 60% 70% at 22% 40%,rgba(208,138,85,0.12),rgba(208,138,85,0) 70%)">
+<div style="max-width:1240px;margin:0 auto;padding:64px 32px 48px;display:flex;flex-direction:column;gap:28px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">Fractie</span>
+<div style="display:flex;flex-direction:column;gap:6px">
+<h1 style="margin:0;font-family:var(--serif);font-size:clamp(64px,11vw,148px);line-height:0.95;font-weight:400;letter-spacing:-0.02em">{{f.a}}</h1>
+<sc-if value="{{f.heeftNaam}}" hint-placeholder-val="{{true}}">
+<span style="font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,32px);line-height:1.2;color:var(--tekst-zacht)">{{f.name}}</span>
+</sc-if>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 40px;font-family:var(--mono);font-size:13px;color:var(--tekst-zacht)">
+<span><span style="font-family:var(--serif);font-size:28px;color:var(--tekst);font-variant-numeric:tabular-nums lining-nums">{{f.z}}</span> {{f.zetelsLabel}}</span>
+<span style="align-self:flex-end">{{f.nTxt}} stemmingen in deze periode</span>
+<span style="align-self:flex-end">{{periodeNaam}}</span>
+</div>
+<div aria-hidden="true" style="display:flex;flex-wrap:wrap;gap:6px;max-width:560px">
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="26">
+<span style="width:14px;height:14px;border-radius:50%;background:#D08A55;border:1.5px solid #E3B76A;box-sizing:border-box"></span>
+</sc-for>
+</div>
+</div>
+</section>
+
+<sc-if value="{{f.bijz}}" hint-placeholder-val="{{false}}">
+<section aria-label="Over deze fractie" style="max-width:1240px;margin:0 auto;padding:0 32px 48px">
+<div style="max-width:760px;border-top:1px solid var(--koper);background:var(--nacht-800);padding:22px 26px 26px;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">{{f.kaderLabel}}</span>
+<h2 style="margin:0;font-family:var(--serif);font-size:30px;line-height:1.15;font-weight:400">{{f.kaderKop}}</h2>
+<p style="margin:0;max-width:62ch;font-size:16px;line-height:1.6;color:var(--tekst)">{{f.kaderTekst}}</p>
+<p style="margin:0;max-width:62ch;font-size:16px;line-height:1.6;color:var(--tekst-zacht)">[UITLEG OVER DE ONTSTAANSGESCHIEDENIS VAN {{f.a}}]. Alleen stemmingen vanaf [DATUM] tellen mee. Een lager aantal stemmingen maakt de percentages minder stabiel, daarom verschijnt hieronder vaker "Te weinig stemmingen".</p>
+</div>
+</section>
+</sc-if>
+
+<section aria-labelledby="lijst" style="border-top:1px solid var(--lijn);background:var(--nacht-900)">
+<div style="max-width:1240px;margin:0 auto;padding:56px 32px 72px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 48px">
+<div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--tekst-zacht)">Cohesie</span>
+<h2 id="lijst" style="margin:0;font-family:var(--serif);font-size:clamp(32px,3.6vw,48px);line-height:1.08;font-weight:400;letter-spacing:-0.01em">Met wie stemt {{f.a}} het vaakst hetzelfde?</h2>
+</div>
+<div role="group" aria-label="Periode" style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{periodes}}" as="p" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{p.on}}" onClick="{{p.pick}}" style="min-height:44px;padding:0 18px;border-radius:999px;border:1px solid {{p.bd}};background:{{p.bg}};color:var(--tekst);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer">{{p.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;gap:8px 20px;padding:0 0 10px;border-bottom:1px solid var(--lijn);font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tekst-zacht)">
+<span style="flex:1 1 220px">Fractie, van hoog naar laag</span>
+<span style="flex:2 1 260px">Aandeel gelijke stemmingen</span>
+<span style="flex:0 0 60px;text-align:right">%</span>
+<span style="flex:0 0 120px;text-align:right">Stemmingen</span>
+</div>
+<sc-for list="{{rijen}}" as="r" hint-placeholder-count="16">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;min-height:52px;padding:8px 0;border-bottom:1px solid var(--lijn)">
+<div style="flex:1 1 220px;min-width:0;display:flex;align-items:baseline;gap:12px">
+<span class="mono" style="width:56px;flex:none;font-size:14px;font-weight:500">{{r.a}}</span>
+<span style="font-size:14px;color:var(--tekst-zacht);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{r.name}}</span>
+</div>
+<div style="flex:2 1 260px;min-width:0">
+<div style="position:relative;height:14px;border-radius:3px;background:{{r.track}};border:1px solid var(--lijn-licht);box-sizing:border-box;overflow:hidden">
+<div style="position:absolute;left:0;top:0;height:100%;width:{{r.w}}%;background:{{r.fill}}"></div>
+</div>
+</div>
+<span class="mono" style="flex:0 0 60px;text-align:right;font-size:15px;font-weight:500">{{r.pct}}</span>
+<span class="mono" style="flex:0 0 120px;text-align:right;font-size:13px;color:var(--tekst-zacht)">{{r.nTxt}}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center">
+<div style="display:flex;align-items:center;gap:10px;min-height:32px">
+<span aria-hidden="true" style="width:22px;height:14px;border-radius:3px;background:repeating-linear-gradient(45deg,#8A97BD 0,#8A97BD 1px,#111B36 1px,#111B36 4px);border:1px solid var(--lijn-licht);box-sizing:border-box"></span>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Te weinig stemmingen</span>
+</div>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Kleur en lengte volgen dezelfde cohesieschaal als de verkenner.</span>
+</div>
+
+<div style="border-top:1px solid var(--lijn);padding-top:14px;display:flex;flex-direction:column;gap:4px">
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Bron: Tweede Kamer open data · {{periodeNaam}} · Laatst ververst: [DATUM]</span>
+<a href="Verkenner.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:600;text-decoration:underline;text-underline-offset:5px">Bekijk alle fracties in de verkenner</a>
+</div>
+</div>
+</section>
+</main>
+
+<dc-import name="Voet" hint-size="100%,330px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"fractie":{"editor":"enum","default":"d66","options":["d66","vvd","pro","pvv","cda","ja21","fvd","gm","bbb","cu","denk","pvdd","sgp","sp","50plus","lk","volt"]},"periode":{"editor":"enum","default":"zp","options":["zp","jaar","kw"]},"$preview":{"width":1440,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const P = this.props || {};
+    const SC = [[43, 47, 107], [62, 124, 177], [127, 183, 201], [242, 211, 139]];
+    const toHex = (c) => '#' + c.map((x) => Math.round(x).toString(16).padStart(2, '0')).join('').toUpperCase();
+    const scaleRGB = (v) => {
+      const t = Math.max(0, Math.min(100, v)) / 100 * 3;
+      const k = Math.min(2, Math.floor(t));
+      const f = t - k;
+      return SC[k].map((x, i) => x + (SC[k + 1][i] - x) * f);
+    };
+    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const rnd = (x) => { const s = Math.sin(x * 12.9898) * 43758.5453; return s - Math.floor(s); };
+    const HATCH = 'repeating-linear-gradient(45deg,#8A97BD 0,#8A97BD 1px,#111B36 1px,#111B36 4px)';
+
+    // Voorbeelddata, gelijk aan het zaalcomponent
+    const FR = [
+      { k: 'd66', a: 'D66', name: 'Democraten 66', z: 26, n: 2310, p: 0.30 },
+      { k: 'vvd', a: 'VVD', name: 'Volkspartij voor Vrijheid en Democratie', z: 22, n: 2310, p: 0.62 },
+      { k: 'pro', a: 'PRO', name: 'PRO', z: 20, n: 2310, p: 0.10 },
+      { k: 'pvv', a: 'PVV', name: 'Partij voor de Vrijheid', z: 19, n: 2310, p: 0.97 },
+      { k: 'cda', a: 'CDA', name: 'Christen-Democratisch Appèl', z: 18, n: 2310, p: 0.50 },
+      { k: 'ja21', a: 'JA21', name: 'JA21', z: 9, n: 2310, p: 0.84 },
+      { k: 'fvd', a: 'FVD', name: 'Forum voor Democratie', z: 7, n: 2310, p: 1.0 },
+      { k: 'gm', a: 'GM', name: 'Groep Markuszower', z: 7, n: 520, p: 0.92, bijz: 'groep' },
+      { k: 'bbb', a: 'BBB', name: 'BoerBurgerBeweging', z: 3, n: 2310, p: 0.72 },
+      { k: 'cu', a: 'CU', name: 'ChristenUnie', z: 3, n: 2310, p: 0.45 },
+      { k: 'denk', a: 'DENK', name: 'DENK', z: 3, n: 2310, p: 0.15 },
+      { k: 'pvdd', a: 'PvdD', name: 'Partij voor de Dieren', z: 3, n: 2310, p: 0.02 },
+      { k: 'sgp', a: 'SGP', name: 'Staatkundig Gereformeerde Partij', z: 3, n: 2310, p: 0.78 },
+      { k: 'sp', a: 'SP', name: 'Socialistische Partij', z: 3, n: 2310, p: 0.05 },
+      { k: '50plus', a: '50PLUS', name: '50PLUS', z: 2, n: 2310, p: 0.40 },
+      { k: 'lk', a: 'LK', name: 'Lid Keijzer', z: 1, n: 64, p: 0.80, bijz: 'lid' },
+      { k: 'volt', a: 'Volt', name: 'Volt', z: 1, n: 2310, p: 0.20 }
+    ].map((f, i) => Object.assign({ i: i }, f));
+
+    const pk = st.periode || P.periode || 'zp';
+    const PF = { zp: 1, jaar: 0.5, kw: 0.15 };
+    const PN = { zp: 'Zittingsperiode', jaar: 'Laatste 12 maanden', kw: 'Laatste 3 maanden' };
+    const pf = PF[pk] || 1;
+    const seed = pk === 'jaar' ? 1 : (pk === 'kw' ? 2 : 0);
+    const me = FR.find((x) => x.k === P.fractie) || FR[0];
+
+    const coh = (a, b) => {
+      const i = Math.min(a.i, b.i), j = Math.max(a.i, b.i);
+      const d = Math.abs(a.p - b.p);
+      const v = Math.round(Math.max(3, Math.min(97, 97 - 90 * Math.pow(d, 0.95) + (rnd(i * 17 + j * 3 + seed * 29) - 0.5) * 12)));
+      const n = Math.round(Math.min(a.n, b.n) * pf * (0.8 + 0.2 * rnd(i * 5 + j * 11 + seed * 7 + 1)));
+      return { v: v, n: n, low: n < 60 };
+    };
+
+    const rijenRaw = FR.filter((x) => x.k !== me.k).map((x) => Object.assign({ f: x }, coh(me, x)));
+    rijenRaw.sort((a, b) => (a.low === b.low) ? (b.v - a.v) : (a.low ? 1 : -1));
+    const rijen = rijenRaw.map((r) => ({
+      a: r.f.a, name: r.f.name,
+      w: r.low ? 0 : r.v,
+      fill: r.low ? 'transparent' : toHex(scaleRGB(r.v)),
+      track: r.low ? HATCH : '#070B18',
+      pct: r.low ? 'n.v.t.' : r.v + '%',
+      nTxt: r.low ? 'te weinig (' + r.n + ')' : fmt(r.n)
+    }));
+
+    const periodes = Object.keys(PN).map((id) => ({
+      label: PN[id], on: id === pk,
+      bg: id === pk ? '#1A2748' : 'transparent',
+      bd: id === pk ? '#D08A55' : '#2A3A63',
+      pick: () => this.setState({ periode: id })
+    }));
+
+    const dots = [];
+    for (let q = 0; q < me.z; q++) dots.push({ q: q });
+
+    const kader = me.bijz === 'groep'
+      ? { kaderLabel: 'Geen gevestigde partij', kaderKop: 'Wat is een groep?', kaderTekst: 'Een groep is een verband van Kamerleden dat tijdens de zittingsperiode is ontstaan, niet via een eigen lijst bij de verkiezingen. De cijfers hieronder gaan over het stemgedrag van de groep als geheel.' }
+      : (me.bijz === 'lid'
+        ? { kaderLabel: 'Geen gevestigde partij', kaderKop: 'Wat is een lid zonder fractie?', kaderTekst: 'Een lid zonder fractie is een Kamerlid dat alleen zit en niet bij een fractie hoort. De cijfers hieronder gaan over de stemmen van dit ene lid.' }
+        : { kaderLabel: '', kaderKop: '', kaderTekst: '' });
+
+    return {
+      f: Object.assign({}, me, kader, {
+        heeftNaam: me.a !== me.name,
+        zetelsLabel: me.z === 1 ? 'zetel' : 'zetels',
+        nTxt: fmt(Math.round(me.n * pf)),
+        bijz: !!me.bijz
+      }),
+      rijen: rijen, periodes: periodes, dots: dots, periodeNaam: PN[pk]
+    };
+  }
+}
+</script>
+</body>
+</html>

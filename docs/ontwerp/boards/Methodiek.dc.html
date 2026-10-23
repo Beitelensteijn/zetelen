@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Methodiek en betrouwbaarheid</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--nacht-900:#0B1226;--nacht-800:#111B36;--lijn:#2A3A63;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+a{color:#D08A55}
+a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.t{margin:0;max-width:68ch;font-size:17px;line-height:1.6;color:#E8ECF5}
+.k{margin:0;font-family:'Newsreader',Georgia,serif;font-size:clamp(28px,3vw,38px);line-height:1.12;font-weight:400;letter-spacing:-0.01em;color:#E8ECF5}
+.toc a{display:flex;align-items:center;min-height:44px;color:#E8ECF5;text-decoration:none;font-size:15px;border-top:1px solid #2A3A63}
+.toc a:hover{color:#E3B76A}
+</style>
+</helmet>
+<div style="position:relative;background:var(--nacht-950);color:var(--tekst);font-family:var(--sans);min-width:0;overflow:hidden">
+
+<dc-import name="Nav" actief="methodiek" hint-size="100%,69px"></dc-import>
+
+<main style="position:relative">
+
+<div style="border-bottom:1px solid var(--lijn)">
+<dc-import name="IllBinnenhof" hint-size="100%,520px"></dc-import>
+</div>
+
+<div style="max-width:1240px;margin:0 auto;padding:56px 32px 80px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;gap:20px;max-width:900px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">Methodiek</span>
+<h1 style="margin:0;font-family:var(--serif);font-size:clamp(44px,5.6vw,80px);line-height:1.04;font-weight:400;letter-spacing:-0.015em;text-wrap:balance">Methodiek en <em>betrouwbaarheid</em></h1>
+<p style="margin:0;max-width:60ch;font-size:18px;line-height:1.6;color:var(--tekst-zacht)">Hoe de cijfers op deze site tot stand komen, wat ze zeggen en vooral wat ze niet zeggen.</p>
+</header>
+
+<div style="display:flex;flex-wrap:wrap;gap:48px 72px;align-items:flex-start">
+
+<nav class="toc" aria-label="Op deze pagina" style="flex:0 1 260px;min-width:220px;display:flex;flex-direction:column">
+<span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht);padding-bottom:10px">Op deze pagina</span>
+<a href="#definitie">Wat is cohesie?</a>
+<a href="#telling">Wat wordt geteld</a>
+<a href="#grenzen">Wat de cijfers niet zeggen</a>
+<a href="#weinig">Te weinig stemmingen</a>
+<a href="#bron" style="border-bottom:1px solid #2A3A63">Bron en verversing</a>
+</nav>
+
+<article style="flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:56px">
+
+<section id="definitie" style="display:flex;flex-direction:column;gap:18px">
+<h2 class="k">Wat is cohesie?</h2>
+<p class="t">Cohesie is het percentage stemmingen waarop twee fracties hetzelfde stemden. Beide stemden voor, of beide stemden tegen.</p>
+<div style="border-top:1px solid var(--koper);background:var(--nacht-800);padding:18px 22px;display:flex;flex-direction:column;gap:6px;max-width:520px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">Rekenvoorbeeld</span>
+<span style="font-size:16px;line-height:1.6">Twee fracties stemden samen op 100 stemmingen. Op 74 daarvan kozen zij dezelfde kant. De cohesie is 74%.</span>
+</div>
+</section>
+
+<section id="telling" style="display:flex;flex-direction:column;gap:18px">
+<h2 class="k">Wat wordt geteld</h2>
+<p class="t">Alleen stemmingen waarop beide fracties een standpunt hadden. Hoe we omgaan met de situaties hieronder, is nog vast te leggen.</p>
+<p class="t" style="color:var(--tekst-zacht)">Hoofdelijke en fractiestemmingen: [KEUZE]. Afwezigheid en onthouding: [KEUZE]. Fracties die tijdens de periode splitsen of ontstaan: [KEUZE].</p>
+</section>
+
+<section id="grenzen" style="display:flex;flex-direction:column;gap:18px">
+<h2 class="k">Wat de cijfers niet zeggen</h2>
+<p class="t">Een hoge cohesie betekent niet dat twee fracties het inhoudelijk eens zijn. Zij kunnen om verschillende redenen hetzelfde stemmen.</p>
+<p class="t">Veel stemmingen zijn hamerstukken waarbij bijna iedereen voor stemt. Die tellen mee en verhogen de cohesie van elk paar fracties.</p>
+<p class="t">Cohesie zegt niets over coalitie of oppositie, over de inhoud van een voorstel, of over wat er in de debatten is gezegd.</p>
+</section>
+
+<section id="weinig" style="display:flex;flex-direction:column;gap:18px">
+<h2 class="k">Te weinig stemmingen</h2>
+<p class="t">Bij minder dan [DREMPEL] gezamenlijke stemmingen tonen we geen percentage. Dat percentage zou te sterk meebewegen met een paar stemmingen. In de beeldtaal van de site is dat een gearceerd vlak met het label "Te weinig stemmingen".</p>
+</section>
+
+<section id="bron" style="display:flex;flex-direction:column;gap:18px">
+<h2 class="k">Bron en verversing</h2>
+<p class="t">Alle stemmingen komen uit de open data van de Tweede Kamer. De gegevens worden [FREQUENTIE] ververst.</p>
+<div style="border-top:1px solid var(--lijn);padding-top:12px;display:flex;flex-direction:column;gap:4px">
+<span style="font-family:var(--mono);font-size:13px;color:var(--tekst-zacht)">Bron: Tweede Kamer open data · [LINK NAAR DOCUMENTATIE]</span>
+<span style="font-family:var(--mono);font-size:13px;color:var(--tekst-zacht)">Laatst ververst: [DATUM]</span>
+</div>
+<p class="t" style="color:var(--tekst-zacht)">Deze site is een persoonlijk project van [EIGEN NAAM]. Er staat geen organisatie of partij achter.</p>
+</section>
+
+</article>
+</div>
+
+</div>
+</main>
+
+<dc-import name="Voet" hint-size="100%,330px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

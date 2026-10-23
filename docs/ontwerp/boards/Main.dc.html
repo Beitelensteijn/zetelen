@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Voorpagina</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--nacht-900:#0B1226;--nacht-800:#111B36;--nacht-700:#1A2748;--lijn:#2A3A63;--lijn-licht:#566AA6;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--goud:#E3B76A;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+a{color:#D08A55}
+a:hover{color:#E3B76A}
+a:focus-visible,button:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.skip{position:absolute;left:-9999px;top:8px;background:#D08A55;color:#070B18;padding:10px 16px;font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:600;z-index:10}
+.skip:focus{left:8px}
+.nav a{color:#E8ECF5;text-decoration:none}
+.nav a:hover{color:#E3B76A}
+</style>
+</helmet>
+<div style="position:relative;background:var(--nacht-950);color:var(--tekst);font-family:var(--sans);min-width:0;overflow:hidden">
+
+<a class="skip" href="#zaal">Naar de inhoud</a>
+
+<svg aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0.03;pointer-events:none;mix-blend-mode:screen"><filter id="korrel-main"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#korrel-main)"></rect></svg>
+
+<header style="position:relative;border-bottom:1px solid var(--lijn)">
+<div style="max-width:1240px;margin:0 auto;padding:12px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 40px">
+<a href="Main.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-family:var(--serif);font-size:28px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:0.14em;color:var(--tekst);text-decoration:none">Sitenaam</a>
+<nav class="nav" aria-label="Hoofdmenu" style="display:flex;flex-wrap:wrap;gap:0 28px">
+<a href="Verkenner.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:500">Verkenner</a>
+<a href="Fractie.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:500">Fracties</a>
+<a href="Lezingen.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:500">Lezingen</a>
+<a href="Methodiek.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:500">Methodiek</a>
+</nav>
+</div>
+</header>
+
+<main style="position:relative">
+
+<section id="zaal" style="background:radial-gradient(ellipse 75% 46% at 50% 64%,rgba(62,124,177,0.17),rgba(62,124,177,0) 72%),radial-gradient(ellipse 52% 34% at 50% 66%,rgba(208,138,85,0.10),rgba(208,138,85,0) 72%)">
+<div style="max-width:1240px;margin:0 auto;padding:72px 32px 56px;display:flex;flex-direction:column;gap:40px">
+
+<div style="display:flex;flex-direction:column;gap:24px;max-width:980px">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">Cohesie</span>
+<h1 style="margin:0;font-family:var(--serif);font-size:clamp(44px,6.4vw,92px);line-height:1.02;font-weight:400;letter-spacing:-0.015em;text-wrap:balance">Hoe vaak stemmen fracties <em style="font-style:italic">hetzelfde?</em></h1>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px">
+<p style="margin:0;max-width:560px;font-size:18px;line-height:1.6;color:var(--tekst-zacht)">Kies een fractie in de zaal. De andere zetels kleuren naar het aandeel stemmingen waarop zij dezelfde kant kozen.</p>
+<div role="group" aria-label="Periode" style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+<span style="font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Periode</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{periodes}}" as="p" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{p.on}}" onClick="{{p.pick}}" style="min-height:44px;padding:0 18px;border-radius:999px;border:1px solid {{p.bd}};background:{{p.bg}};color:var(--tekst);font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer">{{p.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+
+<dc-import name="Zaal" periode="{{periode}}" segment="{{geenSegment}}" hint-size="100%,1100px"></dc-import>
+
+</div>
+</section>
+
+<section aria-label="Verder lezen" style="border-top:1px solid var(--lijn);background:var(--nacht-900)">
+<div style="max-width:1240px;margin:0 auto;padding:72px 32px;display:flex;flex-wrap:wrap;gap:56px 72px">
+
+<div id="verkenner" style="flex:1 1 400px;min-width:0;border-top:1px solid var(--koper);padding-top:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--koper)">Verkenner</span>
+<h2 style="margin:0;font-family:var(--serif);font-size:clamp(32px,3.6vw,48px);line-height:1.08;font-weight:400;letter-spacing:-0.01em">Elke fractie tegenover elke andere</h2>
+<p style="margin:0;max-width:520px;font-size:17px;line-height:1.6;color:var(--tekst-zacht)">Zaal, boog of tabel: dezelfde cijfers, drie manieren om ze te lezen. De gekozen periode staat in de link, zodat je een weergave kunt delen.</p>
+<a href="Verkenner.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px">Naar de verkenner</a>
+</div>
+
+<div id="methodiek" style="flex:1 1 400px;min-width:0;border-top:1px solid var(--lijn);padding-top:24px;display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+<span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--tekst-zacht)">Methodiek</span>
+<h2 style="margin:0;font-family:var(--serif);font-size:clamp(32px,3.6vw,48px);line-height:1.08;font-weight:400;letter-spacing:-0.01em">Wat een percentage wel en niet zegt</h2>
+<p style="margin:0;max-width:520px;font-size:17px;line-height:1.6;color:var(--tekst-zacht)">Cohesie telt op hoeveel stemmingen twee fracties dezelfde kant kozen. Het zegt niets over de reden, en niets over de inhoud van de voorstellen.</p>
+<a href="Methodiek.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-size:16px;font-weight:600;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px">Lees de methodiek</a>
+</div>
+
+</div>
+</section>
+
+</main>
+
+<footer style="position:relative;border-top:1px solid var(--lijn);background:var(--nacht-950)">
+<div style="max-width:1240px;margin:0 auto;padding:48px 32px 40px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:12px">
+<span style="font-family:var(--serif);font-size:26px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:0.14em">Sitenaam</span>
+<p style="margin:0;max-width:440px;font-size:15px;line-height:1.6;color:var(--tekst-zacht)">Een onafhankelijk project van [EIGEN NAAM]. Geen organisatie, geen partij.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--tekst-zacht)">
+<span>Bron: Tweede Kamer open data</span>
+<span>Laatst ververst: [DATUM]</span>
+</div>
+</div>
+<div style="border-top:1px solid var(--lijn);padding-top:20px">
+<span style="font-family:var(--mono);font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Voorbeelddata. Geen actuele zetelverdeling en geen echte cohesiewaarden.</span>
+</div>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const cur = st.periode || 'zp';
+    const defs = [
+      { id: 'zp', label: 'Zittingsperiode' },
+      { id: 'jaar', label: 'Laatste 12 maanden' },
+      { id: 'kw', label: 'Laatste 3 maanden' }
+    ];
+    const periodes = defs.map((d) => {
+      const on = d.id === cur;
+      return {
+        label: d.label,
+        on: on,
+        bg: on ? '#1A2748' : 'transparent',
+        bd: on ? '#D08A55' : '#2A3A63',
+        pick: () => this.setState({ periode: d.id })
+      };
+    });
+    return { periodes, periode: cur, geenSegment: false };
+  }
+}
+</script>
+</body>
+</html>

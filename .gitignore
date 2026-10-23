@@ -1,0 +1,17 @@
+# Geheimen en lokale data: nooit in git, de repo is publiek
+.env*
+data/
+*.sqlite*
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+
+# Node en Next.js
+node_modules/
+web/.next/
+web/out/
+.vercel/
+
+.DS_Store

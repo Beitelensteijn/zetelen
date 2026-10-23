@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Navigatie</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--lijn:#2A3A63;--tekst:#E8ECF5;--koper:#D08A55;--goud:#E3B76A;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif}
+body{margin:0;background:#070B18}
+a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.nl{color:#E8ECF5;text-decoration:none}
+.nl:hover{color:#E3B76A}
+</style>
+</helmet>
+<header style="position:relative;border-bottom:1px solid var(--lijn);background:var(--nacht-950);font-family:var(--sans)">
+<div style="max-width:1240px;margin:0 auto;padding:12px 32px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 40px">
+<a class="nl" href="Main.dc.html" style="display:inline-flex;align-items:center;min-height:44px;font-family:var(--serif);font-size:28px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:0.14em">Sitenaam</a>
+<nav aria-label="Hoofdmenu" style="display:flex;flex-wrap:wrap;gap:0 28px">
+<sc-for list="{{links}}" as="l" hint-placeholder-count="4">
+<a class="nl" href="{{l.href}}" aria-current="{{l.cur}}" style="display:inline-flex;align-items:center;min-height:44px;font-size:15px;font-weight:500;text-decoration:{{l.td}};text-decoration-color:#D08A55;text-decoration-thickness:2px;text-underline-offset:8px">{{l.label}}</a>
+</sc-for>
+</nav>
+</div>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"actief":{"editor":"enum","default":"verkenner","options":["verkenner","fracties","lezingen","methodiek","geen"]},"$preview":{"width":1440,"height":69}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const a = (this.props && this.props.actief) || 'geen';
+    const defs = [
+      ['verkenner', 'Verkenner', 'Verkenner.dc.html'],
+      ['fracties', 'Fracties', 'Fractie.dc.html'],
+      ['lezingen', 'Lezingen', 'Lezingen.dc.html'],
+      ['methodiek', 'Methodiek', 'Methodiek.dc.html']
+    ];
+    return {
+      links: defs.map((d) => ({
+        label: d[1], href: d[2],
+        cur: d[0] === a ? 'page' : 'false',
+        td: d[0] === a ? 'underline' : 'none'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

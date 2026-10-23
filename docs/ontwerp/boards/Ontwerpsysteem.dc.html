@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Ontwerpsysteem</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--nacht-950:#070B18;--nacht-900:#0B1226;--nacht-800:#111B36;--nacht-700:#1A2748;--lijn:#2A3A63;--lijn-licht:#566AA6;--tekst:#E8ECF5;--tekst-zacht:#A9B4CC;--koper:#D08A55;--goud:#E3B76A;--serif:'Newsreader',Georgia,serif;--sans:'Hanken Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace}
+body{margin:0;background:#070B18}
+a{color:#D08A55}
+button:focus-visible,a:focus-visible{outline:2px solid #D08A55;outline-offset:3px}
+.lab{font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#D08A55}
+.mono{font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums lining-nums}
+.cap{font-family:'DM Mono',ui-monospace,monospace;font-size:12px;line-height:1.5;color:#A9B4CC}
+.h2{margin:0;font-family:'Newsreader',Georgia,serif;font-size:clamp(32px,3.6vw,48px);line-height:1.08;font-weight:400;letter-spacing:-0.01em;color:#E8ECF5}
+.p{margin:0;max-width:620px;font-size:17px;line-height:1.6;color:#A9B4CC}
+.ct{border-collapse:collapse;width:100%;font-size:14px}
+.ct th,.ct td{padding:10px 12px;text-align:left;border-bottom:1px solid #2A3A63;font-weight:400}
+.ct th{font-family:'DM Mono',ui-monospace,monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#A9B4CC}
+.ct td.n{font-family:'DM Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums lining-nums}
+</style>
+</helmet>
+<div style="position:relative;background:var(--nacht-950);color:var(--tekst);font-family:var(--sans);min-width:0;overflow:hidden">
+<svg aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0.03;pointer-events:none;mix-blend-mode:screen"><filter id="korrel-os"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="saturate" values="0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#korrel-os)"></rect></svg>
+
+<main style="position:relative;max-width:1240px;margin:0 auto;padding:72px 32px 80px;display:flex;flex-direction:column;gap:96px">
+
+<header style="display:flex;flex-direction:column;gap:20px;max-width:860px">
+<span class="lab">Ontwerpsysteem, versie 0.1</span>
+<h1 style="margin:0;font-family:var(--serif);font-size:clamp(48px,6.4vw,92px);line-height:1.02;font-weight:400;letter-spacing:-0.015em">Nacht met <em>koperlicht</em></h1>
+<p class="p">Een diepe, koele ondergrond met warm licht op wat de bezoeker kiest. Eigen palet, geen partijkleuren, geen logo's. Alle cijfers hieronder zijn voorbeelddata.</p>
+</header>
+
+<section aria-labelledby="kleur" style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Kleur</span><h2 id="kleur" class="h2">Tokens</h2>
+<p class="p">Koel is alles eromheen, warm is de keuze van de bezoeker. Koper voor selectie, links en markeringen. Goud alleen voor de hoogste waarde en een kleine glans.</p></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#070B18;border:1px solid var(--lijn-licht)"></div><span style="font-weight:600;font-size:14px">nacht-950</span><span class="cap">#070B18 · paginabasis</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#0B1226;border:1px solid var(--lijn-licht)"></div><span style="font-weight:600;font-size:14px">nacht-900</span><span class="cap">#0B1226 · vlakken</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#111B36;border:1px solid var(--lijn-licht)"></div><span style="font-weight:600;font-size:14px">nacht-800</span><span class="cap">#111B36 · kaarten, panelen</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#1A2748;border:1px solid var(--lijn-licht)"></div><span style="font-weight:600;font-size:14px">nacht-700</span><span class="cap">#1A2748 · verhoogd, hover</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#2A3A63"></div><span style="font-weight:600;font-size:14px">lijn</span><span class="cap">#2A3A63 · haarlijnen, 1px</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#566AA6"></div><span style="font-weight:600;font-size:14px">lijn-licht</span><span class="cap">#566AA6 · rand van zetels en knopen (toegevoegd)</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#E8ECF5"></div><span style="font-weight:600;font-size:14px">tekst</span><span class="cap">#E8ECF5</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#A9B4CC"></div><span style="font-weight:600;font-size:14px">tekst-zacht</span><span class="cap">#A9B4CC</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#D08A55"></div><span style="font-weight:600;font-size:14px">koper</span><span class="cap">#D08A55 · hoofdaccent</span></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="height:88px;border-radius:6px;background:#E3B76A"></div><span style="font-weight:600;font-size:14px">goud</span><span class="cap">#E3B76A · hoogtepunt</span></div>
+</div>
+
+<div style="overflow-x:auto;border:1px solid var(--lijn);border-radius:8px;background:var(--nacht-900)">
+<table class="ct" style="min-width:640px">
+<caption style="text-align:left;padding:14px 12px;font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tekst-zacht)">Contrastverhouding, WCAG AA vraagt 4,5 voor tekst</caption>
+<thead><tr><th scope="col">Tekstkleur</th><th scope="col">op nacht-950</th><th scope="col">op nacht-900</th><th scope="col">op nacht-800</th><th scope="col">op nacht-700</th></tr></thead>
+<tbody>
+<tr><th scope="row" style="color:var(--tekst)">tekst</th><td class="n">16,6</td><td class="n">15,7</td><td class="n">14,4</td><td class="n">12,4</td></tr>
+<tr><th scope="row" style="color:var(--tekst-zacht)">tekst-zacht</th><td class="n">9,4</td><td class="n">8,9</td><td class="n">8,2</td><td class="n">7,1</td></tr>
+<tr><th scope="row" style="color:var(--koper)">koper</th><td class="n">7,0</td><td class="n">6,6</td><td class="n">6,0</td><td class="n">5,2</td></tr>
+<tr><th scope="row" style="color:var(--goud)">goud</th><td class="n">10,5</td><td class="n">10,0</td><td class="n">9,1</td><td class="n">7,9</td></tr>
+</tbody>
+</table>
+</div>
+<p class="cap" style="max-width:720px">Nacht-950 als tekst op een koperen vlak (knop): 7,0. Rand van zetels, knopen en lijn-licht op nacht-950: 3,7, op nacht-800: 3,3, dus boven de 3,0 die voor grafische vormen geldt.</p>
+</section>
+
+<section aria-labelledby="schaal" style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Datakleur</span><h2 id="schaal" class="h2">Cohesieschaal</h2>
+<p class="p">Vier stops van laag naar hoog, met stijgende helderheid. Daardoor blijft de volgorde leesbaar in grijstinten en bij kleurenblindheid. De waarde staat altijd ook als getal in de cel of tooltip.</p></div>
+
+<div style="display:flex;flex-direction:column;gap:16px;max-width:880px">
+<div style="height:28px;border-radius:6px;background:linear-gradient(90deg,#2B2F6B 0%,#3E7CB1 33.33%,#7FB7C9 66.67%,#F2D38B 100%);border:1px solid var(--lijn-licht);box-sizing:border-box"></div>
+<div class="mono" style="display:flex;justify-content:space-between;font-size:12px;color:var(--tekst-zacht)"><span>#2B2F6B · laag</span><span>#3E7CB1</span><span>#7FB7C9</span><span>#F2D38B · hoog</span></div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:14px;max-width:880px">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Simulatie, zeven monsters op de schaal</span>
+<div style="display:grid;grid-template-columns:130px repeat(7,minmax(0,1fr));gap:4px;align-items:center">
+<span class="cap">Normaal</span>
+<div style="height:36px;background:#2B2F6B"></div><div style="height:36px;background:#34568E"></div><div style="height:36px;background:#3E7CB1"></div><div style="height:36px;background:#5E9ABD"></div><div style="height:36px;background:#7FB7C9"></div><div style="height:36px;background:#B8C5AA"></div><div style="height:36px;background:#F2D38B"></div>
+<span class="cap">Deuteranopie</span>
+<div style="height:36px;background:#00336A"></div><div style="height:36px;background:#31528D"></div><div style="height:36px;background:#5573B0"></div><div style="height:36px;background:#7C8EBC"></div><div style="height:36px;background:#A0ABC9"></div><div style="height:36px;background:#C6C0AB"></div><div style="height:36px;background:#EBDA8D"></div>
+<span class="cap">Protanopie</span>
+<div style="height:36px;background:#0B386D"></div><div style="height:36px;background:#3D5A90"></div><div style="height:36px;background:#657EB3"></div><div style="height:36px;background:#8998BF"></div><div style="height:36px;background:#ACB4CA"></div><div style="height:36px;background:#C8C1A8"></div><div style="height:36px;background:#E3D186"></div>
+<span class="cap">Grijstinten</span>
+<div style="height:36px;background:#353535"></div><div style="height:36px;background:#565656"></div><div style="height:36px;background:#777777"></div><div style="height:36px;background:#939393"></div><div style="height:36px;background:#AEAEAE"></div><div style="height:36px;background:#C1C1C1"></div><div style="height:36px;background:#D6D6D6"></div>
+</div>
+<p class="cap" style="max-width:720px">In alle vier de rijen stijgt de helderheid van links naar rechts. Berekend met de Machado-matrices voor volledige deuteranopie en protanopie.</p>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:32px 56px;align-items:flex-start;max-width:880px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="width:200px;height:56px;border-radius:6px;background:repeating-linear-gradient(45deg,#8A97BD 0,#8A97BD 1px,#111B36 1px,#111B36 4px);border:1px solid var(--lijn-licht);box-sizing:border-box"></div>
+<span class="cap">Te weinig stemmingen: arcering, geen kleur op de schaal</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:6px">
+<span style="width:56px;height:56px;border-radius:4px;background:#2B2F6B;color:#FFFFFF;display:flex;align-items:center;justify-content:center" class="mono">8</span>
+<span style="width:56px;height:56px;border-radius:4px;background:#3E7CB1;color:#000000;display:flex;align-items:center;justify-content:center" class="mono">33</span>
+<span style="width:56px;height:56px;border-radius:4px;background:#7FB7C9;color:#000000;display:flex;align-items:center;justify-content:center" class="mono">67</span>
+<span style="width:56px;height:56px;border-radius:4px;background:#F2D38B;color:#000000;display:flex;align-items:center;justify-content:center" class="mono">94</span>
+</div>
+<span class="cap">Cijfers in cellen: wit of zwart, per cel het hoogste contrast. Overal minimaal 4,6.</span>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="type" style="display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Typografie</span><h2 id="type" class="h2">Drie lettertypes</h2>
+<p class="p">Newsreader voor koppen, uitgelichte cijfers en de twee lezingen. Hanken Grotesk voor interface, labels en tabellen. DM Mono voor kleine datalabels en bronvermeldingen. Alle drie via Google Fonts.</p></div>
+
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--lijn);padding-top:20px">
+<span class="cap">Hero-kop · Newsreader 400 · 72 tot 96 px desktop, 44 px telefoon · regelhoogte 1,02</span>
+<div style="font-family:var(--serif);font-size:clamp(44px,6.4vw,92px);line-height:1.02;font-weight:400;letter-spacing:-0.015em">Hoe vaak stemmen <em>fracties</em> hetzelfde?</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--lijn);padding-top:20px">
+<span class="cap">Sectiekop · Newsreader 400 · 32 tot 48 px · regelhoogte 1,08</span>
+<div style="font-family:var(--serif);font-size:44px;line-height:1.08;font-weight:400;letter-spacing:-0.01em">Wat een percentage wel en niet zegt</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px 56px;border-top:1px solid var(--lijn);padding-top:20px">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<span class="cap">Uitgelicht cijfer · Newsreader, tabulaire cijfers</span>
+<div style="font-family:var(--serif);font-size:96px;line-height:1;font-variant-numeric:tabular-nums lining-nums;color:var(--koper)">74<span style="font-size:36px;color:var(--tekst-zacht)">%</span></div>
+</div>
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<span class="cap">Lopende tekst · Hanken Grotesk 400 · 17 px · regelhoogte 1,6 · maximaal 68 tekens</span>
+<p style="margin:0;max-width:68ch;font-size:17px;line-height:1.6;color:var(--tekst)">Cohesie is het percentage stemmingen waarop twee fracties hetzelfde stemden. Een hoog percentage betekent niet dat fracties het inhoudelijk eens zijn.</p>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:24px 56px;border-top:1px solid var(--lijn);padding-top:20px">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<span class="cap">Rubriekslabel · Hanken Grotesk 600 · kleine kapitalen met ruime letterspatiëring</span>
+<span class="lab">Cohesie</span><span style="font-size:12px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--tekst-zacht)">Methodiek</span>
+</div>
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<span class="cap">Datalabel en bron · DM Mono 400 · 11 tot 13 px</span>
+<span class="mono" style="font-size:13px;color:var(--tekst-zacht)">Bron: Tweede Kamer open data · Laatst ververst: [DATUM]</span>
+<span class="mono" style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Voorbeelddata</span>
+</div>
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<span class="cap">Wordmerk · Newsreader 500, kleine kapitalen, letterspatiëring 0,14 em</span>
+<span style="font-family:var(--serif);font-size:32px;font-weight:500;font-variant-caps:all-small-caps;letter-spacing:0.14em">Sitenaam</span>
+</div>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="ruimte" style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Ruimte en vorm</span><h2 id="ruimte" class="h2">Basis van 4 px</h2></div>
+<div style="display:flex;flex-wrap:wrap;gap:24px 40px;align-items:flex-end">
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:4px;height:4px;background:var(--koper)"></div><span class="cap">4</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:8px;height:8px;background:var(--koper)"></div><span class="cap">8</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:12px;height:12px;background:var(--koper)"></div><span class="cap">12</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:16px;height:16px;background:var(--koper)"></div><span class="cap">16</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:24px;height:24px;background:var(--koper)"></div><span class="cap">24</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:32px;height:32px;background:var(--koper)"></div><span class="cap">32</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:48px;height:48px;background:var(--koper)"></div><span class="cap">48</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:72px;height:72px;background:var(--koper)"></div><span class="cap">72</span></div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><div style="width:96px;height:96px;background:var(--koper)"></div><span class="cap">96</span></div>
+</div>
+<p class="p">Pagina met maximaal 1240 px inhoud en 32 px zijmarge. Secties 72 px boven en onder. Haarlijnen van 1 px in lijn. Hoeken 6 px voor knoppen en cellen, 8 px voor panelen, volledig rond voor keuzepillen. Geen schaduwen, diepte komt van de korrel en de gloed.</p>
+</section>
+
+<section aria-labelledby="grafiek" style="display:flex;flex-direction:column;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Grafiekstijl</span><h2 id="grafiek" class="h2">Zaal, boog en tabel</h2>
+<p class="p">Drie weergaven van dezelfde cijfers. Hieronder staan ze als werkend component: kies een fractie en beweeg over zetels, knopen of cellen.</p></div>
+
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:720px"><h3 style="margin:0;font-family:var(--serif);font-size:28px;font-weight:400">Zaal</h3>
+<p class="cap">150 zetels in zes rijen, hoefijzer van 220 graden. De gekozen fractie in koper met een gouden rand. Andere zetels volgen de cohesieschaal, met een rand in lijn-licht. De overgang is een golf van 600 ms vanaf de gekozen fractie.</p></div>
+<div style="border:1px solid var(--lijn);border-radius:8px;background:radial-gradient(ellipse 75% 46% at 50% 56%,rgba(62,124,177,0.15),rgba(62,124,177,0) 72%);padding:32px 24px">
+<dc-import name="Zaal" weergave="zaal" segment="{{nee}}" periode="zp" hint-size="100%,1100px"></dc-import>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:720px"><h3 style="margin:0;font-family:var(--serif);font-size:28px;font-weight:400">Boog</h3>
+<p class="cap">Fracties als knopen op een halve cirkel, de grootte volgt het aantal zetels. Vanuit de gekozen fractie loopt een lijn naar elke andere, de dikte is de cohesie. Gestreepte dunne lijn: te weinig stemmingen.</p></div>
+<div style="border:1px solid var(--lijn);border-radius:8px;padding:32px 24px">
+<dc-import name="Zaal" weergave="boog" segment="{{nee}}" periode="zp" hint-size="100%,1000px"></dc-import>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:6px;max-width:720px"><h3 style="margin:0;font-family:var(--serif);font-size:28px;font-weight:400">Tabel</h3>
+<p class="cap">Matrix van fractie tegen fractie met dezelfde schaal en het cijfer in elke cel. Kolomkoppen sorteren, de eerste kolom blijft staan bij horizontaal scrollen. Dit is ook het toegankelijke alternatief voor de zaal.</p></div>
+<div style="border:1px solid var(--lijn);border-radius:8px;padding:32px 24px">
+<dc-import name="Zaal" weergave="tabel" segment="{{nee}}" periode="zp" hint-size="100%,1100px"></dc-import>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="comp" style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:12px"><span class="lab">Componenten</span><h2 id="comp" class="h2">Terugkerende onderdelen</h2></div>
+
+<div style="display:flex;flex-wrap:wrap;gap:40px 56px;align-items:flex-start">
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Periodekeuze en segmentbediening</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--koper);background:var(--nacht-700);font-size:14px;font-weight:600">Zittingsperiode</span>
+<span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--lijn);font-size:14px;font-weight:600">Laatste 12 maanden</span>
+</div>
+<span class="cap">Gekozen: koperen rand en nacht-700. Minimaal 44 px hoog.</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;width:280px">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Tooltip</span>
+<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:18px 14px;background:rgba(11,18,38,0.86);border:1px solid var(--lijn);border-radius:8px">
+<span class="mono" style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Cohesie met D66</span>
+<div style="display:flex;align-items:baseline;gap:6px"><span style="font-family:var(--serif);font-size:56px;line-height:1;font-variant-numeric:tabular-nums lining-nums">74</span><span class="mono" style="font-size:14px;color:var(--tekst-zacht)">%</span></div>
+<span style="font-family:var(--serif);font-style:italic;font-size:18px">CDA · Christen-Democratisch Appèl</span>
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Gebaseerd op 2.104 stemmingen</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;width:340px;max-width:100%">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Leeswijzer-kader</span>
+<div style="border-top:1px solid var(--koper);background:var(--nacht-800);padding:18px 20px;display:flex;flex-direction:column;gap:8px">
+<span class="lab" style="color:var(--koper)">Zo lees je dit</span>
+<p style="margin:0;font-size:15px;line-height:1.6;color:var(--tekst)">Een lichte zetel betekent dat die fractie vaak hetzelfde stemde als de gekozen fractie. Een donkere zetel betekent dat zij zelden samen stemden.</p>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Bronvoetregel</span>
+<div style="border-top:1px solid var(--lijn);padding-top:12px;display:flex;flex-direction:column;gap:4px">
+<span class="mono" style="font-size:12px;color:var(--tekst-zacht)">Bron: Tweede Kamer open data · Laatst ververst: [DATUM]</span>
+<span class="mono" style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--tekst-zacht)">Voorbeelddata</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<span class="cap" style="letter-spacing:0.12em;text-transform:uppercase">Focusrand</span>
+<span style="display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--lijn);font-size:14px;font-weight:600;outline:2px solid #D08A55;outline-offset:3px">Gefocust</span>
+<span class="cap">2 px koper, 3 px afstand. Alles is met het toetsenbord te bedienen.</span>
+</div>
+
+</div>
+</section>
+
+<section aria-labelledby="regels" style="display:flex;flex-direction:column;gap:24px;border-top:1px solid var(--lijn);padding-top:40px">
+<h2 id="regels" class="h2">Regels</h2>
+<div style="display:flex;flex-wrap:wrap;gap:24px 56px">
+<p class="p" style="flex:1 1 320px">Geen partijlogo's en geen partijkleuren. Fracties verschijnen met naam en afkorting, in dit palet.</p>
+<p class="p" style="flex:1 1 320px">Geen rood tegen blauw. Warm is selectie, koel is omgeving. Kleur is nooit de enige drager van betekenis.</p>
+<p class="p" style="flex:1 1 320px">Beweging alleen waar die iets betekent: de golf door de zaal en de meebewegende gloed. Met voorkeur voor verminderde beweging een directe kleurwissel.</p>
+</div>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":7600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { nee: false };
+  }
+}
+</script>
+</body>
+</html>
