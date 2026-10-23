@@ -1,6 +1,8 @@
 # Dagelijkse incrementele verversing van de raw-laag (component ingest, stap D).
 # Ook met de hand te starten: Actions-tab of `gh workflow run ververs.yml`.
-# Een mislukte geplande run geeft een e-mail van GitHub aan de eigenaar van de repo.
+# Bewaking (component bewaking): signalen naar healthchecks.io via het geheim HEALTHCHECK_URL;
+# blijft het succes-signaal uit of komt er een fout, dan mailt healthchecks. Een mislukte
+# geplande run geeft daarnaast een e-mail van GitHub. Runbook: docs/onderhoud.md.
 name: Ververs
 
 on:
@@ -8,9 +10,16 @@ on:
     # Dagelijks om 04:17 UTC; niet op het hele uur, dan is GitHub het drukst
     - cron: "17 4 * * *"
   workflow_dispatch:
+    inputs:
+      test_fout:
+        description: "Test de foutmelding: deze run gebruikt een ongeldige databaseverbinding"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
+  # Nodig voor de stap die de workflow actief houdt (60-dagenregel)
+  actions: write
 
 # Zelfde groep als de eerste laad: nooit tegelijk schrijven
 concurrency:
@@ -35,5 +44,15 @@ jobs:
 
       - name: Verversen
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          # Bij test_fout een verbinding die altijd geweigerd wordt; het echte geheim blijft onaangeroerd
+          DATABASE_URL: ${{ inputs.test_fout && 'postgresql://test-fout@127.0.0.1:1/test' || secrets.DATABASE_URL }}
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
         run: python pipeline/ververs.py
+
+      - name: Workflow actief houden (60-dagenregel)
+        # Ook na een mislukte run: de bewaking meldt de fout, de planning moet blijven lopen.
+        # Niet gecontroleerd of dit de teller van 60 dagen reset; de bewaking is het vangnet.
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/ververs.yml/enable"

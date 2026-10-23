@@ -67,3 +67,58 @@ def test_wijziging_en_verwijdering_komen_mee(conn):
     assert conn.execute('select "Verwijderd" from raw.fractie where "Id" = %s', (rec[1]["Id"],)).fetchone()[0] is True
     na = conn.execute("select laatste_api_gewijzigd_op from raw.laadstatus").fetchone()[0]
     assert na > voor
+
+
+# Bewaking: signalen naar healthchecks en het logboek beheer.verversing
+
+def test_ping_zonder_url_doet_niets(monkeypatch):
+    aanroepen = []
+    monkeypatch.delenv("HEALTHCHECK_URL", raising=False)
+    monkeypatch.setattr(ververs.urllib.request, "urlopen", lambda *a, **k: aanroepen.append(a))
+    ververs.ping("/start")
+    assert aanroepen == []
+
+
+def test_ping_met_url_en_achtervoegsel(monkeypatch):
+    class Antwoord:
+        def close(self):
+            pass
+
+    aanroepen = []
+    monkeypatch.setenv("HEALTHCHECK_URL", "https://hc.nep/abc/")
+    monkeypatch.setattr(ververs.urllib.request, "urlopen", lambda url, timeout: aanroepen.append(url) or Antwoord())
+    ververs.ping("/fail")
+    ververs.ping()
+    assert aanroepen == ["https://hc.nep/abc/fail", "https://hc.nep/abc"]
+
+
+def test_mislukt_signaal_laat_de_verversing_niet_falen(monkeypatch, capsys):
+    def kapot(*a, **k):
+        raise OSError("netwerk weg")
+
+    monkeypatch.setenv("HEALTHCHECK_URL", "https://hc.nep/geheim-adres")
+    monkeypatch.setattr(ververs.urllib.request, "urlopen", kapot)
+    ververs.ping()
+    uit = capsys.readouterr().out
+    assert "niet verstuurd" in uit and "geheim-adres" not in uit
+
+
+@db
+def test_logboek_bij_geslaagde_run(conn):
+    laad.laad_entiteit(conn, "Fractie", COLS, haal=NepApi(fracties(3)), base=BASE, pauze=0)
+    totaal = ververs.ververs_alles(conn, META, haal=NepApi(fracties(2)), base=BASE, pauze=0)
+    assert totaal == 2
+    rij = conn.execute("select status, records, klaar_op is not null, fout from beheer.verversing").fetchone()
+    assert rij == ("geslaagd", 2, True, None)
+
+
+@db
+def test_logboek_bij_mislukte_run(conn):
+    laad.laad_entiteit(conn, "Fractie", COLS, haal=NepApi(fracties(3)), base=BASE, pauze=0)
+
+    def kapotte_api(url):
+        raise RuntimeError("API bleef falen")
+
+    with pytest.raises(RuntimeError):
+        ververs.ververs_alles(conn, META, haal=kapotte_api, base=BASE, pauze=0)
+    assert conn.execute("select status, fout from beheer.verversing").fetchone() == ("mislukt", "RuntimeError")

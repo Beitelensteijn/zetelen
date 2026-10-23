@@ -9,6 +9,11 @@ de API zet dan de vlag Verwijderd en werkt ApiGewijzigdOp bij.
 Entiteiten waarvan de eerste laad nog niet klaar is, worden overgeslagen.
 De log bevat alleen aantallen en duur.
 
+Bewaking (component bewaking): elke run krijgt een rij in beheer.verversing, en
+het script stuurt signalen naar healthchecks.io (HEALTHCHECK_URL): /start bij
+de start, de kale URL bij succes en /fail bij een fout. Blijft het
+succes-signaal uit, dan mailt healthchecks. Zonder HEALTHCHECK_URL geen signalen.
+
 Gebruik:
   DATABASE_URL=... python3 pipeline/ververs.py
 """
@@ -16,7 +21,9 @@ import datetime as dt
 import os
 import sys
 import time
+import traceback
 import urllib.parse
+import urllib.request
 from pathlib import Path
 
 import psycopg
@@ -24,6 +31,7 @@ import psycopg
 from api_check import BASE, lees_metadata
 from laad import PAUZE, VOLGORDE, getal, http_json, basis_url, mb, database_grootte, schrijf_pagina, skiptoken_uit
 from raw_schema import METADATA, kolommen
+from verbindingstest import uitleg
 
 MARGE = dt.timedelta(hours=1)  # overlap met de vorige run; de upsert maakt dubbel ophalen onschadelijk
 
@@ -66,17 +74,67 @@ def ververs_entiteit(conn, entiteit, cols, haal=http_json, base=BASE, pauze=PAUZ
     return rijen
 
 
+def ping(pad=""):
+    """Signaal naar healthchecks.io. Een mislukt signaal laat de verversing niet falen.
+    De URL komt nooit in de log: wie hem kent, kan valse signalen sturen."""
+    url = os.environ.get("HEALTHCHECK_URL")
+    if not url:
+        return
+    try:
+        urllib.request.urlopen(url.rstrip("/") + pad, timeout=10).close()
+    except Exception as e:
+        print(f"Healthcheck-signaal{pad} niet verstuurd ({type(e).__name__})")
+
+
+def start_log(conn):
+    return conn.execute("insert into beheer.verversing default values returning id").fetchone()[0]
+
+
+def eind_log(conn, run_id, status, records=None, fout=None):
+    conn.execute(
+        "update beheer.verversing set klaar_op = now(), status = %s, records = %s, fout = %s where id = %s",
+        (status, records, fout, run_id),
+    )
+
+
+def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
+    """Ververst alle entiteiten en logt de run in beheer.verversing. Geeft het totaal terug."""
+    run_id = start_log(conn)
+    try:
+        totaal = 0
+        for entiteit in VOLGORDE:
+            totaal += ververs_entiteit(conn, entiteit, kolommen(meta, entiteit),
+                                       haal=haal, base=base, pauze=pauze) or 0
+    except Exception as e:
+        try:
+            eind_log(conn, run_id, "mislukt", fout=type(e).__name__)
+        except psycopg.Error:
+            pass  # de database zelf is het probleem; het signaal /fail meldt het alsnog
+        raise
+    eind_log(conn, run_id, "geslaagd", records=totaal)
+    return totaal
+
+
 def main():
     url = os.environ.get("DATABASE_URL")
     if not url:
+        ping("/fail")
         sys.exit("DATABASE_URL ontbreekt.")
     meta = lees_metadata(Path(METADATA).read_bytes())
     start = time.monotonic()
-    totaal = 0
-    with psycopg.connect(url, autocommit=True) as conn:
-        for entiteit in VOLGORDE:
-            totaal += ververs_entiteit(conn, entiteit, kolommen(meta, entiteit)) or 0
-        grootte = database_grootte(conn)
+    ping("/start")
+    try:
+        with psycopg.connect(url, autocommit=True, connect_timeout=30) as conn:
+            totaal = ververs_alles(conn, meta)
+            grootte = database_grootte(conn)
+    except Exception as e:
+        ping("/fail")
+        if isinstance(e, psycopg.Error):
+            # Geen traceback: de tekst van een databasefout kan host of gebruiker bevatten
+            sys.exit(f"Verversing mislukt. {uitleg(e)}")
+        traceback.print_exc()
+        sys.exit("Verversing mislukt.")
+    ping()
     minuten = f"{(time.monotonic() - start) / 60:.1f}".replace(".", ",")
     print(f"Verversing klaar: {getal(totaal)} records in {minuten} min, "
           f"database {mb(grootte)} MB")
