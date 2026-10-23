@@ -24,7 +24,7 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 
 - Secret scanning met push protection van GitHub aanzetten (voorstel Claude, 23 oktober 2026): blokkeert een sleutel al voor de push, gitleaks vindt hem pas erna. Instelling voor Niels
 - Controles op de naam Zetelen (zie `01-idee.md`), domein registreren
-- Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen) en de bron van de handmatige kabinettentabel; periodesoorten en standaard zijn besloten
+- Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen); periodesoorten, standaard en de bron van de kabinettentabel (Wikidata) zijn besloten
 - Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten; na de API-check ruim gehaald in de variant "alle stemmingen", de variant "alleen verdeelde stemmingen" wordt bij `cohesie-analyse` gecontroleerd
 - Meetmoment en meetmethode van 500 bezoekers per maand
 - Gebruiksvoorwaarden open data, foto-licentie, beleid bij verwijderverzoek
@@ -45,6 +45,10 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 ## Besluit: laden en Supabase
 
 Besluit Niels, 23 oktober 2026, na het API-checkrapport. Alle 14 entiteiten uit het rapport worden geladen vanaf 2010 (Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie volledig). Past de database niet in Supabase Free, dan wordt het Pro (25 dollar per maand). Tegenspraak van Claude, vastgelegd: met een beperkte laad (vijf entiteiten voor R1) paste Free waarschijnlijk; niet gemeten. Stemmingen zonder datum via Agendapunt en Activiteit (5.766) tellen niet mee in de analyses. Afwijkend stemgedrag (E6-S1) blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen". Verwerkt in `05-techniek.md`, `06-epics.md`, `ingest.md`, `core-model.md` en `cohesie-analyse.md`.
+
+## Besluit: extra databronnen
+
+Besluit Niels, 23 oktober 2026, op advies van Claude. Nu alleen Wikidata (CC0) als bron voor de kabinettentabel (E1-S8), met controle per rij. Bij R2 de entiteit Kamerstukdossier laden als het filter op onderwerp terugkomt. Overige bronnen staan onder Later in `01-idee.md`. Reden: meer data is niet het knelpunt, R1 is al groot. Verwerkt in `01-idee.md`, `06-epics.md` (E1-S8, E2-S2) en `core-model.md`.
 
 ## Besluit: ontwerp
 

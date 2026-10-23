@@ -41,7 +41,7 @@ Verwacht: de raw-laag van `ingest`.
 - Het model moet de twee kanten van stemmen kunnen dragen: fractiestemmen en persoonsstemmen. Persoonsstemmen bestaan, vrijwel alleen bij hoofdelijke stemmingen: 8 tot 75 besluiten per jaar (API-checkrapport, 23 oktober 2026)
 - Datum van een stemming: Stemming en Besluit hebben geen datum, die komt via `Besluit/Agendapunt/Activiteit/Datum`. 5.766 stemmingen (0,6%) hebben langs die weg geen datum; die krijgen geen periode en tellen niet mee in de analyses (besluit Niels, 23 oktober 2026). Maak ze telbaar voor `datakwaliteit`
 - Fractie en partij zijn niet hetzelfde. Op 22 oktober 2026 telt de Kamer 17 fracties, waarvan Groep Markuszower (zeven PVV-Kamerleden die op 20 januari 2026 vertrokken, partij De Nederlandse Alliantie sinds april 2026, fractienaam niet gewijzigd) en Lid Keijzer (een enkel Kamerlid) geen gevestigde partij zijn. Het model moet een fractie aan een partij of aan niets kunnen koppelen en wijzigingen van naam en samenstelling door de tijd bewaren
-- Periode is een eigen begrip met een soort (Kamerperiode of kabinet), een begin en een einde. Kamerperioden volgen uit de verkiezingsdata, kabinetten uit een handmatige tabel (E1-S8). De API bevat geen kabinetten (handmatige API-check, 23 oktober 2026)
+- Periode is een eigen begrip met een soort (Kamerperiode of kabinet), een begin en een einde. Kamerperioden volgen uit de verkiezingsdata, kabinetten uit een handmatige tabel (E1-S8, bron Wikidata). De API bevat geen kabinetten (handmatige API-check, 23 oktober 2026)
 
 ## Schatting
 

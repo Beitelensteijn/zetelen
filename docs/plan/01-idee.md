@@ -60,6 +60,13 @@ Bij elke analyse komen twee lezingen naast elkaar, vanuit verschillende invalsho
 - **Nieuws en podcasts koppelen aan onderwerpen:** een extra datastroom (feeds, onderwerpkoppeling, podcast-afleveringen). Pas na de vier analyses. Auteursrecht beperken door alleen titel, bron en link te tonen. Een verkeerde koppeling onder Niels' eigen naam is zichtbaar, dus kwaliteit van de koppeling is een eis
 - **Eerste Kamer:** idee van Niels (22 oktober 2026). In de eerste zoekronde is geen vergelijkbare open data API gevonden, alleen verkiezingsuitslagen op data.overheid.nl; niet uitputtend onderzocht. De Eerste Kamer stemt vaker via de toerekenmethode, dus cohesie en afwijking rusten daar op minder harde data. Scrapen is zwaarder en juridisch gevoeliger. Eerste stap bij oppakken: een gerichte controle van de beschikbare bronnen
 - **Partijlogo's met toestemming:** alleen als per partij vooraf toestemming is gevraagd en gekregen. Niet gepland
+- **Extra databronnen** (opgesomd door Claude, 23 oktober 2026; licenties en beschikbaarheid niet gecontroleerd tenzij vermeld). Pas oppakken als een release ze nodig heeft:
+  - Kamerstukdossier, Toezegging, CommissieZetel en Verslag uit de API van de Tweede Kamer. Kamerstukdossier is de kandidaat voor het filter op onderwerp (R2); CommissieZetel voor het wetgevingsproces per commissie (R2)
+  - Kiesraad: verkiezingsuitslagen en verkiezingsdata (open data van de overheid). Kan de data voor de Kamerperioden leveren
+  - Officiële bekendmakingen (KOOP): volledige tekst van Kamerstukken, moties en Handelingen, ook van de Eerste Kamer. Kansrijkste route voor de Eerste Kamer
+  - wetten.overheid.nl: inwerkingtreding van wetten, als eindpunt van een doorlooptijd (R2)
+  - ParlGov en Chapel Hill Expert Survey: posities van partijen, mogelijk voor de lens. Risico: een links-rechtsas brengt een duiding binnen die kan botsen met het principe van twee lezingen
+  - Niet bruikbaar zonder toestemming: parlement.com (PDC), Stemwijzer, Kieskompas (geen open data)
 
 Verworpen: een account met opgeslagen profiel (opvattingen of interesses) op de server.
 

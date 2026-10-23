@@ -82,6 +82,7 @@ Als beheerder wil ik een handmatig beheerde tabel met kabinetten, zodat de perio
 - Niels heeft de tabel nagekeken tegen de bron; Claude heeft de data niet nagezocht
 - Er is een kolom voor de coalitiefracties, in R1 nog niet gevuld
 - De Tweede Kamer-API bevat geen entiteit voor kabinetten (handmatige API-check, 23 oktober 2026). De tabel blijft dus handmatig
+- Bron: Wikidata (licentie CC0), besluit Niels 23 oktober 2026. Wikidata wordt door vrijwilligers bijgehouden, dus elke rij wordt nagekeken voordat hij in de tabel komt
 
 ## Epic 2: Cohesie van fracties (R1)
 
@@ -100,7 +101,7 @@ Als bezoeker wil ik cohesie per paar fracties per periode zien, zodat ik patrone
 - Voor een gekozen periode bestaat een voorberekende tabel met alle fractieparen en hun cohesie, plus het aantal onderliggende stemmingen
 - Een steekproef van minstens 10 stemmingen is met de hand nagerekend en komt overeen (aantal steekproef is een voorstel)
 - Een fractie met te weinig gezamenlijke stemmingen toont "te weinig data" in plaats van een getal (drempel: 25, besluit Niels). Volgens het API-checkrapport zijn er 1.911 tot 4.749 besluiten met een stemming per jaar; in de variant "alle stemmingen" halen fracties die langer dan enkele weken bestonden de drempel dus ruim. Het aandeel verdeelde stemmingen is via de API niet te tellen en wordt bij de berekening gecontroleerd
-- Het filter op onderwerp is geen onderdeel van R1, want hoe "onderwerp" uit de data volgt is nog niet bekend (zie E1-S2)
+- Het filter op onderwerp is geen onderdeel van R1, want hoe "onderwerp" uit de data volgt is nog niet bekend (zie E1-S2). Kandidaat-bron bij R2: de entiteit Kamerstukdossier uit dezelfde API (dossiers met titel), nu niet geladen
 
 **E2-S3 Matrix** (MVP)
 Als bezoeker wil ik een matrix van fracties met kleur voor cohesie, zodat ik in een oogopslag zie wie het vaakst samen stemt.
