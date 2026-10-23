@@ -1,6 +1,6 @@
 # Component: ingest
 
-Status: in bouw (23 oktober 2026), stap A en B klaar, stap C gebouwd
+Status: gebouwd en gedraaid (23 oktober 2026). Open: test van de melding bij een mislukte run (voorstel: bij `bewaking`)
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
 
 ## Doel
@@ -56,7 +56,7 @@ Verwacht:
 - De eerste volledige laad kan lang duren en meer API-verkeer geven dan de dagelijkse run; houd rekening met paginering en netwerkfouten (herhalen met uitstel). De API geeft maximaal 250 records per pagina; Stemming vanaf 2010 is ongeveer 3.900 pagina's, alle 14 entiteiten zonder datumfilter ongeveer 18.200
 - Het datumfilter voor Stemming loopt via `Besluit/Agendapunt/Activiteit/Datum`; dat werkt in de API (API-checkrapport)
 - Een GitHub Actions run heeft een maximale duur; een lange eerste laad moet daarom in te delen zijn (per entiteit of per periode) en hervatbaar zijn
-- Of dit binnen Supabase Free past, is niet bekend. Schatting als JSON: 2,7 GB voor de 14 entiteiten. Meet de grootte vroeg, na de eerste entiteit, zodat de overstap naar Pro niet halverwege de laad komt (zie `../05-techniek.md`)
+- Grootte na de eerste laad: 1.349 MB, dus Supabase Pro (zie `../05-techniek.md`)
 
 ## Bouwstappen
 
@@ -64,8 +64,8 @@ Verwacht:
 |---|---|---|
 | A | `pipeline/verbindingstest.py` en workflow Verbindingstest | Klaar en getest (23 oktober 2026): verbinding via de session pooler, Postgres 17.11 |
 | B | Schema `raw` (`db/migrations/001_raw_schema.sql`, gegenereerd door `pipeline/raw_schema.py`), migratierunner `pipeline/migreer.py`, workflow Migreer | Klaar en getest (23 oktober 2026): tests lokaal en in CI, uitgevoerd op Supabase (16 tabellen in `raw`) |
-| C | `pipeline/laad.py` en workflow Laad: eerste laad per entiteit, upsert op `Id`, hervatbaar via het skiptoken, stopt op tijdslimiet (330 min) en groottegrens (450 MB), vergelijkt aantallen met de API | Gebouwd, getest met een nagebootste API en lokaal tegen de live API; nog uit te voeren op Supabase |
-| D | Dagelijkse incrementele verversing | Niet gestart |
+| C | `pipeline/laad.py` en workflow Laad: eerste laad per entiteit, upsert op `Id`, hervatbaar via het skiptoken, stopt op tijdslimiet (330 min) en groottegrens (450 MB), vergelijkt aantallen met de API | Klaar en getest (23 oktober 2026): tests lokaal en in CI; eerste laad op Supabase in twee runs (de eerste stopte op de tijdslimiet en de tweede hervatte), zie Meting |
+| D | `pipeline/ververs.py` en workflow Ververs: dagelijks om 04:17 UTC, haalt alleen records op met `ApiGewijzigdOp` na de vorige run (een uur overlap), verwijderingen via de vlag `Verwijderd` | Klaar en getest (23 oktober 2026): tests lokaal en in CI; eerste run met de hand: 312 records in 0,3 minuut. De melding bij een mislukte run is nog niet getest |
 
 Keuzes (besluit Niels, 23 oktober 2026):
 - Raw-laag met een kolom per veld uit `$metadata`, geen `jsonb`. Uitwerking door Claude: kolomnamen exact de API-namen tussen aanhalingstekens, tabelnamen de entiteitnaam in kleine letters, plus een eigen kolom `_geladen_op`
@@ -82,6 +82,27 @@ Meting stap C (23 oktober 2026, lokale Postgres 16, live API):
 - De vijf kleine entiteiten: 7.055 rijen in 10 seconden, aantallen gelijk aan de API
 - Stemming, eerste minuut: 162 pagina's (40.500 rijen), 267 bytes per rij inclusief primaire sleutel. Geschat voor Stemming vanaf 2010: ongeveer 260 MB en 25 minuten
 - Schatting voor alle 14 entiteiten: ongeveer de helft van de JSON-schatting (2,7 GB), dus rond 1,3 GB. Free (500 MB) is daarmee te klein; grove extrapolatie, alleen Stemming gemeten
+
+Eerste laad op Supabase Pro (23 oktober 2026), na de verversing vergeleken met de API:
+
+| Entiteit | Rijen | Duur | Tabel (MB) | Tegen de API |
+|---|---|---|---|---|
+| Fractie, Commissie, Persoon, FractieZetel, FractieZetelPersoon | 7.055 | 1 min | 1,4 | gelijk |
+| Vergadering | 7.578 | 1 min | 1,9 | gelijk |
+| Activiteit | 66.870 | 7 min | 39,8 | gelijk |
+| Agendapunt | 311.290 | 30 min | 104,9 | 5 meer |
+| Besluit | 638.733 | 100 min | 156,9 | 4 meer |
+| Stemming | 978.678 | 91 min | 259,1 | gelijk |
+| ActiviteitActor | 292.057 | 28 min | 86,4 | gelijk |
+| Zaak | 343.822 | 37 min | 119,7 | gelijk |
+| ZaakActor | 922.008 | 2 runs, samen ongeveer 87 min | 261,4 | gelijk na de verversing (3 ontbraken na de laad) |
+| Document | 567.098 | 57 min | 222,4 | gelijk na de verversing (2 ontbraken na de laad) |
+
+Database na de laad: 1.349 MB. Tempo vanuit GitHub Actions: ongeveer 9.000 rijen per minuut, Besluit (met de koppeling naar Zaak) ongeveer 6.400.
+
+Verklaringen (niet gecontroleerd):
+- Ontbrekende rijen na de laad: de API sorteert op `Id` (een willekeurige GUID). Een record dat tijdens de laad bijkomt met een `Id` voor het huidige punt, wordt overgeslagen. De verversing vult dat aan, omdat het startpunt de start van de laad is
+- Rijen meer dan de API bij Agendapunt en Besluit: records die na de laad buiten het datumfilter vielen (datum van de vergadering verschoven of activiteit verwijderd). De verversing ruimt die niet op; `core-model` filtert op datum
 
 ## Schatting
 

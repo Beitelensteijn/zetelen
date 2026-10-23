@@ -7,7 +7,7 @@ Status: deels uitgevoerd (23 oktober 2026), zie de tabel. Niets hieronder is doo
 | Koppeling | Status | Wie |
 |---|---|---|
 | Repo op GitHub (publiek) | Gedaan (23 oktober 2026): `Beitelensteijn/zetelen` | Niels |
-| Supabase-project aangemaakt | Gedaan (23 oktober 2026): Free, regio Ierland (eu-west-1) | Niels |
+| Supabase-project aangemaakt | Gedaan (23 oktober 2026): Pro, regio Ierland (eu-west-1) | Niels |
 | Geheimen in GitHub Actions | Gedaan (23 oktober 2026): `DATABASE_URL` (session pooler, gebruiker `postgres`), getest met de workflow Verbindingstest | Niels |
 | Vercel-project gekoppeld aan de repo | Niet gedaan | Niels |
 | Environment variables in Vercel | Niet gedaan | Niels |

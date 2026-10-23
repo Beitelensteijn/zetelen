@@ -32,7 +32,7 @@ Reden voor de lagen: de zware berekening (cohesie over 2010 tot nu) staat in SQL
 | Onderdeel | Keuze | Reden | Status |
 |---|---|---|---|
 | Dataverversing | Python-script in GitHub Actions, dagelijks | Niels leest en reviewt Python. Gratis. | Besloten |
-| Database | Supabase Postgres, Free; Pro als de eerste laad niet past | Standaardstack, SQL voor de analyses. Het API-checkrapport schat de 14 entiteiten als JSON op 2,7 GB, boven de 500 MB van Free | Besloten (Pro: besluit Niels, 23 oktober 2026) |
+| Database | Supabase Postgres, Pro | Standaardstack, SQL voor de analyses. Na de eerste laad 1.349 MB, boven de 500 MB van Free | Besloten; Pro genomen (Niels, 23 oktober 2026) |
 | Verbinding vanuit Actions | Supabase session pooler (IPv4) | De directe verbinding is standaard alleen IPv6. De pooler werkt op elk plan over IPv4. | Voorstel, te testen bij bouw |
 | Frontend | Next.js met TypeScript | Standaard op Vercel, goed voor deelbare URL's en server-side rendering (SEO voor "gebruikt") | Voorstel |
 | Hosting | Vercel Hobby | Gratis, past bij personal gebruik | Voorstel |
@@ -80,8 +80,7 @@ Veld- en kolomnamen staan bewust niet in dit plan. De documentatie waarschuwt da
 ## Open punten
 
 - API-check: gedaan op 23 oktober 2026, zie `api-check-rapport.md`
-- Database-grootte inclusief indexes, meten na eerste volledige laad (schatting als JSON: 2,7 GB, zie `api-check-rapport.md`)
-- Pauzering Supabase Free bij een dagelijkse schrijfjob
+- Database-grootte inclusief indexes: gemeten na de eerste laad, 1.349 MB (23 oktober 2026)
 - Keuze grafiekbibliotheek en analytics
 - Naam en domein
 - Maatregel tegen de 60-dagenregel in GitHub Actions

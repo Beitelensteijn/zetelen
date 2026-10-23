@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar en het plan is bijgewerkt met het API-checkrapport.
+Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar; `ingest` is gebouwd en de eerste laad staat in Supabase Pro. Open bij `ingest`: de test van de melding bij een mislukte run (voorstel: bij `bewaking`).
 
 ## Afgerond
 
@@ -19,6 +19,7 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Repo `zetelen` aangemaakt met plan, ontwerp en `CLAUDE.md` (23 oktober 2026). Supabase en Vercel zijn nog niet gekoppeld
 - Component `repo-ci` (23 oktober 2026): secret scan (gitleaks), CI-placeholder, README, pull request-sjabloon en `docs/onderhoud.md` met het onderhoudspad voor de 60-dagenregel. Getest: de scan faalt op een nepsleutel in een testbranch en slaagt op `main`
 - Component `api-check` (23 oktober 2026): `pipeline/api_check.py` met tests in CI, rapport in `api-check-rapport.md`. Getest: 6 pytest-tests lokaal en in CI, tellingen gelijk aan de handmatige check en aan losse aanroepen
+- Component `ingest` (23 oktober 2026): schema `raw`, eerste laad van de 14 entiteiten vanaf 2010 (ongeveer 4,1 miljoen rijen, twee runs, ongeveer 8 uur) en dagelijkse verversing om 04:17 UTC. Database 1.349 MB. Getest: 29 tests lokaal en in CI, aantallen per entiteit vergeleken met de API
 
 ## Openstaand
 
@@ -32,7 +33,8 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Blijven rankings van individuele Kamerleden in scope
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
-- Databasegrootte meten bij `ingest`: schatting als JSON 2,7 GB voor de 14 entiteiten. Past het niet in Free, dan Pro (zie besluit hieronder)
+- Melding bij een mislukte verversing testen (E1-S4); voorstel: bij `bewaking`, met een opzettelijk foute connectiestring
+- Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API: records die na de laad buiten het datumfilter vielen. De verversing ruimt die niet op; `core-model` filtert op datum. Uitzoeken welke rijen het zijn (voorstel: bij `datakwaliteit`)
 
 ## Uitkomst API-check (rapport)
 
@@ -44,7 +46,7 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 
 ## Besluit: laden en Supabase
 
-Besluit Niels, 23 oktober 2026, na het API-checkrapport. Alle 14 entiteiten uit het rapport worden geladen vanaf 2010 (Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie volledig). Past de database niet in Supabase Free, dan wordt het Pro (25 dollar per maand). Tegenspraak van Claude, vastgelegd: met een beperkte laad (vijf entiteiten voor R1) paste Free waarschijnlijk; niet gemeten. Stemmingen zonder datum via Agendapunt en Activiteit (5.766) tellen niet mee in de analyses. Afwijkend stemgedrag (E6-S1) blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen". Verwerkt in `05-techniek.md`, `06-epics.md`, `ingest.md`, `core-model.md` en `cohesie-analyse.md`.
+Besluit Niels, 23 oktober 2026, na het API-checkrapport. Alle 14 entiteiten uit het rapport worden geladen vanaf 2010 (Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie volledig). Past de database niet in Supabase Free, dan wordt het Pro (25 dollar per maand). Gemeten bij `ingest`: 1.349 MB, dus Pro; Niels heeft Pro genomen (23 oktober 2026). Tegenspraak van Claude, vastgelegd: met een beperkte laad (vijf entiteiten voor R1) paste Free waarschijnlijk; niet gemeten. Stemmingen zonder datum via Agendapunt en Activiteit (5.766) tellen niet mee in de analyses. Afwijkend stemgedrag (E6-S1) blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen". Verwerkt in `05-techniek.md`, `06-epics.md`, `ingest.md`, `core-model.md` en `cohesie-analyse.md`.
 
 ## Besluit: extra databronnen
 
@@ -88,4 +90,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `ingest`. Eerst Supabase koppelen (`09-koppelingen.md`, stap 2 en 3).
+Component `bewaking`, met daarin de test van de melding bij een mislukte run (open punt van `ingest`).
