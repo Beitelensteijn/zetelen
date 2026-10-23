@@ -39,7 +39,11 @@ def nep_get(url, accept="application/json"):
         return 400, b'{"error":{"message":"limit of 250"}}'
     if params.get("$count") == "true":
         flt = params.get("$filter", "")
-        if "Persoon_Id ne null" in flt:
+        if "Stemming/any(s:s/Persoon_Id ne null)" in flt:
+            n = 1
+        elif "Stemming/any()" in flt:
+            n = 2
+        elif "Persoon_Id ne null" in flt:
             n = 3
         elif "Verwijderd eq false" in flt:
             n = 9
@@ -98,8 +102,8 @@ def test_rapport_bevat_per_entiteit_aantal_en_velden():
 
 def test_rapport_per_jaar_en_niet_te_dateren():
     _, rapport = maak_rapport(tot_jaar=2012)
-    assert "| 2010 | 10 | 9 | 3 |" in rapport
-    assert "| 2012 | 10 | 9 | 3 |" in rapport
+    assert "| 2010 | 10 | 9 | 3 | 2 | 1 |" in rapport
+    assert "| 2012 | 10 | 9 | 3 | 2 | 1 |" in rapport
     # 1000 totaal - 30 (2010-2012) - 5 (voor 2010)
     assert "Niet te dateren via" in rapport and ": 965" in rapport
 

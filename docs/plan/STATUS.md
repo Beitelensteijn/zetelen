@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar. Het rapport wacht op de lezing van Niels.
+Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar en het plan is bijgewerkt met het API-checkrapport.
 
 ## Afgerond
 
@@ -23,26 +23,28 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 ## Openstaand
 
 - Secret scanning met push protection van GitHub aanzetten (voorstel Claude, 23 oktober 2026): blokkeert een sleutel al voor de push, gitleaks vindt hem pas erna. Instelling voor Niels
-- Na het API-checkrapport: `06-epics.md`, `core-model.md` en `cohesie-analyse.md` bijwerken waar het rapport afwijkt (eerst laten zien)
 - Controles op de naam Zetelen (zie `01-idee.md`), domein registreren
 - Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen) en de bron van de handmatige kabinettentabel; periodesoorten en standaard zijn besloten
-- Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten, maar nog te toetsen na de API-check
+- Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten; na de API-check ruim gehaald in de variant "alle stemmingen", de variant "alleen verdeelde stemmingen" wordt bij `cohesie-analyse` gecontroleerd
 - Meetmoment en meetmethode van 500 bezoekers per maand
 - Gebruiksvoorwaarden open data, foto-licentie, beleid bij verwijderverzoek
 - Invalshoeken voor de lezingen bij het wetgevingsproces en de Kamerleden (bij cohesie besloten: samenwerking tegenover profilering, 22 oktober 2026)
 - Blijven rankings van individuele Kamerleden in scope
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
-- Afwijkend stemgedrag (E6-S1): met ongeveer 540 hoofdelijke stemmingen over de hele dataset is de dekking klein; beslissing na de telling per jaar
-- Supabase Free (500 MB): het API-checkrapport schat de 14 entiteiten als JSON op 2,7 GB, Stemming alleen op 535 MB. In Postgres waarschijnlijk kleiner (geen veldnamen per record, minder kolommen en entiteiten), maar dit is het grootste risico voor `ingest`. Voorstel Claude: alleen de entiteiten die R1 nodig heeft laden en vroeg meten
+- Databasegrootte meten bij `ingest`: schatting als JSON 2,7 GB voor de 14 entiteiten. Past het niet in Free, dan Pro (zie besluit hieronder)
 
 ## Uitkomst API-check (rapport)
 
-23 oktober 2026, details in `api-check-rapport.md`. Maximaal 250 records per pagina bij alle entiteiten. Stemmingen per jaar 2010 tot en met 2026: 22.243 tot 99.330; persoonsstemmen per jaar ongeveer 1.000 tot 11.000. 5.766 stemmingen (0,6%) zijn niet te dateren via Agendapunt en Activiteit. Wijzigingen via `ApiGewijzigdOp` en verwijderingen via `Verwijderd` zijn bij alle 14 entiteiten herkenbaar.
+23 oktober 2026, details in `api-check-rapport.md`. Maximaal 250 records per pagina bij alle entiteiten. Stemmingen per jaar 2010 tot en met 2026: 22.243 tot 99.330; persoonsstemmen per jaar ongeveer 1.000 tot 11.000. Besluiten met een stemming: 1.911 tot 4.749 per jaar, waarvan 8 tot 75 met een persoonsstem. 5.766 stemmingen (0,6%) zijn niet te dateren via Agendapunt en Activiteit. Wijzigingen via `ApiGewijzigdOp` en verwijderingen via `Verwijderd` zijn bij alle 14 entiteiten herkenbaar.
 
 ## Uitkomst handmatige API-check
 
 23 oktober 2026, details in `api-check-handmatig.md`. De API werkt zonder registratie. Individuele stemmen bestaan vrijwel alleen bij hoofdelijke stemmingen (538 besluiten 'Hoofdelijk', 561 met een persoonsstem, tegen 63.719 met handopsteken). Wijzigingen en verwijderingen zijn herkenbaar via `ApiGewijzigdOp` en `Verwijderd`. Er zijn geen kabinetten in de API. Stemming en Besluit hebben geen datum; die komt via Agendapunt en Activiteit.
+
+## Besluit: laden en Supabase
+
+Besluit Niels, 23 oktober 2026, na het API-checkrapport. Alle 14 entiteiten uit het rapport worden geladen vanaf 2010 (Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie volledig). Past de database niet in Supabase Free, dan wordt het Pro (25 dollar per maand). Tegenspraak van Claude, vastgelegd: met een beperkte laad (vijf entiteiten voor R1) paste Free waarschijnlijk; niet gemeten. Stemmingen zonder datum via Agendapunt en Activiteit (5.766) tellen niet mee in de analyses. Afwijkend stemgedrag (E6-S1) blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen". Verwerkt in `05-techniek.md`, `06-epics.md`, `ingest.md`, `core-model.md` en `cohesie-analyse.md`.
 
 ## Besluit: ontwerp
 
@@ -82,4 +84,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Niels leest `api-check-rapport.md`. Daarna de plan-updates na het rapport, dan component `ingest`.
+Component `ingest`. Eerst Supabase koppelen (`09-koppelingen.md`, stap 2 en 3).

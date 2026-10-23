@@ -32,7 +32,7 @@ Reden voor de lagen: de zware berekening (cohesie over 2010 tot nu) staat in SQL
 | Onderdeel | Keuze | Reden | Status |
 |---|---|---|---|
 | Dataverversing | Python-script in GitHub Actions, dagelijks | Niels leest en reviewt Python. Gratis. | Besloten |
-| Database | Supabase Postgres | Standaardstack, SQL voor de analyses | Besloten |
+| Database | Supabase Postgres, Free; Pro als de eerste laad niet past | Standaardstack, SQL voor de analyses. Het API-checkrapport schat de 14 entiteiten als JSON op 2,7 GB, boven de 500 MB van Free | Besloten (Pro: besluit Niels, 23 oktober 2026) |
 | Verbinding vanuit Actions | Supabase session pooler (IPv4) | De directe verbinding is standaard alleen IPv6. De pooler werkt op elk plan over IPv4. | Voorstel, te testen bij bouw |
 | Frontend | Next.js met TypeScript | Standaard op Vercel, goed voor deelbare URL's en server-side rendering (SEO voor "gebruikt") | Voorstel |
 | Hosting | Vercel Hobby | Gratis, past bij personal gebruik | Voorstel |
@@ -50,6 +50,7 @@ Reden voor de lagen: de zware berekening (cohesie over 2010 tot nu) staat in SQL
 - Free: 500 MB per project, pauzeert na een week zonder activiteit, beperkt tot twee actieve projecten.
 - Pro: vanaf 25 dollar per maand, 8 GB inbegrepen. Dollar, geen euro, dus in de praktijk net rond of boven 25 euro afhankelijk van de koers.
 - Niet gecontroleerd: of indexes meetellen in de 500 MB, wat er gebeurt bij overschrijding, en of een dagelijkse schrijfjob de pauzering voorkomt.
+- Volume (API-checkrapport, 23 oktober 2026): de 14 entiteiten zijn als JSON naar schatting 2,7 GB, Stemming alleen 535 MB. Postgres slaat veldnamen niet per rij op en zal kleiner uitkomen, maar Free (500 MB) is waarschijnlijk te klein. Besluit Niels: alle 14 entiteiten laden vanaf 2010, meten, en bij overschrijding Pro nemen. Pro (25 dollar per maand, zie hierboven) heft ook de pauzering na een week zonder activiteit op.
 - Row Level Security aan op elke tabel in een blootgesteld schema. Views omzeilen RLS standaard. In Postgres 15 en hoger lost `security_invoker = true` dat op.
 
 ### Vercel
@@ -78,8 +79,8 @@ Veld- en kolomnamen staan bewust niet in dit plan. De documentatie waarschuwt da
 
 ## Open punten
 
-- API-check door Niels: toegang zonder registratie, veldnamen, paginering en maximale paginagrootte, volume per entiteit, of de API wijzigingen en verwijderingen aangeeft, en het aantal stemmingen met een Persoon per jaar
-- Database-grootte inclusief indexes, schatten na eerste volledige laad
+- API-check: gedaan op 23 oktober 2026, zie `api-check-rapport.md`
+- Database-grootte inclusief indexes, meten na eerste volledige laad (schatting als JSON: 2,7 GB, zie `api-check-rapport.md`)
 - Pauzering Supabase Free bij een dagelijkse schrijfjob
 - Keuze grafiekbibliotheek en analytics
 - Naam en domein

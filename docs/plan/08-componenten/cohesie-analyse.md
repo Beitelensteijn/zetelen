@@ -31,6 +31,7 @@ Verwacht: het core-model met stemmingen op fractieniveau.
 - Niels heeft de definitie goedgekeurd
 - Fracties worden alleen vergeleken in periodes waarin ze beide bestonden
 - Periode is een Kamerperiode of een kabinet; beide soorten worden voorberekend. Standaard op de site: kabinet (besluit Niels, 22 oktober 2026)
+- Een stemming hoort bij een periode via de datum van de vergadering (`Besluit/Agendapunt/Activiteit/Datum`). Stemmingen zonder datum langs die weg tellen niet mee (5.766, 0,6%; besluit Niels, 23 oktober 2026)
 - Voorstel van Claude, Niels beslist: een demissionaire fase telt bij het kabinet waar die uit voortkomt
 
 **E2-S2 Berekening.** Als bezoeker wil ik cohesie per paar fracties per periode zien.
@@ -50,8 +51,8 @@ Verwacht: het core-model met stemmingen op fractieniveau.
 ## Aandachtspunten
 
 - Eerst de definitie vastleggen en door Niels laten goedkeuren, daarna pas de SQL
-- Periodesoorten besloten: kabinet (standaard) en Kamerperiode. Korte kabinetten brengen meer fractieparen onder de drempel van 25 gezamenlijke stemmingen; controleer dat na de API-check
-- Drempel "te weinig data": 25 gezamenlijke stemmingen per variant. In de variant "alleen verdeelde stemmingen" kunnen daardoor veel fractieparen wegvallen; controleer dat na de API-check
+- Periodesoorten besloten: kabinet (standaard) en Kamerperiode. Na de API-check (23 oktober 2026): 1.911 tot 4.749 besluiten met een stemming per jaar. In de variant "alle stemmingen" halen fractieparen de drempel van 25 dus ruim, ook in korte kabinetten, behalve fracties die maar enkele weken bestonden
+- Drempel "te weinig data": 25 gezamenlijke stemmingen per variant. Het aandeel verdeelde stemmingen is via de API niet te tellen; controleer bij de berekening hoeveel fractieparen in de variant "alleen verdeelde stemmingen" wegvallen
 
 ## Schatting
 

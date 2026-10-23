@@ -51,7 +51,7 @@ Verwacht: basis-URL `https://gegevensmagazijn.tweedekamer.nl/OData/v4/2.0/` (bev
 
 ## Gebouwd (23 oktober 2026)
 
-- `pipeline/api_check.py`: controlescript, alleen standaardbibliotheek. Draaien met `python3 pipeline/api_check.py`, schrijft `docs/plan/api-check-rapport.md`. Ongeveer 1 minuut en 165 aanroepen, met een korte pauze tussen de aanroepen
+- `pipeline/api_check.py`: controlescript, alleen standaardbibliotheek. Draaien met `python3 pipeline/api_check.py`, schrijft `docs/plan/api-check-rapport.md`. Ongeveer 1 minuut en 200 aanroepen, met een korte pauze tussen de aanroepen
 - `pipeline/tests/test_api_check.py`: 6 pytest-tests met nagebootste API-antwoorden, ook een test dat een naam uit de records niet in het rapport komt
 - `pipeline/requirements-dev.txt`: pytest
 - `.github/workflows/ci.yml`: de placeholder is vervangen door een job die `pytest pipeline` draait

@@ -5,7 +5,7 @@ Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/
 
 ## Doel
 
-Het Python-script en de GitHub Actions workflow die de benodigde entiteiten vanaf 2010 in de raw-laag laden en daarna dagelijks incrementeel bijwerken.
+Het Python-script en de GitHub Actions workflow die de 14 entiteiten uit het API-checkrapport vanaf 2010 in de raw-laag laden en daarna dagelijks incrementeel bijwerken.
 
 ## Laag
 
@@ -30,14 +30,16 @@ Verwacht:
 ## Stories
 
 **E1-S3 Volledige eerste laad.** Als beheerder wil ik de benodigde entiteiten vanaf 2010 in de raw-laag laden.
-- Alleen de entiteiten uit `../05-techniek.md` onder "Datamodel op hoofdlijnen" worden geladen, geen contactgegevens, geschenken, reizen, nevenfuncties of inkomsten van personen
-- Na de laad is het aantal records per entiteit gelijk aan het aantal in de API (telling vergeleken en vastgelegd)
+- De 14 entiteiten uit het API-checkrapport worden geladen (besluit Niels, 23 oktober 2026), geen contactgegevens, geschenken, reizen, nevenfuncties of inkomsten van personen
+- Entiteiten met een datum laden vanaf 2010. Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie laden volledig. Het datumfilter per entiteit volgt uit de velden in het rapport
+- Na de laad is het aantal records per entiteit gelijk aan het aantal in de API met hetzelfde filter (telling vergeleken en vastgelegd)
 - Het script is herhaalbaar: opnieuw draaien na een onderbreking levert geen dubbele rijen op
 - De totale databasegrootte inclusief indexes is gemeten en vastgelegd, met een vergelijking met de 500 MB van het Free plan
+- Past de database na de eerste laad niet in Supabase Free (500 MB), dan wordt het Supabase Pro (besluit Niels, 23 oktober 2026)
 
 **E1-S4 Dagelijkse incrementele verversing.** Als beheerder wil ik dat de data elke dag zelf bijgewerkt wordt.
-- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd (of volledig, als het API-checkrapport laat zien dat wijzigingen niet herkenbaar zijn)
-- Verwijderde records in de bron worden ook in de database verwerkt, voor zover de API ze aangeeft
+- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd (`ApiGewijzigdOp`, bij alle 14 entiteiten aanwezig en filterbaar volgens het API-checkrapport)
+- Verwijderde records in de bron worden ook in de database verwerkt (vlag `Verwijderd`, bij alle 14 entiteiten aanwezig)
 - De run is herhaalbaar en schrijft een log met aantallen en duur
 - Bij een mislukte run krijgt de beheerder een melding
 
@@ -51,9 +53,10 @@ Verwacht:
 
 ## Aandachtspunten
 
-- De eerste volledige laad kan lang duren en meer API-verkeer geven dan de dagelijkse run; houd rekening met paginering en netwerkfouten (herhalen met uitstel)
+- De eerste volledige laad kan lang duren en meer API-verkeer geven dan de dagelijkse run; houd rekening met paginering en netwerkfouten (herhalen met uitstel). De API geeft maximaal 250 records per pagina; Stemming vanaf 2010 is ongeveer 3.900 pagina's, alle 14 entiteiten zonder datumfilter ongeveer 18.200
+- Het datumfilter voor Stemming loopt via `Besluit/Agendapunt/Activiteit/Datum`; dat werkt in de API (API-checkrapport)
 - Een GitHub Actions run heeft een maximale duur; een lange eerste laad moet daarom in te delen zijn (per entiteit of per periode) en hervatbaar zijn
-- Of dit binnen Supabase Free past, is niet bekend (zie `../05-techniek.md`)
+- Of dit binnen Supabase Free past, is niet bekend. Schatting als JSON: 2,7 GB voor de 14 entiteiten. Meet de grootte vroeg, na de eerste entiteit, zodat de overstap naar Pro niet halverwege de laad komt (zie `../05-techniek.md`)
 
 ## Schatting
 

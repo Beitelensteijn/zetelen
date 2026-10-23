@@ -34,6 +34,8 @@ EERSTE_JAAR = 2010
 MAX_TOP = 250
 # Pad van Stemming naar de datum van de vergadering; Stemming en Besluit hebben zelf geen datum
 DATUMPAD = "Besluit/Agendapunt/Activiteit/Datum"
+# Hetzelfde pad vanaf Besluit
+DATUMPAD_BESLUIT = "Agendapunt/Activiteit/Datum"
 PAUZE = 0.2  # seconden tussen aanroepen, om de API niet onnodig te belasten
 
 
@@ -141,19 +143,29 @@ def check_entiteit(api, naam, meta, sinds):
     return r
 
 
+def periodefilter(pad, jaar):
+    return (
+        f"{pad} ge {jaar}-01-01T00:00:00Z and "
+        f"{pad} lt {jaar + 1}-01-01T00:00:00Z"
+    )
+
+
 def stemmingen_per_jaar(api, tot_jaar):
-    """Per jaar het aantal stemmingen, niet verwijderd, en met een persoon."""
+    """Per jaar het aantal stemmingen (niet verwijderd, met een persoon)
+    en het aantal besluiten met een stemming (met een persoonsstem)."""
     jaren = []
     for jaar in range(EERSTE_JAAR, tot_jaar + 1):
-        periode = (
-            f"{DATUMPAD} ge {jaar}-01-01T00:00:00Z and "
-            f"{DATUMPAD} lt {jaar + 1}-01-01T00:00:00Z"
-        )
+        periode = periodefilter(DATUMPAD, jaar)
+        periode_besluit = periodefilter(DATUMPAD_BESLUIT, jaar)
         jaren.append({
             "jaar": jaar,
             "totaal": api.tel("Stemming", periode),
             "niet_verwijderd": api.tel("Stemming", f"{periode} and Verwijderd eq false"),
             "met_persoon": api.tel("Stemming", f"{periode} and Persoon_Id ne null"),
+            "besluiten": api.tel("Besluit", f"Stemming/any() and {periode_besluit}"),
+            "besluiten_persoon": api.tel(
+                "Besluit", f"Stemming/any(s:s/Persoon_Id ne null) and {periode_besluit}"
+            ),
         })
     voor = api.tel("Stemming", f"{DATUMPAD} lt {EERSTE_JAAR}-01-01T00:00:00Z")
     return jaren, voor
@@ -217,13 +229,16 @@ def schrijf_rapport(resultaten, jaren, voor_eerste_jaar, totaal_stemming, peilda
         "## Stemmingen per jaar",
         "",
         f"Jaar van de vergadering: `{DATUMPAD}`. Stemming en Besluit hebben zelf geen datum.",
+        "Een stemming is hier een rij in Stemming: de stem van een fractie of een persoon op een besluit.",
         "",
-        "| Jaar | Stemmingen | Niet verwijderd | Met persoon (`Persoon_Id`) |",
-        "|---|---|---|---|",
+        "| Jaar | Stemmingen | Niet verwijderd | Met persoon (`Persoon_Id`) "
+        "| Besluiten met een stemming | Besluiten met een persoonsstem |",
+        "|---|---|---|---|---|---|",
     ]
     for j in jaren:
         regels.append(
-            f"| {j['jaar']} | {getal(j['totaal'])} | {getal(j['niet_verwijderd'])} | {getal(j['met_persoon'])} |"
+            f"| {j['jaar']} | {getal(j['totaal'])} | {getal(j['niet_verwijderd'])} "
+            f"| {getal(j['met_persoon'])} | {getal(j['besluiten'])} | {getal(j['besluiten_persoon'])} |"
         )
     som_jaren = sum(j["totaal"] for j in jaren)
     niet_te_dateren = totaal_stemming - som_jaren - voor_eerste_jaar

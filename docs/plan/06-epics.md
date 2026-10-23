@@ -2,6 +2,7 @@
 
 Opgesteld: 22 oktober 2026, op basis van `01-idee.md` en `05-techniek.md`.
 Bijgewerkt: 23 oktober 2026, met de uitkomst van de handmatige API-check (`api-check-handmatig.md`) en het ontwerp in `docs/ontwerp/` (E1-S4, E1-S8, E2-S1, E3-S2, E6-S1).
+Bijgewerkt: 23 oktober 2026, met het API-checkrapport (`api-check-rapport.md`) (E1-S2, E1-S3, E1-S4, E2-S1, E2-S2, E6-S1, E6-S2).
 
 Regels in dit document:
 
@@ -37,17 +38,20 @@ Als beheerder wil ik een controlescript dat de API doorlicht, zodat het plan op 
 - Het rapport meldt of wijzigingen en verwijderingen via de API herkenbaar zijn
 - Het rapport bevat geen namen van personen, alleen aantallen
 - Het rapport staat als markdown in `docs/plan/` zodat de epics erop bijgewerkt kunnen worden
+- Gedaan (23 oktober 2026): `api-check-rapport.md`, gemaakt door `pipeline/api_check.py`
 
 **E1-S3 Volledige eerste laad** (MVP)
 Als beheerder wil ik de benodigde entiteiten vanaf 2010 in de raw-laag laden, zodat de analyses een volledige basis hebben.
-- Alleen de entiteiten uit `05-techniek.md` onder "Datamodel op hoofdlijnen" worden geladen, geen contactgegevens, geschenken, reizen, nevenfuncties of inkomsten van personen
-- Na de laad is het aantal records per entiteit gelijk aan het aantal in de API (telling vergeleken en vastgelegd)
+- De 14 entiteiten uit het API-checkrapport worden geladen (besluit Niels, 23 oktober 2026), geen contactgegevens, geschenken, reizen, nevenfuncties of inkomsten van personen
+- Entiteiten met een datum laden vanaf 2010. Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie laden volledig, omdat ze klein zijn en geen eigen stemdatum hebben. Het datumfilter per entiteit volgt uit de velden in het rapport
+- Na de laad is het aantal records per entiteit gelijk aan het aantal in de API met hetzelfde filter (telling vergeleken en vastgelegd)
 - Het script is herhaalbaar: opnieuw draaien na een onderbreking levert geen dubbele rijen op
-- De totale databasegrootte inclusief indexes is gemeten en vastgelegd, met een vergelijking met de 500 MB van het Free plan
+- De totale databasegrootte inclusief indexes is gemeten en vastgelegd, met een vergelijking met de 500 MB van het Free plan. Het API-checkrapport schat de 14 entiteiten als JSON op 2,7 GB; in Postgres waarschijnlijk minder, niet gemeten
+- Past de database na de eerste laad niet in Supabase Free (500 MB), dan wordt het Supabase Pro (besluit Niels, 23 oktober 2026)
 
 **E1-S4 Dagelijkse incrementele verversing** (MVP)
 Als beheerder wil ik dat de data elke dag zelf bijgewerkt wordt, zodat de site actueel blijft zonder dat ik eraan denk.
-- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd. Uit de handmatige API-check (23 oktober 2026) blijkt dat dit kan: elk record heeft `ApiGewijzigdOp`
+- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd. Uit de API-check (23 oktober 2026) blijkt dat dit kan: alle 14 entiteiten hebben `ApiGewijzigdOp` en `Verwijderd`, en filteren op `ApiGewijzigdOp` werkt
 - Verwijderde records in de bron worden ook in de database verwerkt. De API markeert ze met de vlag `Verwijderd` in plaats van ze weg te laten (7.247 stemmingen op 23 oktober 2026)
 - De run is herhaalbaar en schrijft een log met aantallen en duur
 - Bij een mislukte run krijgt de beheerder een melding
@@ -86,6 +90,7 @@ Doel: laten zien welke fracties vaak samen stemmen.
 **E2-S1 Definitie** (MVP)
 Als beheerder wil ik een exacte definitie van cohesie, zodat elk cijfer navertelbaar is.
 - De definitie staat op papier met formule, en beantwoordt: hoe tellen afwezigen en niet-deelnemers, wat is een gedeelde stemming, hoe tellen hamerstukken en besluiten zonder stemming, en hoe tellen stemmen die als vergissing zijn gemarkeerd (veld `Vergissing`, 1.437 stemmingen op 23 oktober 2026)
+- Een stemming hoort bij een periode via de datum van de vergadering (`Besluit/Agendapunt/Activiteit/Datum`). Stemmingen zonder datum via die weg tellen niet mee (5.766, 0,6%, op 23 oktober 2026; besluit Niels, 23 oktober 2026). Het aantal staat bij de datakwaliteit (E7-S5)
 - De definitie is in een alinea uit te leggen, zodat Niels het aan een ander kan navertellen
 - Niels heeft de definitie goedgekeurd
 - Fracties worden alleen vergeleken in periodes waarin ze beide bestonden
@@ -94,7 +99,7 @@ Als beheerder wil ik een exacte definitie van cohesie, zodat elk cijfer navertel
 Als bezoeker wil ik cohesie per paar fracties per periode zien, zodat ik patronen kan vergelijken.
 - Voor een gekozen periode bestaat een voorberekende tabel met alle fractieparen en hun cohesie, plus het aantal onderliggende stemmingen
 - Een steekproef van minstens 10 stemmingen is met de hand nagerekend en komt overeen (aantal steekproef is een voorstel)
-- Een fractie met te weinig gezamenlijke stemmingen toont "te weinig data" in plaats van een getal (drempel: Niels bepaalt)
+- Een fractie met te weinig gezamenlijke stemmingen toont "te weinig data" in plaats van een getal (drempel: 25, besluit Niels). Volgens het API-checkrapport zijn er 1.911 tot 4.749 besluiten met een stemming per jaar; in de variant "alle stemmingen" halen fracties die langer dan enkele weken bestonden de drempel dus ruim. Het aandeel verdeelde stemmingen is via de API niet te tellen en wordt bij de berekening gecontroleerd
 - Het filter op onderwerp is geen onderdeel van R1, want hoe "onderwerp" uit de data volgt is nog niet bekend (zie E1-S2)
 
 **E2-S3 Matrix** (MVP)
@@ -228,11 +233,14 @@ Als bezoeker wil ik twee lezingen bij deze analyse (zie E4).
 Als beheerder wil ik op basis van de API-check beslissen of afwijkend stemgedrag in scope blijft.
 - De beslissing en de onderliggende aantallen per jaar staan vastgelegd
 - Is de dekking te klein, dan wordt de analyse beperkt tot de hoofdelijke stemmingen of laat Niels hem vallen
-- Uitkomst handmatige API-check (23 oktober 2026): individuele stemmen bestaan vrijwel alleen bij hoofdelijke stemmingen. Over de hele dataset zijn dat 538 besluiten met `StemmingsSoort` 'Hoofdelijk' en 561 besluiten met een persoonsstem, tegen 63.719 met handopsteken. De aantallen per jaar volgen uit het rapport van `api-check`
+- Uitkomst handmatige API-check (23 oktober 2026): individuele stemmen bestaan vrijwel alleen bij hoofdelijke stemmingen. Over de hele dataset zijn dat 538 besluiten met `StemmingsSoort` 'Hoofdelijk' en 561 besluiten met een persoonsstem, tegen 63.719 met handopsteken
+- Aantallen per jaar (API-checkrapport, 23 oktober 2026): 8 tot 75 besluiten met een persoonsstem per jaar, tegen 1.911 tot 4.749 besluiten met een stemming. Per Kamerlid per kabinet blijft dat vaak onder een drempel van 25
+- Beslissing Niels (23 oktober 2026): afwijkend stemgedrag blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen"
 
 **E6-S2 Berekening afwijkend stemgedrag** (R3)
 Als bezoeker wil ik zien hoe vaak een Kamerlid afwijkt van zijn fractie, met erbij waarop dat gebaseerd is.
 - Elke weergave toont het aantal onderliggende stemmingen en het label "alleen hoofdelijke stemmingen"
+- De berekening is per Kamerlid over de hele Kamerperiode, niet per kabinet (besluit Niels, 23 oktober 2026)
 - Onder een minimaal aantal stemmingen toont de site geen percentage (drempel: Niels bepaalt)
 
 **E6-S3 Activiteitsprofiel** (R3)
