@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""Verbindingstest met de database (component ingest, stap A).
+
+Verbindt met DATABASE_URL, toont versie, gebruiker, database en grootte, en stopt.
+Schrijft niets. De connectiestring en het wachtwoord komen nooit in de uitvoer:
+de repo en de logs van GitHub Actions zijn publiek.
+
+Gebruik:
+  DATABASE_URL=... python3 pipeline/verbindingstest.py
+"""
+import os
+import sys
+
+import psycopg
+
+# Herkenbare foutmeldingen, vertaald naar een uitleg zonder hostnaam of gebruikersnaam
+BEKENDE_FOUTEN = [
+    ("password authentication failed", "Wachtwoord klopt niet. Zet DATABASE_URL opnieuw met het juiste wachtwoord."),
+    ("could not translate host name", "Hostnaam onbekend. Controleer de host in de connectiestring (session pooler)."),
+    ("failed to resolve host", "Hostnaam onbekend. Controleer de host in de connectiestring (session pooler)."),
+    ("timeout", "Geen antwoord binnen de tijd. Controleer host en poort (session pooler: 5432)."),
+    ("Network is unreachable", "Netwerk onbereikbaar. Gebruik de session pooler (IPv4), niet de directe verbinding (IPv6)."),
+    ("Connection refused", "Verbinding geweigerd. Controleer host en poort."),
+    ("Tenant or user not found", "Gebruiker of project niet gevonden. Controleer de gebruikersnaam (postgres.<projectcode>)."),
+]
+
+
+def uitleg(fout):
+    tekst = str(fout)
+    for sleutel, melding in BEKENDE_FOUTEN:
+        if sleutel.lower() in tekst.lower():
+            return melding
+    # Onbekende fout: alleen het type, want de tekst kan host of gebruiker bevatten
+    return f"Onbekende fout van het type {type(fout).__name__}. Draai het script lokaal voor de volledige melding."
+
+
+def mb(n):
+    return f"{n / 1_000_000:,.1f}".replace(",", "_").replace(".", ",").replace("_", ".")
+
+
+def main():
+    url = os.environ.get("DATABASE_URL")
+    if not url:
+        sys.exit("DATABASE_URL ontbreekt. Zet het als GitHub Actions secret of als omgevingsvariabele.")
+    try:
+        with psycopg.connect(url, connect_timeout=15) as conn:
+            versie, gebruiker, database, grootte = conn.execute(
+                "select current_setting('server_version'), current_user, current_database(), "
+                "pg_database_size(current_database())"
+            ).fetchone()
+    except psycopg.Error as fout:
+        sys.exit(f"Verbinding mislukt. {uitleg(fout)}")
+    print("Verbinding gelukt.")
+    print(f"Postgres-versie: {versie}")
+    print(f"Gebruiker: {gebruiker}")
+    print(f"Database: {database}")
+    print(f"Databasegrootte: {mb(grootte)} MB")
+
+
+if __name__ == "__main__":
+    main()

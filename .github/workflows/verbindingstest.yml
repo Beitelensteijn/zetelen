@@ -1,0 +1,29 @@
+# Verbindingstest met Supabase via de session pooler (component ingest, stap A).
+# Alleen met de hand te starten: Actions-tab of `gh workflow run verbindingstest.yml`.
+name: Verbindingstest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verbinding:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Verbinding testen
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python pipeline/verbindingstest.py
