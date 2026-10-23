@@ -85,7 +85,7 @@ def test_ping_met_url_en_achtervoegsel(monkeypatch):
             pass
 
     aanroepen = []
-    monkeypatch.setenv("HEALTHCHECK_URL", "https://hc.nep/abc/")
+    monkeypatch.setenv("HEALTHCHECK_URL", " https://hc.nep/abc/\n")
     monkeypatch.setattr(ververs.urllib.request, "urlopen", lambda url, timeout: aanroepen.append(url) or Antwoord())
     ververs.ping("/fail")
     ververs.ping()

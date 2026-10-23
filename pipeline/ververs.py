@@ -77,13 +77,20 @@ def ververs_entiteit(conn, entiteit, cols, haal=http_json, base=BASE, pauze=PAUZ
 def ping(pad=""):
     """Signaal naar healthchecks.io. Een mislukt signaal laat de verversing niet falen.
     De URL komt nooit in de log: wie hem kent, kan valse signalen sturen."""
-    url = os.environ.get("HEALTHCHECK_URL")
+    # strip: een geplakt geheim eindigt vaak op een regeleinde of spatie
+    url = (os.environ.get("HEALTHCHECK_URL") or "").strip()
     if not url:
         return
     try:
         urllib.request.urlopen(url.rstrip("/") + pad, timeout=10).close()
     except Exception as e:
-        print(f"Healthcheck-signaal{pad} niet verstuurd ({type(e).__name__})")
+        # Alleen veilige details: schema en host, nooit het pad (dat is het geheime deel)
+        delen = urllib.parse.urlsplit(url)
+        reden = getattr(e, "code", None) or getattr(e, "reason", None) or ""
+        if not isinstance(reden, (int, str)):
+            reden = type(reden).__name__
+        print(f"Healthcheck-signaal{pad} niet verstuurd ({type(e).__name__} {reden}; "
+              f"schema '{delen.scheme}', host '{delen.hostname}')")
 
 
 def start_log(conn):
