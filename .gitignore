@@ -15,3 +15,6 @@ web/out/
 .vercel/
 
 .DS_Store
+
+# Editor: werkruimte-instellingen kunnen verbindingsgegevens bevatten
+.vscode/
