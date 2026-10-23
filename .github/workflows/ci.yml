@@ -1,4 +1,4 @@
-# Tests van de componenten. Nu nog een placeholder die slaagt.
+# Tests van de componenten bij elke push en pull request.
 # Elk component dat tests krijgt, voegt hier een eigen job toe
 # (pytest voor pipeline/, pgTAP voor db/, Vitest voor web/).
 name: CI
@@ -12,11 +12,20 @@ permissions:
   contents: read
 
 jobs:
-  tests:
+  pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Code ophalen
         uses: actions/checkout@v4
 
-      - name: Placeholder
-        run: echo "Nog geen tests. Componenten voegen hier hun eigen job toe."
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Testafhankelijkheden installeren
+        run: pip install -r pipeline/requirements-dev.txt
+
+      - name: Tests van pipeline/ draaien
+        # Tests gebruiken nagebootste API-antwoorden, dus geen netwerk naar de API
+        run: pytest pipeline
