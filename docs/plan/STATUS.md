@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; het eerste component, `repo-ci`, is klaar.
+Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar. Het rapport wacht op de lezing van Niels.
 
 ## Afgerond
 
@@ -18,11 +18,12 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Ontwerp (23 oktober 2026): in `docs/ontwerp/`, verwerkt in `06-epics.md` (E3-S2) en `08-componenten/ontwerpsysteem.md`
 - Repo `zetelen` aangemaakt met plan, ontwerp en `CLAUDE.md` (23 oktober 2026). Supabase en Vercel zijn nog niet gekoppeld
 - Component `repo-ci` (23 oktober 2026): secret scan (gitleaks), CI-placeholder, README, pull request-sjabloon en `docs/onderhoud.md` met het onderhoudspad voor de 60-dagenregel. Getest: de scan faalt op een nepsleutel in een testbranch en slaagt op `main`
+- Component `api-check` (23 oktober 2026): `pipeline/api_check.py` met tests in CI, rapport in `api-check-rapport.md`. Getest: 6 pytest-tests lokaal en in CI, tellingen gelijk aan de handmatige check en aan losse aanroepen
 
 ## Openstaand
 
 - Secret scanning met push protection van GitHub aanzetten (voorstel Claude, 23 oktober 2026): blokkeert een sleutel al voor de push, gitleaks vindt hem pas erna. Instelling voor Niels
-- Component `api-check`: het volledige rapport, met de telling per jaar vanaf 2010 en een grootte-schatting van de raw-laag
+- Na het API-checkrapport: `06-epics.md`, `core-model.md` en `cohesie-analyse.md` bijwerken waar het rapport afwijkt (eerst laten zien)
 - Controles op de naam Zetelen (zie `01-idee.md`), domein registreren
 - Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen) en de bron van de handmatige kabinettentabel; periodesoorten en standaard zijn besloten
 - Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten, maar nog te toetsen na de API-check
@@ -33,7 +34,11 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
 - Afwijkend stemgedrag (E6-S1): met ongeveer 540 hoofdelijke stemmingen over de hele dataset is de dekking klein; beslissing na de telling per jaar
-- Supabase Free (500 MB): ruim een miljoen stemmingen plus indexes kan krap worden; meten bij `ingest` (schatting Claude, niet gemeten)
+- Supabase Free (500 MB): het API-checkrapport schat de 14 entiteiten als JSON op 2,7 GB, Stemming alleen op 535 MB. In Postgres waarschijnlijk kleiner (geen veldnamen per record, minder kolommen en entiteiten), maar dit is het grootste risico voor `ingest`. Voorstel Claude: alleen de entiteiten die R1 nodig heeft laden en vroeg meten
+
+## Uitkomst API-check (rapport)
+
+23 oktober 2026, details in `api-check-rapport.md`. Maximaal 250 records per pagina bij alle entiteiten. Stemmingen per jaar 2010 tot en met 2026: 22.243 tot 99.330; persoonsstemmen per jaar ongeveer 1.000 tot 11.000. 5.766 stemmingen (0,6%) zijn niet te dateren via Agendapunt en Activiteit. Wijzigingen via `ApiGewijzigdOp` en verwijderingen via `Verwijderd` zijn bij alle 14 entiteiten herkenbaar.
 
 ## Uitkomst handmatige API-check
 
@@ -77,4 +82,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `api-check`.
+Niels leest `api-check-rapport.md`. Daarna de plan-updates na het rapport, dan component `ingest`.
