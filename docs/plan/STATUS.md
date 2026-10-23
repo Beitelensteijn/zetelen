@@ -1,10 +1,10 @@
 # STATUS
 
-Laatst bijgewerkt: 22 oktober 2026
+Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Het plan staat; er is nog niets gebouwd.
+Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; er is nog geen component gebouwd.
 
 ## Afgerond
 
@@ -13,12 +13,15 @@ Fase 4: koppelen en bouwen (stap 9). Het plan staat; er is nog niets gebouwd.
 - Stap 5: `05-techniek.md` (akkoord Niels)
 - Stap 6 en 7: `06-epics.md` (R1 niet kleiner gemaakt, besluit Niels)
 - Stap 8: `08-componenten/` met `_conventies.md`, `_overzicht.md` en 16 componenten voor R1
-- Stap 9, voorbereiding: `09-koppelingen.md`, `CLAUDE-snippet.md`, `BRIEFING.md`. De koppelingen zelf zijn niet uitgevoerd
+- Stap 9, voorbereiding: `09-koppelingen.md`, `CLAUDE-snippet.md`, `BRIEFING.md`
+- Handmatige API-check (23 oktober 2026): uitkomst in `api-check-handmatig.md`, verwerkt in `06-epics.md` (E1-S4, E1-S8, E2-S1, E6-S1)
+- Ontwerp (23 oktober 2026): in `docs/ontwerp/`, verwerkt in `06-epics.md` (E3-S2) en `08-componenten/ontwerpsysteem.md`
+- Repo `zetelen` aangemaakt met plan, ontwerp en `CLAUDE.md` (23 oktober 2026). Supabase en Vercel zijn nog niet gekoppeld
 
 ## Openstaand
 
-- API-check (handmatig, zie `BRIEFING.md`), daarna component `api-check`
-- Controles op de naam Zetelen (zie `01-idee.md`), domein registreren, naam van de repo
+- Component `api-check`: het volledige rapport, met de telling per jaar vanaf 2010 en een grootte-schatting van de raw-laag
+- Controles op de naam Zetelen (zie `01-idee.md`), domein registreren
 - Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen) en de bron van de handmatige kabinettentabel; periodesoorten en standaard zijn besloten
 - Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten, maar nog te toetsen na de API-check
 - Meetmoment en meetmethode van 500 bezoekers per maand
@@ -27,6 +30,16 @@ Fase 4: koppelen en bouwen (stap 9). Het plan staat; er is nog niets gebouwd.
 - Blijven rankings van individuele Kamerleden in scope
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
+- Afwijkend stemgedrag (E6-S1): met ongeveer 540 hoofdelijke stemmingen over de hele dataset is de dekking klein; beslissing na de telling per jaar
+- Supabase Free (500 MB): ruim een miljoen stemmingen plus indexes kan krap worden; meten bij `ingest` (schatting Claude, niet gemeten)
+
+## Uitkomst handmatige API-check
+
+23 oktober 2026, details in `api-check-handmatig.md`. De API werkt zonder registratie. Individuele stemmen bestaan vrijwel alleen bij hoofdelijke stemmingen (538 besluiten 'Hoofdelijk', 561 met een persoonsstem, tegen 63.719 met handopsteken). Wijzigingen en verwijderingen zijn herkenbaar via `ApiGewijzigdOp` en `Verwijderd`. Er zijn geen kabinetten in de API. Stemming en Besluit hebben geen datum; die komt via Agendapunt en Activiteit.
+
+## Besluit: ontwerp
+
+Besluit Niels, 23 oktober 2026. Het ontwerp "nacht met koperlicht" in `docs/ontwerp/` is de basis voor de frontend. Het is gemaakt op een eerdere versie van de design-prompt; op vier punten (periodes, schakelaar verdeelde stemmingen, drempel, naam) gaat het plan voor, zie `08-componenten/ontwerpsysteem.md`.
 
 ## Idee voor Later: Eerste Kamer
 
@@ -50,7 +63,7 @@ Besluit Niels, 22 oktober 2026. Cohesie is het percentage gezamenlijke stemminge
 
 ## Besluit: periodesoorten
 
-Besluit Niels, 22 oktober 2026. Twee periodesoorten, kabinet (standaard, herkenbaarder voor het publiek) en Kamerperiode. Verwerkt in `06-epics.md` (E2-S4, nieuwe E1-S8), `core-model.md`, `cohesie-analyse.md`, `cohesie-pagina.md`. Kabinetten komen uit een handmatige tabel; of de API ze bevat is niet vastgesteld. Coalitie en oppositie als latere lezing is niet in R1.
+Besluit Niels, 22 oktober 2026. Twee periodesoorten, kabinet (standaard, herkenbaarder voor het publiek) en Kamerperiode. Verwerkt in `06-epics.md` (E2-S4, nieuwe E1-S8), `core-model.md`, `cohesie-analyse.md`, `cohesie-pagina.md`. Kabinetten komen uit een handmatige tabel; de API bevat ze niet (handmatige API-check, 23 oktober 2026). Coalitie en oppositie als latere lezing is niet in R1.
 
 ## Gebruiksvoorwaarden open data
 
@@ -62,4 +75,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Niels doet de handmatige API-check en start Claude Code met de opdracht uit `BRIEFING.md`. Daarna component `repo-ci`, dan `api-check`.
+Component `repo-ci`, dan `api-check`.

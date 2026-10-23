@@ -106,7 +106,7 @@ Uitwerken pas na de API-check en na R1: de API-check kan scope en velden wijzige
 
 **Dekking.** Alle stories van R1 staan in een component. De bijbehorende R2-R4-stories staan in `../06-epics.md` en hebben een voorlopig component hierboven.
 
-**Scherpte.** De acceptatiecriteria zijn overgenomen uit `../06-epics.md`. Niet af te vinken zolang Niels niet beslist: de drempel voor "te weinig data", de reactietermijn op een foutmelding, de keuze van periode (voorstel: Kamerperiode), en de grafiekbibliotheek.
+**Scherpte.** De acceptatiecriteria zijn overgenomen uit `../06-epics.md`. Niet af te vinken zolang Niels niet beslist: de drempel voor "te weinig data", de reactietermijn op een foutmelding, en de grafiekbibliotheek. De periodesoorten zijn besloten: kabinet (standaard) en Kamerperiode (Niels, 22 oktober 2026).
 
 **Volgorde.** Vastgelegd hierboven. De API-check is het keerpunt: de uitkomst kan de componenten `core-model`, `cohesie-analyse` en alles in R2 en R3 wijzigen.
 

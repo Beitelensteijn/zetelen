@@ -1,6 +1,7 @@
 # 06 Epics en user stories
 
 Opgesteld: 22 oktober 2026, op basis van `01-idee.md` en `05-techniek.md`.
+Bijgewerkt: 23 oktober 2026, met de uitkomst van de handmatige API-check (`api-check-handmatig.md`) en het ontwerp in `docs/ontwerp/` (E1-S4, E1-S8, E2-S1, E3-S2, E6-S1).
 
 Regels in dit document:
 
@@ -46,8 +47,8 @@ Als beheerder wil ik de benodigde entiteiten vanaf 2010 in de raw-laag laden, zo
 
 **E1-S4 Dagelijkse incrementele verversing** (MVP)
 Als beheerder wil ik dat de data elke dag zelf bijgewerkt wordt, zodat de site actueel blijft zonder dat ik eraan denk.
-- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd (of volledig, als de API-check laat zien dat wijzigingen niet herkenbaar zijn)
-- Verwijderde records in de bron worden ook in de database verwerkt, voor zover de API ze aangeeft
+- Een GitHub Actions workflow draait dagelijks en laadt alleen wat sinds de vorige run is gewijzigd. Uit de handmatige API-check (23 oktober 2026) blijkt dat dit kan: elk record heeft `ApiGewijzigdOp`
+- Verwijderde records in de bron worden ook in de database verwerkt. De API markeert ze met de vlag `Verwijderd` in plaats van ze weg te laten (7.247 stemmingen op 23 oktober 2026)
 - De run is herhaalbaar en schrijft een log met aantallen en duur
 - Bij een mislukte run krijgt de beheerder een melding
 
@@ -76,7 +77,7 @@ Als beheerder wil ik een handmatig beheerde tabel met kabinetten, zodat de perio
 - Elke rij heeft naam, begin, einde, bron en datum van controle
 - Niels heeft de tabel nagekeken tegen de bron; Claude heeft de data niet nagezocht
 - Er is een kolom voor de coalitiefracties, in R1 nog niet gevuld
-- Het is niet vastgesteld of de Tweede Kamer-API kabinetten bevat; controleer dat bij de API-check en gebruik de API als die ze heeft
+- De Tweede Kamer-API bevat geen entiteit voor kabinetten (handmatige API-check, 23 oktober 2026). De tabel blijft dus handmatig
 
 ## Epic 2: Cohesie van fracties (R1)
 
@@ -84,7 +85,7 @@ Doel: laten zien welke fracties vaak samen stemmen.
 
 **E2-S1 Definitie** (MVP)
 Als beheerder wil ik een exacte definitie van cohesie, zodat elk cijfer navertelbaar is.
-- De definitie staat op papier met formule, en beantwoordt: hoe tellen afwezigen en niet-deelnemers, wat is een gedeelde stemming, hoe tellen hamerstukken en besluiten zonder stemming
+- De definitie staat op papier met formule, en beantwoordt: hoe tellen afwezigen en niet-deelnemers, wat is een gedeelde stemming, hoe tellen hamerstukken en besluiten zonder stemming, en hoe tellen stemmen die als vergissing zijn gemarkeerd (veld `Vergissing`, 1.437 stemmingen op 23 oktober 2026)
 - De definitie is in een alinea uit te leggen, zodat Niels het aan een ander kan navertellen
 - Niels heeft de definitie goedgekeurd
 - Fracties worden alleen vergeleken in periodes waarin ze beide bestonden
@@ -132,7 +133,7 @@ Als bezoeker wil ik een korte verhalende voorpagina met een eerste vondst en een
 **E3-S2 Ontwerpsysteem** (MVP)
 Als beheerder wil ik een vastgelegd ontwerpsysteem, zodat elke pagina en elk component er hetzelfde uitziet.
 - Kleuren, typografie, grafiekstijl en spacing zijn vastgelegd in een bestand en in tokens
-- Het palet is eigen: de stijl is journalistiek en sober in de geest van The Economist, zonder diens merkelementen over te nemen
+- Het palet is eigen en volgt het ontwerp "nacht met koperlicht" in `docs/ontwerp/` (besluit Niels, 23 oktober 2026), zonder merkelementen van The Economist of een andere krant over te nemen
 - Contrast voldoet aan WCAG AA
 - Er staan geen partijlogo's en geen partijkleuren in het ontwerpsysteem of op de site in R1; partijen worden getoond met naam en afkorting in het eigen palet
 
@@ -227,6 +228,7 @@ Als bezoeker wil ik twee lezingen bij deze analyse (zie E4).
 Als beheerder wil ik op basis van de API-check beslissen of afwijkend stemgedrag in scope blijft.
 - De beslissing en de onderliggende aantallen per jaar staan vastgelegd
 - Is de dekking te klein, dan wordt de analyse beperkt tot de hoofdelijke stemmingen of laat Niels hem vallen
+- Uitkomst handmatige API-check (23 oktober 2026): individuele stemmen bestaan vrijwel alleen bij hoofdelijke stemmingen. Over de hele dataset zijn dat 538 besluiten met `StemmingsSoort` 'Hoofdelijk' en 561 besluiten met een persoonsstem, tegen 63.719 met handopsteken. De aantallen per jaar volgen uit het rapport van `api-check`
 
 **E6-S2 Berekening afwijkend stemgedrag** (R3)
 Als bezoeker wil ik zien hoe vaak een Kamerlid afwijkt van zijn fractie, met erbij waarop dat gebaseerd is.
