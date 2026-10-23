@@ -1,0 +1,58 @@
+# Component: cohesie-analyse
+
+Status: niet gestart (22 oktober 2026)
+Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
+
+## Doel
+
+De definitie en de berekening van cohesie tussen fracties: hoe vaak twee fracties hetzelfde stemmen, per periode, als voorberekende tabel in de analyse-laag.
+
+## Laag
+
+Backend (SQL)
+
+## Interface
+
+Biedt: een voorberekende tabel in de analyse-laag met per fractiepaar en per periode de cohesie en het aantal onderliggende stemmingen, plus een afgesproken waarde voor "te weinig data". Publiek leesbaar (zie `rechten`). Daarnaast de definitie als tekst voor de methodiekpagina.
+
+Verwacht: het core-model met stemmingen op fractieniveau.
+
+## Afhankelijkheden
+
+`core-model`, `rechten`.
+
+## Stories
+
+**E2-S1 Definitie.** Als beheerder wil ik een exacte definitie van cohesie, zodat elk cijfer navertelbaar is.
+- De definitie staat op papier met formule, en beantwoordt: hoe tellen afwezigen en niet-deelnemers, wat is een gedeelde stemming, hoe tellen hamerstukken en besluiten zonder stemming
+- Besluit Niels (22 oktober 2026): cohesie is het percentage gezamenlijke stemmingen waarop twee fracties hetzelfde stemden (beide voor of beide tegen); stemmingen waarbij een van de twee niet meedeed tellen niet mee
+- Twee varianten: alle stemmingen, en alleen stemmingen waarover de Kamer verdeeld was. Voorstel van Claude voor "verdeeld": zowel fracties voor als tegen (niet unaniem); alternatief met een zetelsdrempel is ingewikkelder en nog niet gekozen
+- De definitie is in een alinea uit te leggen, zodat Niels het aan een ander kan navertellen
+- Niels heeft de definitie goedgekeurd
+- Fracties worden alleen vergeleken in periodes waarin ze beide bestonden
+- Periode is een Kamerperiode of een kabinet; beide soorten worden voorberekend. Standaard op de site: kabinet (besluit Niels, 22 oktober 2026)
+- Voorstel van Claude, Niels beslist: een demissionaire fase telt bij het kabinet waar die uit voortkomt
+
+**E2-S2 Berekening.** Als bezoeker wil ik cohesie per paar fracties per periode zien.
+- Voor een gekozen periode bestaat een voorberekende tabel met alle fractieparen en hun cohesie, plus het aantal onderliggende stemmingen
+- Een steekproef van minstens 10 stemmingen is met de hand nagerekend en komt overeen (aantal is een voorstel)
+- De tabel bevat per fractiepaar en periode de cohesie in twee varianten (alle stemmingen, alleen verdeelde stemmingen), met het aantal onderliggende stemmingen per variant
+- Een fractie met te weinig gezamenlijke stemmingen toont "te weinig data" in plaats van een getal (drempel: 25 gezamenlijke stemmingen per variant, besluit Niels, een grove keuze die na de API-check wordt getoetst)
+- Het filter op onderwerp is geen onderdeel van R1
+
+## Testen
+
+- Handmatige nacontrole van minstens 10 stemmingen (voorstel) tegen de berekende tabel
+- Twee fracties die nooit gelijktijdig bestonden komen niet in dezelfde periode voor
+- Een eenvoudig scenario met bekende uitkomst (zelfde stem altijd, tegengestelde stem altijd) geeft de uiterste waarden
+- De tabel is leesbaar voor de anon-rol en niet beschrijfbaar
+
+## Aandachtspunten
+
+- Eerst de definitie vastleggen en door Niels laten goedkeuren, daarna pas de SQL
+- Periodesoorten besloten: kabinet (standaard) en Kamerperiode. Korte kabinetten brengen meer fractieparen onder de drempel van 25 gezamenlijke stemmingen; controleer dat na de API-check
+- Drempel "te weinig data": 25 gezamenlijke stemmingen per variant. In de variant "alleen verdeelde stemmingen" kunnen daardoor veel fractieparen wegvallen; controleer dat na de API-check
+
+## Schatting
+
+Middel, ca. 8 tot 14 uur van Niels (inclusief de definitie en de nacontrole), plus waarschijnlijk enkele uren voor de tweede variant en enkele uren voor de tweede periodesoort. Grove schatting, niet gemeten.
