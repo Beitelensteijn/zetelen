@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Verbindingstest met de database (component ingest, stap A).
 
-Verbindt met DATABASE_URL, toont versie, gebruiker, database en grootte, en stopt.
+Verbindt met DATABASE_URL, toont versie, gebruiker, database, grootte en het
+aantal tabellen in de eigen schema's (raw, beheer), en stopt.
 Schrijft niets. De connectiestring en het wachtwoord komen nooit in de uitvoer:
 de repo en de logs van GitHub Actions zijn publiek.
 
@@ -48,6 +49,10 @@ def main():
                 "select current_setting('server_version'), current_user, current_database(), "
                 "pg_database_size(current_database())"
             ).fetchone()
+            tabellen = conn.execute(
+                "select table_schema, count(*) from information_schema.tables "
+                "where table_schema in ('raw', 'beheer') group by table_schema order by table_schema"
+            ).fetchall()
     except psycopg.Error as fout:
         sys.exit(f"Verbinding mislukt. {uitleg(fout)}")
     print("Verbinding gelukt.")
@@ -55,6 +60,10 @@ def main():
     print(f"Gebruiker: {gebruiker}")
     print(f"Database: {database}")
     print(f"Databasegrootte: {mb(grootte)} MB")
+    for schema, aantal in tabellen:
+        print(f"Tabellen in schema {schema}: {aantal}")
+    if not tabellen:
+        print("Nog geen tabellen in de schema's raw en beheer.")
 
 
 if __name__ == "__main__":

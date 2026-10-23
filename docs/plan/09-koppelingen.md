@@ -1,17 +1,17 @@
 # 09 Koppelingen
 
-Status: nog niet uitgevoerd (22 oktober 2026). Niets hieronder is door mij getest; ik had geen toegang tot jouw laptop of accounts. Controleer elke opdracht voordat je hem draait en pas namen aan.
+Status: deels uitgevoerd (23 oktober 2026), zie de tabel. Niets hieronder is door mij getest; ik had geen toegang tot jouw laptop of accounts. Controleer elke opdracht voordat je hem draait en pas namen aan.
 
 ## Wat er gekoppeld moet worden
 
 | Koppeling | Status | Wie |
 |---|---|---|
-| Repo op GitHub (publiek) | Niet gedaan | Niels |
-| Supabase-project aangemaakt | Niet gedaan | Niels |
-| Geheimen in GitHub Actions | Niet gedaan | Niels |
+| Repo op GitHub (publiek) | Gedaan (23 oktober 2026): `Beitelensteijn/zetelen` | Niels |
+| Supabase-project aangemaakt | Gedaan (23 oktober 2026): Free, regio Frankfurt | Niels |
+| Geheimen in GitHub Actions | Gedaan (23 oktober 2026): `DATABASE_URL` (session pooler, gebruiker `postgres`), getest met de workflow Verbindingstest | Niels |
 | Vercel-project gekoppeld aan de repo | Niet gedaan | Niels |
 | Environment variables in Vercel | Niet gedaan | Niels |
-| `CLAUDE.md` verwijst naar `docs/plan/` | Niet gedaan | Claude Code, na akkoord |
+| `CLAUDE.md` verwijst naar `docs/plan/` | Gedaan (23 oktober 2026) | Claude Code, na akkoord |
 
 ## Voorbereiding: tools controleren (PowerShell)
 
@@ -79,5 +79,4 @@ De bouwcyclus gebruikt agents in `.claude/agents/` (`backend-developer`, `fronte
 ## Open punten
 
 - Naam en domein van de site
-- Naam van de repo
-- Welke regio van Supabase
+- Aparte schrijfrol in plaats van `postgres` (component `rechten`; het wachtwoord zet Niels zelf)

@@ -1,6 +1,6 @@
 # Component: ingest
 
-Status: niet gestart (22 oktober 2026)
+Status: in bouw (23 oktober 2026), stap A en B klaar
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
 
 ## Doel
@@ -57,6 +57,26 @@ Verwacht:
 - Het datumfilter voor Stemming loopt via `Besluit/Agendapunt/Activiteit/Datum`; dat werkt in de API (API-checkrapport)
 - Een GitHub Actions run heeft een maximale duur; een lange eerste laad moet daarom in te delen zijn (per entiteit of per periode) en hervatbaar zijn
 - Of dit binnen Supabase Free past, is niet bekend. Schatting als JSON: 2,7 GB voor de 14 entiteiten. Meet de grootte vroeg, na de eerste entiteit, zodat de overstap naar Pro niet halverwege de laad komt (zie `../05-techniek.md`)
+
+## Bouwstappen
+
+| Stap | Wat | Status |
+|---|---|---|
+| A | `pipeline/verbindingstest.py` en workflow Verbindingstest | Klaar en getest (23 oktober 2026): verbinding via de session pooler, Postgres 17.11 |
+| B | Schema `raw` (`db/migrations/001_raw_schema.sql`, gegenereerd door `pipeline/raw_schema.py`), migratierunner `pipeline/migreer.py`, workflow Migreer | Gebouwd, getest tegen een lokale Postgres en in CI; nog uit te voeren op Supabase |
+| C | Laadscript en workflow voor de eerste laad, per entiteit hervatbaar | Niet gestart |
+| D | Dagelijkse incrementele verversing | Niet gestart |
+
+Keuzes (besluit Niels, 23 oktober 2026):
+- Raw-laag met een kolom per veld uit `$metadata`, geen `jsonb`. Uitwerking door Claude: kolomnamen exact de API-namen tussen aanhalingstekens, tabelnamen de entiteitnaam in kleine letters, plus een eigen kolom `_geladen_op`
+- Persoon zonder `Geslacht`, `Geboortedatum`, `Geboorteplaats`, `Geboorteland`, `Overlijdensdatum`, `Overlijdensplaats`, `Woonplaats`, `Land`, `ContentType`, `ContentLength`. Het laadscript vraagt alleen de bewaarde velden op (`$select`)
+- Alleen de koppeling Besluit en Zaak extra (`raw.besluit_zaak`, via `$expand`); andere koppelingen pas als een release ze nodig heeft
+- Zaak zonder datumfilter, zodat een zaak die voor 2010 begon en later is gestemd niet ontbreekt. Aanname Claude: ZaakActor dan ook zonder datumfilter, omdat het filter via Zaak zou lopen
+- Voorlopig verbindt het script als `postgres`; een aparte schrijfrol volgt bij `rechten`
+
+Feiten uit de API (23 oktober 2026, niet in het rapport):
+- Pagineren werkt alleen zonder `$top`: dan geeft de API 250 records en een `@odata.nextLink` met `$skiptoken=Id-<guid>`, gesorteerd op `Id`. Met `$top` ontbreekt de volgende-link
+- Koppelingen als Besluit en Zaak staan niet als veld in het record, alleen als relatie; `$expand=Zaak($select=Id)` werkt
 
 ## Schatting
 

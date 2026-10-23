@@ -1,0 +1,40 @@
+# Voert openstaande migraties uit db/migrations/ uit op Supabase (component ingest, stap B).
+# Alleen met de hand te starten: Actions-tab of `gh workflow run migreer.yml`.
+# Met "droog" aan toont hij alleen wat zou draaien.
+name: Migreer
+
+on:
+  workflow_dispatch:
+    inputs:
+      droog:
+        description: "Alleen tonen wat zou draaien"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  migreer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Migraties uitvoeren
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ "${{ inputs.droog }}" = "true" ]; then
+            python pipeline/migreer.py --droog
+          else
+            python pipeline/migreer.py
+          fi
