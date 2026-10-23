@@ -262,7 +262,8 @@ def main():
                 moet_stoppen=lambda: time.monotonic() > deadline, max_bytes=max_bytes,
             )
             if status == "tijd":
-                return
+                # Niet meteen stoppen: een afwijking bij een eerder klare entiteit moet nog gemeld worden
+                break
             if status == "grootte":
                 sys.exit("Gestopt op de groottegrens. Beslis over Supabase Pro voordat je verder laadt.")
             if status == "klaar" and not controleer_aantal(conn, entiteit):
