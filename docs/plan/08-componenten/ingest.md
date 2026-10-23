@@ -1,6 +1,6 @@
 # Component: ingest
 
-Status: in bouw (23 oktober 2026), stap A en B klaar
+Status: in bouw (23 oktober 2026), stap A en B klaar, stap C gebouwd
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
 
 ## Doel
@@ -63,8 +63,8 @@ Verwacht:
 | Stap | Wat | Status |
 |---|---|---|
 | A | `pipeline/verbindingstest.py` en workflow Verbindingstest | Klaar en getest (23 oktober 2026): verbinding via de session pooler, Postgres 17.11 |
-| B | Schema `raw` (`db/migrations/001_raw_schema.sql`, gegenereerd door `pipeline/raw_schema.py`), migratierunner `pipeline/migreer.py`, workflow Migreer | Gebouwd, getest tegen een lokale Postgres en in CI; nog uit te voeren op Supabase |
-| C | Laadscript en workflow voor de eerste laad, per entiteit hervatbaar | Niet gestart |
+| B | Schema `raw` (`db/migrations/001_raw_schema.sql`, gegenereerd door `pipeline/raw_schema.py`), migratierunner `pipeline/migreer.py`, workflow Migreer | Klaar en getest (23 oktober 2026): tests lokaal en in CI, uitgevoerd op Supabase (16 tabellen in `raw`) |
+| C | `pipeline/laad.py` en workflow Laad: eerste laad per entiteit, upsert op `Id`, hervatbaar via het skiptoken, stopt op tijdslimiet (330 min) en groottegrens (450 MB), vergelijkt aantallen met de API | Gebouwd, getest met een nagebootste API en lokaal tegen de live API; nog uit te voeren op Supabase |
 | D | Dagelijkse incrementele verversing | Niet gestart |
 
 Keuzes (besluit Niels, 23 oktober 2026):
@@ -77,6 +77,11 @@ Keuzes (besluit Niels, 23 oktober 2026):
 Feiten uit de API (23 oktober 2026, niet in het rapport):
 - Pagineren werkt alleen zonder `$top`: dan geeft de API 250 records en een `@odata.nextLink` met `$skiptoken=Id-<guid>`, gesorteerd op `Id`. Met `$top` ontbreekt de volgende-link
 - Koppelingen als Besluit en Zaak staan niet als veld in het record, alleen als relatie; `$expand=Zaak($select=Id)` werkt
+
+Meting stap C (23 oktober 2026, lokale Postgres 16, live API):
+- De vijf kleine entiteiten: 7.055 rijen in 10 seconden, aantallen gelijk aan de API
+- Stemming, eerste minuut: 162 pagina's (40.500 rijen), 267 bytes per rij inclusief primaire sleutel. Geschat voor Stemming vanaf 2010: ongeveer 260 MB en 25 minuten
+- Schatting voor alle 14 entiteiten: ongeveer de helft van de JSON-schatting (2,7 GB), dus rond 1,3 GB. Free (500 MB) is daarmee te klein; grove extrapolatie, alleen Stemming gemeten
 
 ## Schatting
 

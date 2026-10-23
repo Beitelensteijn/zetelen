@@ -1,0 +1,54 @@
+# Eerste laad van de raw-laag (component ingest, stap C).
+# Alleen met de hand te starten: Actions-tab of
+#   gh workflow run laad.yml -f entiteiten=klein
+# Hervatbaar: stopt hij op de tijdslimiet, start hem dan opnieuw met dezelfde keuze.
+name: Laad
+
+on:
+  workflow_dispatch:
+    inputs:
+      entiteiten:
+        description: "'klein', 'alle' of een lijst met komma's (bijv. Stemming,Besluit)"
+        type: string
+        default: klein
+      max_minuten:
+        description: "Stop netjes na zoveel minuten (een run mag maximaal 6 uur duren)"
+        type: string
+        default: "330"
+      max_mb:
+        description: "Stop als de database groter wordt dan zoveel MB (Supabase Free: 500)"
+        type: string
+        default: "450"
+
+permissions:
+  contents: read
+
+# Nooit twee laadruns tegelijk
+concurrency:
+  group: laad
+  cancel-in-progress: false
+
+jobs:
+  laad:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Laden
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ENTITEITEN: ${{ inputs.entiteiten }}
+          MAX_MINUTEN: ${{ inputs.max_minuten }}
+          MAX_MB: ${{ inputs.max_mb }}
+        # Invoer via omgevingsvariabelen, niet rechtstreeks in het commando (voorkomt injectie)
+        run: python pipeline/laad.py --entiteiten "$ENTITEITEN" --max-minuten "$MAX_MINUTEN" --max-mb "$MAX_MB"
