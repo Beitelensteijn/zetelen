@@ -1,0 +1,39 @@
+# Dagelijkse incrementele verversing van de raw-laag (component ingest, stap D).
+# Ook met de hand te starten: Actions-tab of `gh workflow run ververs.yml`.
+# Een mislukte geplande run geeft een e-mail van GitHub aan de eigenaar van de repo.
+name: Ververs
+
+on:
+  schedule:
+    # Dagelijks om 04:17 UTC; niet op het hele uur, dan is GitHub het drukst
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Zelfde groep als de eerste laad: nooit tegelijk schrijven
+concurrency:
+  group: laad
+  cancel-in-progress: false
+
+jobs:
+  ververs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Verversen
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python pipeline/ververs.py

@@ -96,10 +96,11 @@ def filtertekst(entiteit):
     return f"{pad} ge {VANAF}" if pad else None
 
 
-def basis_url(entiteit, cols, base=BASE):
-    """URL van de eerste pagina. Geen $top: alleen zonder $top geeft de API een volgende-link."""
+def basis_url(entiteit, cols, base=BASE, extra_filter=None):
+    """URL van de eerste pagina. Geen $top: alleen zonder $top geeft de API een volgende-link.
+    extra_filter wordt met 'and' aan het datumfilter toegevoegd (gebruikt door de verversing)."""
     params = {"$select": ",".join(c for c, _ in cols)}
-    flt = filtertekst(entiteit)
+    flt = " and ".join(f for f in (filtertekst(entiteit), extra_filter) if f)
     if flt:
         params["$filter"] = flt
     if entiteit == "Besluit":
@@ -130,8 +131,8 @@ def upsert_sql(entiteit, cols):
     )
 
 
-def schrijf_pagina(conn, entiteit, cols, records, skiptoken):
-    """Rijen, koppelingen en voortgang in een transactie."""
+def schrijf_pagina(conn, entiteit, cols, records, skiptoken, voortgang=True):
+    """Rijen, koppelingen en (bij de eerste laad) de voortgang in een transactie."""
     namen = [c for c, _ in cols]
     with conn.transaction():
         with conn.cursor() as cur:
@@ -146,10 +147,11 @@ def schrijf_pagina(conn, entiteit, cols, records, skiptoken):
                         "on conflict do nothing",
                         links,
                     )
-            cur.execute(
-                "update raw.laadstatus set skiptoken = %s, bijgewerkt_op = now() where entiteit = %s",
-                (skiptoken, entiteit),
-            )
+            if voortgang:
+                cur.execute(
+                    "update raw.laadstatus set skiptoken = %s, bijgewerkt_op = now() where entiteit = %s",
+                    (skiptoken, entiteit),
+                )
 
 
 def database_grootte(conn):
