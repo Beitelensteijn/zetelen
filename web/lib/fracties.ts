@@ -10,10 +10,10 @@ export function balken(fracties: FractieInPeriode[], overstappen: Overstap[]): {
   const rijen = fracties
     .filter((f) => f.bijBegin && f.zetelsBegin > 0)
     .map((f) => {
-      const delen = overstappen
-        .filter((o) => o.van === f.afkorting)
-        .map((o) => ({ naar: o.naar, leden: o.leden }))
-        .sort((a, b) => b.leden - a.leden);
+      // Optellen per afkorting: de bron heeft soms twee fracties met dezelfde afkorting (bijvoorbeeld na een herstart)
+      const perNaar = new Map<string, number>();
+      for (const o of overstappen) if (o.van === f.afkorting) perNaar.set(o.naar, (perNaar.get(o.naar) ?? 0) + o.leden);
+      const delen = [...perNaar].map(([naar, leden]) => ({ naar, leden })).sort((a, b) => b.leden - a.leden);
       // Meer overstappers dan zetels kan bij vervanging binnen de periode; begrens op de zetels
       const weg = Math.min(delen.reduce((t, d) => t + d.leden, 0), f.zetelsBegin);
       return { fractie: f, zetels: f.zetelsBegin, gebleven: f.zetelsBegin - weg, delen };

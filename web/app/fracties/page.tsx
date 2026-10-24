@@ -89,7 +89,7 @@ export default async function Fracties({ searchParams }: Props) {
 
       {nieuw.length > 0 && (
         <section style={{ display: "flex", flexDirection: "column", gap: "var(--r-3)" }}>
-          <Label>Ontstaan tijdens {periode.naam}</Label>
+          <Label>Nieuw in de Kamer tijdens {periode.naam}</Label>
           <ul className={s.kolommen}>
             {nieuw.map(({ fractie: f, uit }) => (
               <li key={f.id}>

@@ -23,4 +23,8 @@ describe("balken", () => {
     const { rijen } = balken([f("X", 2)], [{ van: "X", naar: "Y", leden: 5 }]);
     expect(rijen[0].gebleven).toBe(0);
   });
+  it("telt overstappen naar dezelfde afkorting op", () => {
+    const { rijen } = balken([f("A", 10)], [{ van: "A", naar: "B", leden: 1 }, { van: "A", naar: "B", leden: 1 }]);
+    expect(rijen[0].delen).toEqual([{ naar: "B", leden: 2 }]);
+  });
 });
