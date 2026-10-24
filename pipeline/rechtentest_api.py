@@ -42,6 +42,7 @@ PROEVEN = [
     ("Laatst bijgewerkt lezen uit api", "GET", "laatst_bijgewerkt", "api", None, True),
     ("Cohesie lezen uit api", "GET", "cohesie?select=cohesie&limit=1", "api", None, True),
     ("Eensgezindheid lezen uit api", "GET", "eensgezindheid?select=hoofdelijk&limit=1", "api", None, True),
+    ("Fracties per periode lezen uit api", "GET", "fractie_periode?select=afkorting&limit=1", "api", None, True),
     ("Tussenstap analyses lezen", "GET", "fractie_besluit_stem?limit=1", "analyses", None, False),
     ("Kabinet toevoegen", "POST", "kabinet", "api", {"naam": "x", "begin": "2030-01-01"}, False),
     ("Kabinet wijzigen", "PATCH", "kabinet?naam=eq.bestaat-niet", "api", {"naam": "x"}, False),

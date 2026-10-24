@@ -135,3 +135,24 @@ def test_anon_leest_cohesie_maar_niet_de_tussenstap(conn, scenario):
             conn.execute("select * from analyses.fractie_besluit_stem")
     finally:
         conn.execute("reset role")
+
+
+def test_fractie_periode_zetels_en_zaal(conn, scenario):
+    # Fractie E stemde alleen ruim voor het einde van de periode: wel in de periode, niet in de zaal
+    from test_core import Bron  # noqa: F401
+    e = fractie(conn, "E")
+    bes = nieuw()
+    act, ap = nieuw(), nieuw()
+    conn.execute('insert into raw.activiteit ("Id", "Datum", "Verwijderd") values (%s, %s, false)', (act, "2024-12-01T12:00:00+01:00"))
+    conn.execute('insert into raw.agendapunt ("Id", "Activiteit_Id", "Verwijderd") values (%s, %s, false)', (ap, act))
+    conn.execute('insert into raw.besluit ("Id", "Agendapunt_Id", "StemmingsSoort", "Verwijderd") values (%s, %s, %s, false)',
+                 (bes, ap, "Met handopsteken"))
+    conn.execute('insert into raw.stemming ("Id", "Besluit_Id", "Fractie_Id", "Soort", "FractieGrootte", "Vergissing", "Verwijderd") '
+                 "values (%s, %s, %s, 'Voor', 4, false, false)", (nieuw(), bes, e))
+    herbouw(conn)
+    conn.execute("select * from analyses.herbouw()")
+    rijen = {r[0]: r[1:] for r in conn.execute(
+        "select afkorting, zetels, in_zaal from api.fractie_periode where periodesoort = 'kabinet' and periode = 'Schoof'"
+    ).fetchall()}
+    assert rijen["A"] == (10, True)
+    assert rijen["E"] == (4, False)
