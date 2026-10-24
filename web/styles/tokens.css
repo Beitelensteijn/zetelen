@@ -1,0 +1,54 @@
+/*
+ * Ontwerpsysteem Zetelen: "nacht met koperlicht" (component ontwerpsysteem, story E3-S2).
+ * Bron: docs/ontwerp/HANDOVER.md en docs/ontwerp/boards/Ontwerpsysteem.dc.html (besluit Niels, 23 oktober 2026).
+ * Eigen palet: geen partijkleuren, geen logo's, geen merkelementen van een krant.
+ */
+:root {
+  /* Kleur: koel is alles eromheen, warm is de keuze van de bezoeker */
+  --nacht-950: #070b18; /* paginabasis */
+  --nacht-900: #0b1226; /* vlakken */
+  --nacht-800: #111b36; /* kaarten, panelen */
+  --nacht-700: #1a2748; /* verhoogd, hover, gekozen knop */
+  --lijn: #2a3a63; /* haarlijnen van 1 px */
+  --lijn-licht: #566aa6; /* rand van zetels, knopen en schaalbalken: 3:1 op nacht-950, -900 en -800; niet op nacht-700 (2,81) */
+  --tekst: #e8ecf5;
+  --tekst-zacht: #a9b4cc;
+  --koper: #d08a55; /* selectie, links, markeringen, focusrand */
+  --goud: #e3b76a; /* hoogste waarde, rand om de gekozen fractie */
+
+  /* Cohesieschaal: vier stops, lineair in sRGB (zie lib/kleur.ts) */
+  --schaal-0: #2b2f6b;
+  --schaal-33: #3e7cb1;
+  --schaal-67: #7fb7c9;
+  --schaal-100: #f2d38b;
+  --te-weinig-data: repeating-linear-gradient(45deg, #8a97bd 0 1px, #111b36 1px 4px);
+
+  /* Typografie; de lettertypes zelf komen uit next/font (app/layout.tsx) */
+  --serif: var(--font-newsreader), Georgia, serif;
+  --sans: var(--font-hanken), system-ui, sans-serif;
+  --mono: var(--font-dm-mono), ui-monospace, monospace;
+  --kop-hero: clamp(44px, 6.4vw, 96px);
+  --kop-sectie: clamp(32px, 3.6vw, 48px);
+  --tekst-lopend: 17px;
+  --tekst-label: 12px;
+  --tekst-data: 12px;
+
+  /* Ruimte: basis van 4 px */
+  --r-1: 4px;
+  --r-2: 8px;
+  --r-3: 12px;
+  --r-4: 16px;
+  --r-5: 24px;
+  --r-6: 32px;
+  --r-7: 48px;
+  --r-8: 72px;
+  --r-9: 96px;
+  --pagina-max: 1240px;
+  --pagina-marge: 32px;
+
+  /* Vorm: geen schaduwen, diepte komt van de korrel en de gloed */
+  --hoek-klein: 6px; /* knoppen, cellen */
+  --hoek-paneel: 8px;
+  --hoek-pil: 999px;
+  --doel-min: 44px; /* minimale hoogte van een knop */
+}

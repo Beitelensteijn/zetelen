@@ -1,0 +1,152 @@
+.kaart {
+  background: var(--nacht-800);
+  border: 1px solid var(--lijn);
+  border-radius: var(--hoek-paneel);
+  padding: var(--r-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-3);
+}
+
+.segment {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--r-2);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.segment legend {
+  width: 100%;
+  margin-bottom: var(--r-2);
+}
+.optie {
+  min-height: var(--doel-min);
+  padding: 0 var(--r-4);
+  border-radius: var(--hoek-pil);
+  border: 1px solid var(--lijn);
+  background: transparent;
+  color: var(--tekst);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.optie:hover {
+  background: var(--nacht-700);
+}
+.optie[aria-pressed="true"] {
+  background: var(--nacht-700);
+  border-color: var(--koper);
+}
+
+.uitlees {
+  display: inline-flex;
+  align-self: flex-start;
+  flex-direction: column;
+  gap: var(--r-1);
+  padding: var(--r-3) var(--r-4);
+  background: var(--nacht-900);
+  border: 1px solid var(--lijn-licht);
+  border-radius: var(--hoek-paneel);
+}
+
+.tabelkader {
+  overflow-x: auto;
+}
+.tabel {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+.tabel th,
+.tabel td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--lijn);
+  font-weight: 400;
+}
+.tabel th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tekst-zacht);
+}
+.getal {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: right;
+}
+
+.grafiek {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-4);
+}
+.grafiek figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-1);
+}
+
+.lezingen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--r-5);
+}
+.lezing {
+  border-top: 1px solid var(--koper);
+  padding-top: var(--r-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-3);
+}
+.lezing h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.schaal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-2);
+}
+.schaalbalk {
+  height: 14px;
+  border-radius: var(--hoek-klein);
+  border: 1px solid var(--lijn-licht);
+}
+.schaalas {
+  display: flex;
+  justify-content: space-between;
+}
+.cel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  min-height: var(--doel-min);
+  border-radius: var(--hoek-klein);
+  border: 1px solid var(--lijn-licht);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 14px;
+}
+.teWeinig {
+  background: var(--te-weinig-data);
+  color: var(--tekst);
+}
+
+.korrel {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}

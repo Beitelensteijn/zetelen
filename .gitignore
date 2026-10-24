@@ -12,9 +12,11 @@ __pycache__/
 node_modules/
 web/.next/
 web/out/
+web/*.tsbuildinfo
 .vercel/
 
 .DS_Store
 
-# Editor: werkruimte-instellingen kunnen verbindingsgegevens bevatten
+# Editor en lokale hulpmiddelen: werkruimte-instellingen kunnen verbindingsgegevens bevatten
 .vscode/
+.claude/

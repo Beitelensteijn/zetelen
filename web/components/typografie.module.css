@@ -1,0 +1,52 @@
+.hero {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--kop-hero);
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+.sectie {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: var(--kop-sectie);
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.tekst {
+  margin: 0;
+  max-width: 68ch;
+  font-size: var(--tekst-lopend);
+  line-height: 1.6;
+  color: var(--tekst-zacht);
+}
+.label {
+  font-size: var(--tekst-label);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--koper);
+}
+.data {
+  font-family: var(--mono);
+  font-size: var(--tekst-data);
+  line-height: 1.5;
+  color: var(--tekst-zacht);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.cijfer {
+  font-family: var(--serif);
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.woordmerk {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+  font-size: 22px;
+  color: var(--tekst);
+  text-decoration: none;
+}
