@@ -6,7 +6,19 @@ import { PERIODESOORTEN, VARIANTEN } from "@/lib/cohesie";
 import { Data, Label } from "@/components/Typografie";
 import s from "./verkenner.module.css";
 
-export function PeriodeKeuze({ perioden, soort, periode, variant }: { perioden: Periode[]; soort: Periodesoort; periode: string | null; variant: Variant }) {
+export function PeriodeKeuze({
+  perioden,
+  soort,
+  periode,
+  variant,
+  pad = "/verkenner",
+}: {
+  perioden: Periode[];
+  soort: Periodesoort;
+  periode: string | null;
+  variant?: Variant;
+  pad?: string;
+}) {
   const router = useRouter();
   const zoek = useSearchParams();
   function ga(wijziging: Record<string, string | null>) {
@@ -15,7 +27,7 @@ export function PeriodeKeuze({ perioden, soort, periode, variant }: { perioden: 
       if (v == null) nieuw.delete(k);
       else nieuw.set(k, v);
     }
-    router.push(`/verkenner?${nieuw.toString()}`, { scroll: false });
+    router.push(`${pad}?${nieuw.toString()}`, { scroll: false });
   }
   const binnenSoort = perioden.filter((p) => p.soort === soort);
   return (
@@ -40,16 +52,18 @@ export function PeriodeKeuze({ perioden, soort, periode, variant }: { perioden: 
           ))}
         </select>
       </label>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <Label>Stemmingen</Label>
-        <div className={s.segment} role="group" aria-label="Stemmingen">
-          {VARIANTEN.map((v) => (
-            <button key={v.waarde} type="button" aria-pressed={v.waarde === variant} onClick={() => ga({ variant: v.waarde })}>
-              {v.tekst}
-            </button>
-          ))}
+      {variant && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Label>Stemmingen</Label>
+          <div className={s.segment} role="group" aria-label="Stemmingen">
+            {VARIANTEN.map((v) => (
+              <button key={v.waarde} type="button" aria-pressed={v.waarde === variant} onClick={() => ga({ variant: v.waarde })}>
+                {v.tekst}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <Data>Een kabinet loopt tot het volgende is beëdigd; de demissionaire tijd telt mee.</Data>
     </div>
   );

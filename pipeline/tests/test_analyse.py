@@ -156,3 +156,18 @@ def test_fractie_periode_zetels_en_zaal(conn, scenario):
     ).fetchall()}
     assert rijen["A"] == (10, True)
     assert rijen["E"] == (4, False)
+
+
+def test_stemmatrix_per_periode(conn, scenario):
+    assert conn.execute("select analyses.herbouw_stemmatrix()").fetchone()[0] == 2  # Schoof en 2023-2025
+    fracties, stemmen, zetels = conn.execute(
+        "select fracties, stemmen, zetels from api.stemmatrix where periodesoort = 'kabinet' and periode = 'Schoof'"
+    ).fetchone()
+    namen = [f["afkorting"] for f in fracties]
+    assert namen == sorted(namen)
+    a, c = namen.index("A"), namen.index("C")
+    # Elk besluit een regel met per fractie een teken; A voor en C tegen in de eerste 30 besluiten
+    assert all(len(r) == len(namen) for r in stemmen)
+    assert sum(1 for r in stemmen if r[a] == "V" and r[c] == "T") >= 30
+    # A heeft 10 zetels bij handopsteken; bij de hoofdelijke stemming telt het aantal leden (3)
+    assert {10, 3} <= {z for _, z in zetels[a]}
