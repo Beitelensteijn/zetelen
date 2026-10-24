@@ -9,6 +9,9 @@ de API zet dan de vlag Verwijderd en werkt ApiGewijzigdOp bij.
 Entiteiten waarvan de eerste laad nog niet klaar is, worden overgeslagen.
 De log bevat alleen aantallen en duur.
 
+Na de raw-laag wordt de core-laag opnieuw opgebouwd met core.herbouw()
+(component core-model), zodat de analyses altijd op de verse data draaien.
+
 Bewaking (component bewaking): elke run krijgt een rij in beheer.verversing, en
 het script stuurt signalen naar healthchecks.io (HEALTHCHECK_URL): /start bij
 de start, de kale URL bij succes en /fail bij een fout. Blijft het
@@ -104,6 +107,14 @@ def eind_log(conn, run_id, status, records=None, fout=None):
     )
 
 
+def herbouw_core(conn):
+    """Bouwt de core-laag opnieuw op uit raw en logt het aantal rijen per tabel."""
+    start = time.monotonic()
+    aantallen = conn.execute("select tabel, rijen from core.herbouw()").fetchall()
+    seconden = f"{time.monotonic() - start:.0f}"
+    print("Core herbouwd in " + seconden + " s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
+
+
 def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
     """Ververst alle entiteiten en logt de run in beheer.verversing. Geeft het totaal terug."""
     run_id = start_log(conn)
@@ -112,6 +123,7 @@ def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
         for entiteit in VOLGORDE:
             totaal += ververs_entiteit(conn, entiteit, kolommen(meta, entiteit),
                                        haal=haal, base=base, pauze=pauze) or 0
+        herbouw_core(conn)
     except Exception as e:
         try:
             eind_log(conn, run_id, "mislukt", fout=type(e).__name__)

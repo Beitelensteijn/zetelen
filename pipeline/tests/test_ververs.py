@@ -41,7 +41,8 @@ def conn():
     import psycopg
 
     with psycopg.connect(URL, autocommit=True) as c:
-        c.execute("drop schema if exists raw cascade; drop schema if exists beheer cascade;")
+        c.execute("drop schema if exists core cascade; drop schema if exists raw cascade; "
+                  "drop schema if exists beheer cascade;")
         migreer.migreer(c)
         yield c
 
@@ -108,6 +109,8 @@ def test_logboek_bij_geslaagde_run(conn):
     laad.laad_entiteit(conn, "Fractie", COLS, haal=NepApi(fracties(3)), base=BASE, pauze=0)
     totaal = ververs.ververs_alles(conn, META, haal=NepApi(fracties(2)), base=BASE, pauze=0)
     assert totaal == 2
+    # De core-laag is na de verversing opnieuw opgebouwd: 3 geladen plus 2 nieuwe fracties
+    assert conn.execute("select count(*) from core.fractie").fetchone()[0] == 5
     rij = conn.execute("select status, records, klaar_op is not null, fout from beheer.verversing").fetchone()
     assert rij == ("geslaagd", 2, True, None)
 

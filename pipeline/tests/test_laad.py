@@ -2,7 +2,7 @@
 
 De unittests hebben geen database nodig. De integratietests draaien alleen als
 TEST_DATABASE_URL gezet is (in CI: een Postgres-container) en gooien de schema's
-raw en beheer leeg, dus nooit tegen Supabase draaien.
+raw, core en beheer leeg, dus nooit tegen Supabase draaien.
 """
 import os
 import sys
@@ -96,7 +96,8 @@ def conn():
     import psycopg
 
     with psycopg.connect(URL, autocommit=True) as c:
-        c.execute("drop schema if exists raw cascade; drop schema if exists beheer cascade;")
+        c.execute("drop schema if exists core cascade; drop schema if exists raw cascade; "
+                  "drop schema if exists beheer cascade;")
         migreer.migreer(c)
         yield c
 
