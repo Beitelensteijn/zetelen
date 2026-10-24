@@ -41,7 +41,7 @@ def conn():
     import psycopg
 
     with psycopg.connect(URL, autocommit=True) as c:
-        c.execute("drop schema if exists api cascade; drop schema if exists core cascade; drop schema if exists raw cascade; "
+        c.execute("drop schema if exists api cascade; drop schema if exists analyses cascade; drop schema if exists core cascade; drop schema if exists raw cascade; "
                   "drop schema if exists beheer cascade;")
         migreer.migreer(c)
         yield c
@@ -132,6 +132,7 @@ def test_herbouw_negeert_een_korte_standaard_timeout(conn):
     # Supabase heeft een standaard statement_timeout; de herbouw zet voor zichzelf een ruimere
     laad.laad_entiteit(conn, "Fractie", COLS, haal=NepApi(fracties(3)), base=BASE, pauze=0)
     conn.execute("set statement_timeout = '1ms'")
-    ververs.herbouw_core(conn)
+    ververs.herbouw(conn, "core")
+    ververs.herbouw(conn, "analyses")
     assert conn.execute("show statement_timeout").fetchone()[0] == "1ms"
     conn.execute("reset statement_timeout")

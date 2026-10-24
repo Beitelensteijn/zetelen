@@ -16,7 +16,7 @@ import psycopg
 from verbindingstest import uitleg
 
 # De schema's van dit project; de schema's die Supabase zelf beheert (auth, storage, ...) vallen erbuiten
-EIGEN = "('public', 'api', 'core', 'raw', 'beheer')"
+EIGEN = "('public', 'api', 'core', 'raw', 'beheer', 'analyses')"
 BEZOEKERS = "('anon', 'authenticated')"
 
 CONTROLES = [

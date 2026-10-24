@@ -1,0 +1,137 @@
+"""Tests voor de analyse-laag (db/migrations/006_analyse_cohesie.sql, functie analyses.herbouw).
+
+Een klein scenario met bekende uitkomst, volgens docs/plan/definitie-cohesie.md. Draaien alleen
+met TEST_DATABASE_URL (in CI: een Postgres-container); nooit tegen Supabase.
+"""
+import sys
+from decimal import Decimal
+from pathlib import Path
+
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from test_core import URL, Bron, conn, herbouw, nieuw  # noqa: E402,F401
+
+pytestmark = pytest.mark.skipif(not URL, reason="TEST_DATABASE_URL niet gezet")
+
+DATUM = "2025-03-04T15:00:00+01:00"  # kabinet Schoof, Kamerperiode 2023-2025
+
+
+def fractie(conn, afkorting):
+    f = nieuw()
+    conn.execute('insert into raw.fractie ("Id", "Afkorting", "Verwijderd") values (%s, %s, false)', (f, afkorting))
+    return f
+
+
+def lid(conn):
+    p = nieuw()
+    conn.execute('insert into raw.persoon ("Id", "Achternaam", "Verwijderd") values (%s, %s, false)', (p, "Lid"))
+    return p
+
+
+@pytest.fixture
+def scenario(conn):
+    bron = Bron(conn)
+    a, b = bron.fractie_a, bron.fractie_b
+    c = fractie(conn, "C")
+    # 30 gewone stemmingen: A en B altijd gelijk, C altijd tegengesteld
+    for _ in range(30):
+        bes = bron.besluit(DATUM)
+        bron.stem(bes, a, "Voor")
+        bron.stem(bes, b, "Voor")
+        bron.stem(bes, c, "Tegen")
+    # Unaniem: telt alleen in variant 'alle'
+    bes = bron.besluit(DATUM)
+    for f in (a, b, c):
+        bron.stem(bes, f, "Voor")
+    # B nam niet deel: A-B telt niet, A-C wel
+    bes = bron.besluit(DATUM)
+    bron.stem(bes, a, "Voor")
+    bron.stem(bes, b, "Niet deelgenomen")
+    bron.stem(bes, c, "Tegen")
+    # Vergissing bij A: telt niet voor A
+    bes = bron.besluit(DATUM)
+    bron.stem(bes, a, "Voor", vergissing=True)
+    bron.stem(bes, b, "Voor")
+    bron.stem(bes, c, "Tegen")
+    # Hoofdelijk: A 2 voor 1 tegen (afgeleid Voor, niet eensgezind), B 1-1 (gelijke stand: geen stem), C 2 tegen
+    bes = bron.besluit(DATUM, soort="Hoofdelijk")
+    for f, stemmen in ((a, ["Voor", "Voor", "Tegen"]), (b, ["Voor", "Tegen"]), (c, ["Tegen", "Tegen"])):
+        for s in stemmen:
+            bron.stem(bes, f, s, persoon=lid(conn))
+    # Handopsteken met een afwijker in A; alleen A stemt, dus geen fractieparen
+    bes = bron.besluit(DATUM)
+    bron.stem(bes, a, "Tegen")
+    bron.stem(bes, a, "Voor", persoon=lid(conn))
+    # Fractie D deelt maar 3 stemmingen met A: te weinig data
+    d = fractie(conn, "D")
+    for _ in range(3):
+        bes = bron.besluit(DATUM)
+        bron.stem(bes, a, "Voor")
+        bron.stem(bes, d, "Voor")
+    herbouw(conn)
+    conn.execute("select * from analyses.herbouw()")
+    return {"A": a, "B": b, "C": c, "D": d}
+
+
+def cohesie(conn, f1, f2, variant="alle", periodesoort="kabinet", periode="Schoof"):
+    return conn.execute(
+        "select gezamenlijk, gelijk, cohesie, te_weinig_data from api.cohesie "
+        "where periodesoort = %s and periode = %s and variant = %s and fractie = %s and andere_fractie = %s",
+        (periodesoort, periode, variant, f1, f2),
+    ).fetchone()
+
+
+def test_altijd_gelijk_is_100_procent(conn, scenario):
+    # 30 gewoon + unaniem; niet deelgenomen, vergissing en de gelijke stand bij B tellen niet
+    assert cohesie(conn, scenario["A"], scenario["B"]) == (31, 31, Decimal("100.0"), False)
+
+
+def test_altijd_tegengesteld_is_0_procent_op_het_unanieme_besluit_na(conn, scenario):
+    # 30 gewoon + niet-deelgenomen-besluit + hoofdelijk (allemaal verschillend), unaniem gelijk
+    assert cohesie(conn, scenario["A"], scenario["C"]) == (33, 1, Decimal("3.0"), False)
+
+
+def test_variant_verdeeld_laat_unanieme_besluiten_weg(conn, scenario):
+    assert cohesie(conn, scenario["A"], scenario["B"], "verdeeld") == (30, 30, Decimal("100.0"), False)
+    assert cohesie(conn, scenario["A"], scenario["C"], "verdeeld") == (32, 0, Decimal("0.0"), False)
+
+
+def test_beide_richtingen_en_beide_periodesoorten(conn, scenario):
+    assert cohesie(conn, scenario["C"], scenario["A"]) == cohesie(conn, scenario["A"], scenario["C"])
+    assert cohesie(conn, scenario["A"], scenario["B"], periodesoort="kamerperiode", periode="2023-2025") == \
+        (31, 31, Decimal("100.0"), False)
+
+
+def test_te_weinig_data_onder_25(conn, scenario):
+    assert cohesie(conn, scenario["A"], scenario["D"]) == (3, 3, None, True)
+
+
+def test_afgeleide_fractiestem_bij_hoofdelijk(conn, scenario):
+    rijen = dict(conn.execute(
+        "select fractie_id::text, stem from analyses.fractie_besluit_stem where afgeleid"
+    ).fetchall())
+    assert rijen == {scenario["A"]: "Voor", scenario["C"]: "Tegen"}  # B: gelijke stand, geen stem
+
+
+def test_eensgezindheid(conn, scenario):
+    rijen = {r[0]: r[1:] for r in conn.execute(
+        "select fractie::text, hoofdelijk, hoofdelijk_verdeeld, afwijkers_handopsteken from api.eensgezindheid "
+        "where periodesoort = 'kabinet' and periode = 'Schoof'"
+    ).fetchall()}
+    assert rijen[scenario["A"]] == (1, 1, 1)
+    assert rijen[scenario["B"]] == (1, 1, 0)
+    assert rijen[scenario["C"]] == (1, 0, 0)
+
+
+def test_anon_leest_cohesie_maar_niet_de_tussenstap(conn, scenario):
+    import psycopg
+
+    conn.execute("set role anon")
+    try:
+        assert conn.execute("select count(*) from api.cohesie").fetchone()[0] > 0
+        assert conn.execute("select count(*) from api.eensgezindheid").fetchone()[0] > 0
+        with pytest.raises(psycopg.errors.InsufficientPrivilege):
+            conn.execute("select * from analyses.fractie_besluit_stem")
+    finally:
+        conn.execute("reset role")

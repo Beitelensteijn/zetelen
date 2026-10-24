@@ -9,8 +9,9 @@ de API zet dan de vlag Verwijderd en werkt ApiGewijzigdOp bij.
 Entiteiten waarvan de eerste laad nog niet klaar is, worden overgeslagen.
 De log bevat alleen aantallen en duur.
 
-Na de raw-laag wordt de core-laag opnieuw opgebouwd met core.herbouw()
-(component core-model), zodat de analyses altijd op de verse data draaien.
+Na de raw-laag worden de core-laag (core.herbouw(), component core-model) en de
+analyse-laag (analyses.herbouw(), component cohesie-analyse) opnieuw opgebouwd,
+zodat de analyses altijd op de verse data draaien.
 
 Bewaking (component bewaking): elke run krijgt een rij in beheer.verversing, en
 het script stuurt signalen naar healthchecks.io (HEALTHCHECK_URL): /start bij
@@ -107,18 +108,18 @@ def eind_log(conn, run_id, status, records=None, fout=None):
     )
 
 
-def herbouw_core(conn):
-    """Bouwt de core-laag opnieuw op uit raw en logt het aantal rijen per tabel."""
+def herbouw(conn, schema):
+    """Bouwt een afgeleide laag (core of analyses) opnieuw op en logt het aantal rijen per tabel."""
     start = time.monotonic()
     # Supabase stopt standaard lange queries; de herbouw over ruim een miljoen stemmen heeft meer tijd nodig
     oud = conn.execute("show statement_timeout").fetchone()[0]
     conn.execute("set statement_timeout = '20min'")
     try:
-        aantallen = conn.execute("select tabel, rijen from core.herbouw()").fetchall()
+        aantallen = conn.execute(f"select tabel, rijen from {schema}.herbouw()").fetchall()
     finally:
         conn.execute("select set_config('statement_timeout', %s, false)", (oud,))
     seconden = f"{time.monotonic() - start:.0f}"
-    print("Core herbouwd in " + seconden + " s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
+    print(f"{schema} herbouwd in {seconden} s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
 
 
 def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
@@ -129,7 +130,8 @@ def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
         for entiteit in VOLGORDE:
             totaal += ververs_entiteit(conn, entiteit, kolommen(meta, entiteit),
                                        haal=haal, base=base, pauze=pauze) or 0
-        herbouw_core(conn)
+        herbouw(conn, "core")
+        herbouw(conn, "analyses")
     except Exception as e:
         try:
             eind_log(conn, run_id, "mislukt", fout=type(e).__name__)
