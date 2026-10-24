@@ -11,6 +11,8 @@ Status: deels uitgevoerd (23 oktober 2026), zie de tabel. Niets hieronder is doo
 | Geheimen in GitHub Actions | Gedaan (23 oktober 2026): `DATABASE_URL` (session pooler, gebruiker `postgres`), getest met de workflow Verbindingstest | Niels |
 | Vercel-project gekoppeld aan de repo | Niet gedaan | Niels |
 | Environment variables in Vercel | Niet gedaan | Niels |
+| Data API: schema `api` open (Exposed schemas) | Gedaan (24 oktober 2026) | Niels |
+| GitHub-variabelen `SUPABASE_URL` en `SUPABASE_ANON_KEY` (publishable key, publiek) voor de rechtentest | Gedaan (24 oktober 2026) | Niels |
 | `CLAUDE.md` verwijst naar `docs/plan/` | Gedaan (23 oktober 2026) | Claude Code, na akkoord |
 
 ## Voorbereiding: tools controleren (PowerShell)

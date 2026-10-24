@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). `repo-ci`, `api-check`, `ingest`, `bewaking` en `core-model` zijn gebouwd en getest; de data staat in Supabase Pro (rekencapaciteit Micro) en wordt dagelijks ververst, inclusief de core-laag.
+Fase 4: koppelen en bouwen (stap 9). `repo-ci`, `api-check`, `ingest`, `bewaking`, `core-model` en `rechten` zijn gebouwd en getest; de data staat in Supabase Pro (rekencapaciteit Micro), wordt dagelijks ververst en is voor bezoekers alleen leesbaar via schema `api`.
 
 ## Afgerond
 
@@ -22,6 +22,7 @@ Fase 4: koppelen en bouwen (stap 9). `repo-ci`, `api-check`, `ingest`, `bewaking
 - Component `ingest` (23 oktober 2026): schema `raw`, eerste laad van de 14 entiteiten vanaf 2010 (ongeveer 4,1 miljoen rijen, twee runs, ongeveer 8 uur) en dagelijkse verversing om 04:17 UTC. Database 1.349 MB. Getest: 29 tests lokaal en in CI, aantallen per entiteit vergeleken met de API
 - Component `bewaking` (23 en 24 oktober 2026): logboek `beheer.verversing`, externe controle via healthchecks.io (mail bij een fout of na 2 dagen zonder geslaagde verversing), stap die de workflow actief houdt, runbook `docs/onderhoud.md`. Getest: 34 tests, fout-mails van GitHub en healthchecks aangekomen
 - Component `core-model` (24 oktober 2026): schema `core` met de handmatige tabellen kabinet, kamerperiode en fractie_partij, en zeven afgeleide tabellen die na elke verversing opnieuw worden opgebouwd (unlogged). 60.133 besluiten en 899.200 fractiestemmen sinds 2010. Beschrijving in `docs/datamodel.md`. Getest: 48 tests
+- Component `rechten` (24 oktober 2026): schema `api` als enige open schema, RLS op elke tabel, rechtencontrole in de database en een test als bezoeker via de Data API, beide na elke migratie. Getest: 56 tests, zes controles en tien proeven via de API op Supabase. De test op de frontendbuild is verplaatst naar `site-shell`
 
 ## Openstaand
 
@@ -36,6 +37,7 @@ Fase 4: koppelen en bouwen (stap 9). `repo-ci`, `api-check`, `ingest`, `bewaking
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
 - Bewaking: de mail bij een uitblijvend signaal testen (healthchecks-periode tijdelijk op 1 minuut, zie `docs/onderhoud.md`). De fout-mails van GitHub en healthchecks zijn getest (23 oktober 2026)
+- Geplande workflows draaien niet: de verversing van 04:17 UTC op 24 oktober kwam niet. Tijdelijke workflow Planningstest (elk uur, zonder de stap die de workflow actief houdt) moet uitwijzen of het aan die stap ligt. Daarna Planningstest verwijderen
 - Handmatige tabellen van `core-model` nakijken (Niels): kabinetten (Wikidata), Kamerperiodes (verkiezingsdata nog te controleren bij de Kiesraad) en de partijkoppeling (vier twijfelgevallen: GroenLinks-PvdA, PRO, DPK, Groep Markuszower)
 - Definitie van cohesie (E2-S1): hoofdelijke stemmingen (geen fractiestem in de bron) en vergissingen
 - Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API: records die na de laad buiten het datumfilter vielen. De verversing ruimt die niet op; `core-model` filtert op datum. Uitzoeken welke rijen het zijn (voorstel: bij `datakwaliteit`)
@@ -94,4 +96,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `rechten`, daarna `cohesie-analyse` (eerst de definitie, E2-S1).
+Component `cohesie-analyse`: eerst de definitie (E2-S1), met de keuzes voor hoofdelijke stemmingen en vergissingen.

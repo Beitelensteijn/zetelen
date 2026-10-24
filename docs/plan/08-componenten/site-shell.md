@@ -20,7 +20,7 @@ Biedt:
 - Standaard titel, beschrijving en deelafbeelding per pagina, en een sitemap
 - Een standaard lege staat en foutstaat
 
-Verwacht: de tokens en basiscomponenten van `ontwerpsysteem`, de "laatst bijgewerkt"-datum van `bewaking`.
+Verwacht: de tokens en basiscomponenten van `ontwerpsysteem`, de "laatst bijgewerkt"-datum van `bewaking` (view `api.laatst_bijgewerkt`, kolom `laatst_bijgewerkt`, via de Data API met de publieke sleutel; zie `rechten.md`).
 
 ## Afhankelijkheden
 
@@ -31,6 +31,7 @@ Verwacht: de tokens en basiscomponenten van `ontwerpsysteem`, de "laatst bijgewe
 **E3-S1 Voorpagina.** Als bezoeker wil ik een korte verhalende voorpagina met een eerste vondst en een doorklik naar de verkenner.
 - De voorpagina bevat minstens een door Niels goedgekeurde conclusie met bron
 - Een "laatst bijgewerkt"-datum staat zichtbaar
+- Overgenomen van `rechten` (E1-S6): een test op de gebouwde frontend zoekt naar de `service_role`- of secret-sleutel en naar alles wat op een geheim lijkt, en faalt als er iets gevonden wordt
 - Een link naar de cohesie-verkenner en naar de methodiekpagina
 
 **E3-S4 Delen en zoekmachines.** Elke publieke pagina kan gedeeld worden en is vindbaar.
