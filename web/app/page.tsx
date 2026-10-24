@@ -1,4 +1,4 @@
-// Voorpagina (E3-S1). De eerste conclusie en de zaal komen na cohesie-pagina en na akkoord van Niels.
+// Voorpagina (E3-S1). De eerste conclusie komt na akkoord van Niels.
 import Link from "next/link";
 import { Inhoud, knopKlasse } from "@/components/Kader";
 import { Kaart } from "@/components/Onderdelen";
@@ -18,12 +18,15 @@ export default function Voorpagina() {
       </section>
 
       <Kaart>
-        <Label>In aanbouw</Label>
-        <SectieKop>De zaal komt hier</SectieKop>
+        <Label>Verkenner</Label>
+        <SectieKop>Elke fractie tegenover elke andere</SectieKop>
         <Tekst>
-          Kies straks een fractie in de zaal en zie hoe vaak de andere fracties met haar meestemden. Tot die tijd
-          is deze site in aanbouw en niet vindbaar in zoekmachines.
+          Kies een fractie in de zaal en zie hoe vaak de andere fracties met haar meestemden, per kabinet of per
+          Kamerperiode. De site is in aanbouw en niet vindbaar in zoekmachines; de eerste conclusie volgt.
         </Tekst>
+        <Link href="/verkenner" className={knopKlasse}>
+          Naar de verkenner
+        </Link>
       </Kaart>
 
       <section style={{ display: "flex", flexDirection: "column", gap: "var(--r-4)" }}>

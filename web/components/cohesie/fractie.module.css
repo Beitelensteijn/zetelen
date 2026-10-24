@@ -1,0 +1,101 @@
+.raster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: var(--r-3);
+}
+.tegel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-1);
+  padding: var(--r-4);
+  min-height: var(--doel-min);
+  border: 1px solid var(--lijn);
+  border-radius: var(--hoek-paneel);
+  background: var(--nacht-900);
+  color: var(--tekst);
+  text-decoration: none;
+}
+.tegel:hover {
+  border-color: var(--koper);
+  background: var(--nacht-800);
+}
+.tegelNaam {
+  font-family: var(--serif);
+  font-size: 22px;
+}
+.keuzes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-3);
+}
+.keuzerij {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--r-2);
+}
+.pil {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--doel-min);
+  padding: 0 var(--r-4);
+  border-radius: var(--hoek-pil);
+  border: 1px solid var(--lijn);
+  color: var(--tekst);
+  text-decoration: none;
+  font-size: 15px;
+}
+.pil:hover {
+  background: var(--nacht-700);
+}
+.pil[aria-current="true"] {
+  background: var(--nacht-700);
+  border-color: var(--koper);
+}
+.lijst {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--r-2);
+}
+.rij {
+  display: grid;
+  grid-template-columns: minmax(90px, 160px) minmax(0, 1fr) 110px;
+  gap: var(--r-3);
+  align-items: center;
+  min-height: 36px;
+}
+.naam {
+  font-size: 15px;
+}
+.balkKader {
+  height: 14px;
+  background: var(--nacht-900);
+  border-radius: var(--hoek-klein);
+  overflow: hidden;
+}
+.balk {
+  display: block;
+  height: 100%;
+  border-radius: var(--hoek-klein);
+}
+.teWeinig {
+  background: var(--te-weinig-data);
+}
+.waarde {
+  font-family: var(--mono);
+  font-size: 14px;
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.aantal {
+  grid-column: 2 / 4;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--tekst-zacht);
+  margin-top: -6px;
+}

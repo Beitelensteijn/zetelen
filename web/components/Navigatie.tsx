@@ -5,8 +5,12 @@ import { usePathname } from "next/navigation";
 import { Woordmerk } from "./Typografie";
 import s from "./kader.module.css";
 
-// Alleen pagina's die bestaan; Verkenner, Fracties, Lezingen en Methodiek komen met hun component
-const MENU = [{ href: "/over", tekst: "Over" }];
+// Alleen pagina's die bestaan; Lezingen en Methodiek komen met hun component
+const MENU = [
+  { href: "/verkenner", tekst: "Verkenner" },
+  { href: "/fracties", tekst: "Fracties" },
+  { href: "/over", tekst: "Over" },
+];
 
 export function Navigatie() {
   const pad = usePathname();
@@ -20,7 +24,7 @@ export function Navigatie() {
         <ul className={s.links}>
           {MENU.map((m) => (
             <li key={m.href}>
-              <Link href={m.href} aria-current={pad === m.href ? "page" : undefined}>
+              <Link href={m.href} aria-current={pad === m.href || pad.startsWith(`${m.href}/`) ? "page" : undefined}>
                 {m.tekst}
               </Link>
             </li>
