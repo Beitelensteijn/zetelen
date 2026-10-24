@@ -1,6 +1,6 @@
 # Component: coalitie-analyse
 
-Status: niet gestart (24 oktober 2026, toegevoegd aan R1 op besluit van Niels)
+Status: in bouw (24 oktober 2026). Gebouwd volgens het voorstel voor de definitie hieronder; de definitie is nog niet goedgekeurd door Niels
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `../definitie-cohesie.md`, `cohesie-analyse.md`
 
 ## Doel
@@ -46,6 +46,21 @@ Voor een groep G en een periode P:
   2. Een functie in de database die de site aanroept. Vraagt een uitzondering in de rechtencontrole (bezoekers mogen nu geen functies uitvoeren) en valt onder de time-out voor bezoekers
 - Politiek gevoelig: de uitkomst leest snel als advies. De lezingen (E2-S10) en de vaste uitlegtekst zijn onderdeel van R1, geen bijzaak
 - Fracties per periode koppelen op de stemmen en de afkorting (zie `cohesie-pagina.md`, bevinding 50PLUS)
+
+## Gebouwd als concept (24 oktober 2026)
+
+Gekozen optie: 1, rekenen in de browser.
+- `db/migrations/010_stemmatrix.sql`: tabel `analyses.stemmatrix` en view `api.stemmatrix`, een rij per periode met de fracties, per besluit een regel met V, T of - per fractie, en per fractie de wijzigingen van de zetels. Opgebouwd na elke verversing (`analyses.herbouw_stemmatrix()`, ongeveer een minuut)
+- `web/lib/coalitie.ts`: de rekenkern volgens het voorstel hieronder
+- `web/app/api/stemmatrix/route.ts`: levert de stemmatrix via de server (de publieke sleutel blijft uit de browser), een uur bewaard door het CDN van Vercel; de grootste periode (Rutte II) is gecomprimeerd ongeveer 56 kB
+
+Getest: 4 scenario's met bekende uitkomst in Vitest (76 zetels is altijd een meerderheid, beslissend, alleen eensgezinde stemmingen, zetels van het moment); de stemmatrix in pytest; op Supabase 14 perioden opgebouwd. Voorbeeld onder Jetten: D66, CDA en VVD (66 zetels) stemden 3.393 keer eensgezind en hadden 3.322 keer een meerderheid; JA21 was 44 keer beslissend.
+
+Vragen aan Niels over de definitie (te beslissen voor E2-S7):
+1. Alle stemmingen of alleen verdeelde? Nu alle; daardoor wint een groep in bijna elke eensgezinde stemming (98% in het voorbeeld), omdat veel stemmingen unaniem zijn. Voorstel Claude: alleen verdeelde stemmingen, of beide met een schakelaar zoals bij cohesie
+2. Zetels bij hoofdelijke stemmingen: nu het aantal leden dat echt stemde (afwezigen tellen niet). Bij handopsteken de fractiegrootte
+3. Rangorde van de partners: nu op het aantal keer beslissend, daarna meegestemd
+4. Drempel "te weinig data": 25 eensgezinde stemmingen, gelijk aan cohesie
 
 ## Schatting
 

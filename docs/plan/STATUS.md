@@ -106,4 +106,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Niels beoordeelt `cohesie-pagina` en de definitie van de coalitiebouwer (`coalitie-analyse.md`). Daarna `coalitie-analyse` en `coalitie-pagina`. Open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
+Niels beoordeelt `cohesie-pagina` en de coalitiebouwer (concept op https://zetelen.vercel.app/coalitie), en beslist over de vier vragen bij de definitie in `coalitie-analyse.md`. Daarna de coalitiebouwer afronden en in het menu zetten, dan `lezingen`. Open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
