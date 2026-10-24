@@ -36,7 +36,7 @@ Koppelt een fractie aan een partij, of aan niets. Fractie en partij zijn niet he
 
 ## Afgeleide tabellen
 
-Opnieuw opgebouwd door `core.herbouw()`.
+Opnieuw opgebouwd door `core.herbouw()`. Het zijn unlogged tabellen (`db/migrations/004_core_unlogged.sql`): Postgres schrijft er geen transactielog voor, wat de schrijflast van de nachtelijke herbouw halveert. Na een crash van de database zijn ze leeg tot de volgende herbouw.
 
 ### fractie
 

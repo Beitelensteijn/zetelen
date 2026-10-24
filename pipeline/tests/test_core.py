@@ -162,3 +162,14 @@ def test_beschrijving_komt_overeen_met_het_schema(conn):
         "select table_name from information_schema.tables where table_schema = 'core'"
     )}
     assert beschreven == schema
+
+
+def test_afgeleide_tabellen_unlogged_handmatige_gelogd(conn):
+    persistentie = dict(conn.execute(
+        "select relname, relpersistence from pg_class "
+        "where relnamespace = 'core'::regnamespace and relkind = 'r'"
+    ).fetchall())
+    for tabel in ("kabinet", "kamerperiode", "fractie_partij"):
+        assert persistentie[tabel] == "p", tabel
+    for tabel in ("besluit", "fractiestem", "persoonsstem", "fractie", "persoon", "zaak", "besluit_zaak"):
+        assert persistentie[tabel] == "u", tabel
