@@ -70,3 +70,7 @@ jobs:
 
       - name: Site bouwen
         run: npm run build
+
+      - name: Controle op de build
+        # Geen geheime sleutel in de gebouwde site (E1-S6)
+        run: npm run controleer-build

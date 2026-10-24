@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { DM_Mono, Hanken_Grotesk, Newsreader } from "next/font/google";
 import type { ReactNode } from "react";
+import { Navigatie, Voet } from "@/components/Kader";
 import { Korrel } from "@/components/Onderdelen";
+import { laatstBijgewerkt } from "@/lib/api";
+import { LIVE, SITE, siteUrl } from "@/lib/site";
 import "@/styles/globals.css";
+
+// Statisch gebouwd en elk uur ververst (ISR); gelijk aan VERVERS_SECONDEN in lib/api.ts
+export const revalidate = 3600;
 
 // next/font haalt de lettertypes bij het bouwen op en levert ze zelf uit:
 // bezoekers maken geen verbinding met Google
@@ -17,16 +23,23 @@ const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", d
 const dmMono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-dm-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Zetelen",
-  description: "Hoe vaak stemmen fracties in de Tweede Kamer hetzelfde? Op basis van de open data van de Kamer.",
+  metadataBase: siteUrl(),
+  title: { default: SITE.naam, template: `%s · ${SITE.naam}` },
+  description: SITE.beschrijving,
+  openGraph: { siteName: SITE.naam, locale: "nl_NL", type: "website" },
+  // Tot de livegang niet indexeren
+  robots: LIVE ? undefined : { index: false, follow: false },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const ververst = await laatstBijgewerkt();
   return (
     <html lang="nl" className={`${newsreader.variable} ${hanken.variable} ${dmMono.variable}`}>
       <body>
         <Korrel />
+        <Navigatie />
         {children}
+        <Voet ververst={ververst} />
       </body>
     </html>
   );

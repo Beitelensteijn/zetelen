@@ -2,7 +2,7 @@
 // Alle cijfers op deze pagina zijn voorbeelddata.
 import { useState } from "react";
 import { CohesieCel, Grafiekkader, Kaart, Lezingen, Schaal, Segment, Tabel, Uitleesvak } from "@/components/Onderdelen";
-import { Cijfer, Data, HeroKop, Label, SectieKop, Tekst, Woordmerk } from "@/components/Typografie";
+import { Cijfer, Data, HeroKop, Label, SectieKop, Tekst } from "@/components/Typografie";
 import { TOKENS, contrast } from "@/lib/kleur";
 
 const ACHTERGRONDEN = ["nacht-950", "nacht-900", "nacht-800", "nacht-700"] as const;
@@ -18,9 +18,8 @@ export function Voorbeelden() {
   const sectie = { display: "flex", flexDirection: "column" as const, gap: "var(--r-5)" };
 
   return (
-    <main style={{ maxWidth: "var(--pagina-max)", margin: "0 auto", padding: "var(--r-8) var(--pagina-marge)", display: "flex", flexDirection: "column", gap: "var(--r-9)" }}>
+    <main id="inhoud" style={{ maxWidth: "var(--pagina-max)", margin: "0 auto", padding: "var(--r-7) var(--pagina-marge)", display: "flex", flexDirection: "column", gap: "var(--r-9)" }}>
       <header style={sectie}>
-        <Woordmerk />
         <Label>Ontwerpsysteem, versie 0.1</Label>
         <HeroKop>
           Nacht met <em>koperlicht</em>
