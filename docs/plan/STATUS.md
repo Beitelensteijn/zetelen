@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ontwerpsysteem` en `site-shell`. De site staat online op https://zetelen.vercel.app, niet geindexeerd tot de livegang. Repo in de organisatie Zetelen (`Zetelen/zetelen`).
+Fase 4: koppelen en bouwen (stap 9). Backend van R1, `ontwerpsysteem`, `site-shell` en `cohesie-pagina` gebouwd en getest. De verkenner staat online op https://zetelen.vercel.app/verkenner, niet geindexeerd tot de livegang. Repo in de organisatie Zetelen (`Zetelen/zetelen`).
 
 ## Afgerond
 
@@ -27,6 +27,7 @@ Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ont
 - Component `datakwaliteit` (24 oktober 2026): vier controles na elke verversing, waaronder de grens van 150 zetels (harde fout) en de vergelijking van elke uitslag met de officiele uitslag in de bron (signaal: 8 van 60.133 besluiten). Steekproef per release voorbereid. Getest: 68 tests
 - Component `ontwerpsysteem` (24 oktober 2026): Next.js 16 in `web/`, tokens, basiscomponenten, voorbeeldpagina `/ontwerpsysteem`. Getest: 24 contrasttests, bekeken op telefoon en groot scherm, goedgekeurd door Niels
 - Component `site-shell` (24 oktober 2026): navigatie, voet, voorpagina, Over, lege staat en foutstaat, sitemap, robots, deelafbeelding, buildcontrole. Online op Vercel. Getest: 28 tests en online gecontroleerd
+- Component `cohesie-pagina` (24 oktober 2026): verkenner met zaal, boog en tabel, periodekeuze en variant in de URL, fractiepagina's en overzicht. Gebouwd terwijl Niels afwezig was; keuzes staan in `cohesie-pagina.md` ter beoordeling. Getest: 40 frontend- en 72 backendtests, vergeleken met de database, bekeken op telefoon en groot scherm
 
 ## Openstaand
 
@@ -105,4 +106,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `cohesie-pagina` (zaal, boog, matrix, periodekeuze en schakelaar, met de feedback van Niels op de schets). Daarnaast open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
+Niels beoordeelt `cohesie-pagina` en de definitie van de coalitiebouwer (`coalitie-analyse.md`). Daarna `coalitie-analyse` en `coalitie-pagina`. Open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
