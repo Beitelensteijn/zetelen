@@ -1,0 +1,19 @@
+# TIJDELIJK (24 oktober 2026): test of geplande workflows in deze repo draaien.
+# Vergelijkt met Ververs, die zichzelf na elke run via de API opnieuw aanzet. Deze workflow doet dat niet.
+# Verwijderen na de vergelijking (zie docs/plan/STATUS.md).
+name: Planningstest
+
+on:
+  schedule:
+    - cron: "23 * * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  tik:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Tijd loggen
+        run: date -u
