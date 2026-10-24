@@ -10,6 +10,7 @@ Gebruik:
   DATABASE_URL=... python3 pipeline/verbindingstest.py
 """
 import os
+import re
 import sys
 
 import psycopg
@@ -27,13 +28,25 @@ BEKENDE_FOUTEN = [
 ]
 
 
+def zonder_gegevens(tekst):
+    """Haalt host, gebruiker en IP-adres uit een foutmelding, zodat hij in een publieke log mag."""
+    tekst = re.sub(r"[\w.-]+\.(supabase\.(com|co)|pooler\.supabase\.com)", "<host>", tekst)
+    tekst = re.sub(r"postgres\.[a-z0-9]+", "<gebruiker>", tekst)
+    tekst = re.sub(r"\b\d{1,3}(\.\d{1,3}){3}\b", "<ip>", tekst)
+    tekst = re.sub(r'user "[^"]*"', 'user "<gebruiker>"', tekst)
+    return tekst
+
+
 def uitleg(fout):
     tekst = str(fout)
     for sleutel, melding in BEKENDE_FOUTEN:
         if sleutel.lower() in tekst.lower():
             return melding
-    # Onbekende fout: alleen het type, want de tekst kan host of gebruiker bevatten
-    return f"Onbekende fout van het type {type(fout).__name__}. Draai het script lokaal voor de volledige melding."
+    # Onbekende fout: de tekst zonder host, gebruiker en IP-adres, plus de foutcode van Postgres als die er is
+    code = getattr(fout, "sqlstate", None)
+    return (f"Onbekende fout van het type {type(fout).__name__}"
+            + (f" (code {code})" if code else "")
+            + f": {zonder_gegevens(tekst).strip()}")
 
 
 def mb(n):
