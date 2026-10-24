@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CoalitieBouwer } from "@/components/coalitie/CoalitieBouwer";
+import { Bronregel } from "@/components/cohesie/Bronregel";
 import { PeriodeKeuze } from "@/components/cohesie/PeriodeKeuze";
 import { Inhoud, LegeStaat } from "@/components/Kader";
 import { Kaart } from "@/components/Onderdelen";
@@ -47,6 +48,7 @@ export default async function Coalitie({ searchParams }: Props) {
           <CoalitieBouwer fracties={ordenFracties(fracties, kaart)} soort={soort} periode={periode.naam} />
         </Suspense>
       )}
+      {periode && <Bronregel toelichting={`${periode.naam} · eigen berekening, zie de methodiek`} />}
     </Inhoud>
   );
 }

@@ -8,7 +8,7 @@ import { Data, HeroKop, Label, Tekst } from "@/components/Typografie";
 import { alleFracties, cohesieIn, fractiesIn, getal, perioden, procent, slug, type Periodesoort, type Variant } from "@/lib/cohesie";
 import { schaalkleur } from "@/lib/kleur";
 import { sleutel } from "@/lib/zaal";
-import { SITE } from "@/lib/site";
+import { Bronregel } from "@/components/cohesie/Bronregel";
 import s from "@/components/cohesie/fractie.module.css";
 
 type Props = {
@@ -110,10 +110,7 @@ export default async function FractiePagina({ params, searchParams }: Props) {
               </li>
             ))}
           </ol>
-          <Data>
-            Bron: <a href={SITE.bron}>Tweede Kamer open data</a>, eigen berekening · {periode.naam} ·{" "}
-            {variant === "alle" ? "alle stemmingen" : "alleen verdeelde stemmingen"}
-          </Data>
+          <Bronregel toelichting={`${periode.naam} · ${variant === "alle" ? "alle stemmingen" : "alleen verdeelde stemmingen"}`} />
           <Link href={`/verkenner?${new URLSearchParams({ soort, periode: periode.naam, variant, fractie: ik.afkorting }).toString()}`} className={knopKlasse}>
             Bekijk in de verkenner
           </Link>
