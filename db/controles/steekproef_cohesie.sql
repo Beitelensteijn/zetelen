@@ -9,7 +9,9 @@ with paar as (
            (select id from core.fractie where afkorting = 'CDA' and actief_tot is null) as b,
            'Schoof'::text as kabinet
 )
-select b.datum, z.nummer as zaaknummer, z.titel, sa.stem as stem_a, sb.stem as stem_b,
+-- Soort en onderwerp, niet de titel: bij moties en amendementen is de titel die van het hele dossier
+select b.datum, z.nummer as zaaknummer, z.soort, coalesce(z.onderwerp, z.titel) as onderwerp,
+       sa.stem as stem_a, sb.stem as stem_b,
        sa.afgeleid or sb.afgeleid as afgeleid_uit_leden
 from paar
 join core.besluit b on b.kabinet = paar.kabinet

@@ -8,7 +8,8 @@ with steekproef as (
     select id from core.besluit order by random() limit 10
 )
 select b.datum, b.stemmingssoort, b.besluitsoort,
-       (select string_agg(z.nummer || ' ' || coalesce(z.titel, ''), ' | ')
+       -- Soort en onderwerp, niet de titel: bij moties en amendementen is de titel die van het hele dossier
+       (select string_agg(z.nummer || ' ' || coalesce(z.soort, '') || ': ' || coalesce(z.onderwerp, z.titel, ''), ' | ')
         from core.besluit_zaak bz join core.zaak z on z.id = bz.zaak_id where bz.besluit_id = b.id) as zaak,
        (select string_agg(f.afkorting, ', ' order by f.afkorting)
         from core.fractiestem s join core.fractie f on f.id = s.fractie_id

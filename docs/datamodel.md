@@ -60,7 +60,7 @@ De stem van een Kamerlid op een besluit, met de fractie waartoe het Kamerlid toe
 
 ### zaak
 
-De zaken (moties, wetsvoorstellen en dergelijke) waarover een besluit met een stemming is genomen, met nummer, soort, titel en onderwerp.
+De zaken (moties, wetsvoorstellen en dergelijke) waarover een besluit met een stemming is genomen, met nummer, soort, titel en onderwerp. Let op: bij moties en amendementen is de titel die van het hele dossier (bijvoorbeeld een wetsvoorstel of een begroting); waar de zaak over gaat, staat in onderwerp.
 
 ### besluit_zaak
 
