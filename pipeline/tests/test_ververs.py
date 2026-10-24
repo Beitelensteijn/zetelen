@@ -125,3 +125,13 @@ def test_logboek_bij_mislukte_run(conn):
     with pytest.raises(RuntimeError):
         ververs.ververs_alles(conn, META, haal=kapotte_api, base=BASE, pauze=0)
     assert conn.execute("select status, fout from beheer.verversing").fetchone() == ("mislukt", "RuntimeError")
+
+
+@db
+def test_herbouw_negeert_een_korte_standaard_timeout(conn):
+    # Supabase heeft een standaard statement_timeout; de herbouw zet voor zichzelf een ruimere
+    laad.laad_entiteit(conn, "Fractie", COLS, haal=NepApi(fracties(3)), base=BASE, pauze=0)
+    conn.execute("set statement_timeout = '1ms'")
+    ververs.herbouw_core(conn)
+    assert conn.execute("show statement_timeout").fetchone()[0] == "1ms"
+    conn.execute("reset statement_timeout")

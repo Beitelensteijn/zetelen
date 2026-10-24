@@ -110,7 +110,13 @@ def eind_log(conn, run_id, status, records=None, fout=None):
 def herbouw_core(conn):
     """Bouwt de core-laag opnieuw op uit raw en logt het aantal rijen per tabel."""
     start = time.monotonic()
-    aantallen = conn.execute("select tabel, rijen from core.herbouw()").fetchall()
+    # Supabase stopt standaard lange queries; de herbouw over ruim een miljoen stemmen heeft meer tijd nodig
+    oud = conn.execute("show statement_timeout").fetchone()[0]
+    conn.execute("set statement_timeout = '20min'")
+    try:
+        aantallen = conn.execute("select tabel, rijen from core.herbouw()").fetchall()
+    finally:
+        conn.execute("select set_config('statement_timeout', %s, false)", (oud,))
     seconden = f"{time.monotonic() - start:.0f}"
     print("Core herbouwd in " + seconden + " s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
 

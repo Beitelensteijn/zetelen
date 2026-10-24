@@ -22,6 +22,7 @@ BEKENDE_FOUTEN = [
     ("timeout", "Geen antwoord binnen de tijd. Controleer host en poort (session pooler: 5432)."),
     ("Network is unreachable", "Netwerk onbereikbaar. Gebruik de session pooler (IPv4), niet de directe verbinding (IPv6)."),
     ("Connection refused", "Verbinding geweigerd. Controleer host en poort."),
+    ("statement timeout", "Query afgebroken omdat hij te lang duurde (statement_timeout van de database)."),
     ("Tenant or user not found", "Gebruiker of project niet gevonden. Controleer de gebruikersnaam (postgres.<projectcode>)."),
 ]
 
