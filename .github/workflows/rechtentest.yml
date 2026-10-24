@@ -1,0 +1,36 @@
+# Rechtencontrole los te starten, zonder migratie (component rechten).
+# Actions-tab of `gh workflow run rechtentest.yml`.
+name: Rechtentest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rechten:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v4
+
+      - name: Python opzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Rechtencontrole in de database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python pipeline/controleer_rechten.py
+
+      - name: Rechtentest via de API (als bezoeker)
+        if: always()
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+        run: python pipeline/rechtentest_api.py

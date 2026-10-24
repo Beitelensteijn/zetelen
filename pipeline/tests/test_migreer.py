@@ -20,7 +20,7 @@ def conn():
     import psycopg
 
     with psycopg.connect(URL, autocommit=True) as c:
-        c.execute("drop schema if exists core cascade; drop schema if exists raw cascade; "
+        c.execute("drop schema if exists api cascade; drop schema if exists core cascade; drop schema if exists raw cascade; "
                   "drop schema if exists beheer cascade;")
         yield c
 

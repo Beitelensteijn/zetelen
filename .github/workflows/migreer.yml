@@ -1,6 +1,8 @@
 # Voert openstaande migraties uit db/migrations/ uit op Supabase (component ingest, stap B).
 # Alleen met de hand te starten: Actions-tab of `gh workflow run migreer.yml`.
 # Met "droog" aan toont hij alleen wat zou draaien.
+# Na een echte run volgen de rechtencontroles (component rechten): in de database, en van buitenaf
+# via de Data API met de publieke anon-sleutel (GitHub-variabelen SUPABASE_URL en SUPABASE_ANON_KEY).
 name: Migreer
 
 on:
@@ -38,3 +40,16 @@ jobs:
           else
             python pipeline/migreer.py
           fi
+
+      - name: Rechtencontrole in de database
+        if: ${{ !inputs.droog }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python pipeline/controleer_rechten.py
+
+      - name: Rechtentest via de API (als bezoeker)
+        if: ${{ !inputs.droog }}
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ vars.SUPABASE_ANON_KEY }}
+        run: python pipeline/rechtentest_api.py
