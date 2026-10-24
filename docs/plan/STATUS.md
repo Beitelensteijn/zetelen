@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ontwerpsysteem` en `site-shell`. De site staat online op https://zetelen.vercel.app, niet geindexeerd tot de livegang. Repo in de organisatie Zetelen (`Zetelen/zetelen`).
+Fase 4: koppelen en bouwen (stap 9). Backend van R1, `ontwerpsysteem`, `site-shell` en `cohesie-pagina` gebouwd en getest. De verkenner staat online op https://zetelen.vercel.app/verkenner, niet geindexeerd tot de livegang. Repo in de organisatie Zetelen (`Zetelen/zetelen`).
 
 ## Afgerond
 
@@ -27,6 +27,8 @@ Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ont
 - Component `datakwaliteit` (24 oktober 2026): vier controles na elke verversing, waaronder de grens van 150 zetels (harde fout) en de vergelijking van elke uitslag met de officiele uitslag in de bron (signaal: 8 van 60.133 besluiten). Steekproef per release voorbereid. Getest: 68 tests
 - Component `ontwerpsysteem` (24 oktober 2026): Next.js 16 in `web/`, tokens, basiscomponenten, voorbeeldpagina `/ontwerpsysteem`. Getest: 24 contrasttests, bekeken op telefoon en groot scherm, goedgekeurd door Niels
 - Component `site-shell` (24 oktober 2026): navigatie, voet, voorpagina, Over, lege staat en foutstaat, sitemap, robots, deelafbeelding, buildcontrole. Online op Vercel. Getest: 28 tests en online gecontroleerd
+- Component `cohesie-pagina` (24 oktober 2026): verkenner met zaal, boog en tabel, periodekeuze en variant in de URL, fractiepagina's en overzicht. Gebouwd terwijl Niels afwezig was; keuzes staan in `cohesie-pagina.md` ter beoordeling. Getest: 40 frontend- en 72 backendtests, vergeleken met de database, bekeken op telefoon en groot scherm
+- Deels `methodiek-betrouwbaarheid` (24 oktober 2026): methodiek, wijzigingslog, bron per grafiek, privacy als concept; gebruiksvoorwaarden van de open data gevonden (CC0)
 
 ## Openstaand
 
@@ -35,7 +37,7 @@ Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ont
 - Demissionaire periodes (voorstel: tellen bij het kabinet waar ze uit voortkomen); periodesoorten, standaard en de bron van de kabinettentabel (Wikidata) zijn besloten
 - Reactietermijn bij foutmelding. De drempel "te weinig data" (25) is besloten; na de API-check ruim gehaald in de variant "alle stemmingen", de variant "alleen verdeelde stemmingen" wordt bij `cohesie-analyse` gecontroleerd
 - Meetmoment en meetmethode van 500 bezoekers per maand
-- Gebruiksvoorwaarden open data, foto-licentie, beleid bij verwijderverzoek
+- Foto-licentie (R3) en beleid bij verwijderverzoek. De gebruiksvoorwaarden van de open data zijn gevonden: CC0, zie `08-componenten/methodiek-betrouwbaarheid.md`
 - Invalshoeken voor de lezingen bij het wetgevingsproces en de Kamerleden (bij cohesie besloten: samenwerking tegenover profilering, 22 oktober 2026)
 - Blijven rankings van individuele Kamerleden in scope
 - Gerichte controle op bestaande sites
@@ -105,4 +107,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `cohesie-pagina` (zaal, boog, matrix, periodekeuze en schakelaar, met de feedback van Niels op de schets). Daarnaast open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
+Niels beoordeelt `cohesie-pagina` en de coalitiebouwer (concept op https://zetelen.vercel.app/coalitie), en beslist over de vier vragen bij de definitie in `coalitie-analyse.md`. Daarna de coalitiebouwer afronden en in het menu zetten, dan `lezingen`. Open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.
