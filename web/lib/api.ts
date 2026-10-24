@@ -4,11 +4,12 @@
 export const VERVERS_SECONDEN = 3600;
 
 export async function leesApi<T>(pad: string): Promise<T | null> {
-  const basis = process.env.SUPABASE_URL;
-  const sleutel = process.env.SUPABASE_PUBLISHABLE_KEY;
+  // Vergevingsgezind: spaties, een slash of /rest/v1 achter de URL mogen er per ongeluk in staan
+  const basis = process.env.SUPABASE_URL?.trim().replace(/\/+$/, "").replace(/\/rest\/v1$/, "");
+  const sleutel = process.env.SUPABASE_PUBLISHABLE_KEY?.trim();
   if (!basis || !sleutel) return null;
   try {
-    const antwoord = await fetch(`${basis.replace(/\/$/, "")}/rest/v1/${pad}`, {
+    const antwoord = await fetch(`${basis}/rest/v1/${pad}`, {
       headers: { apikey: sleutel, "Accept-Profile": "api", Accept: "application/json" },
       next: { revalidate: VERVERS_SECONDEN },
     });

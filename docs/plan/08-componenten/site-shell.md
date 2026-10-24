@@ -1,6 +1,6 @@
 # Component: site-shell
 
-Status: niet gestart (22 oktober 2026)
+Status: gebouwd en getest (24 oktober 2026), online op https://zetelen.vercel.app (niet geindexeerd tot de livegang). Open: de eerste conclusie op de voorpagina (na `cohesie-pagina` en akkoord Niels)
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `ontwerpsysteem.md`
 
 ## Doel
@@ -56,6 +56,24 @@ Verwacht: de tokens en basiscomponenten van `ontwerpsysteem`, de "laatst bijgewe
 
 - De inhoud van de voorpagina (de eerste conclusie) bestaat pas als de cohesie-analyse draait en Niels hem heeft goedgekeurd; bouw eerst het raamwerk
 - Over-de-maker bevat alleen wat Niels wil publiceren; neem geen persoonlijke gegevens over uit andere bronnen
+
+## Gebouwd (24 oktober 2026)
+
+Keuzes (akkoord Niels, 24 oktober 2026): statisch gebouwd en elk uur ververst (ISR), zodat de site de laatste goede versie toont als de database weg is; de cijfers met gewone verzoeken aan de Data API op de server, zonder Supabase-bibliotheek; in het menu alleen pagina's die bestaan; Vercel gekoppeld met "niet indexeren" tot de livegang (`LIVE` in `web/lib/site.ts`).
+
+- `web/components/Kader.tsx`, `Navigatie.tsx`: navigatie (met link naar de inhoud), voet (maker Niels Stol, bron, laatst ververst, contact niels@datavizd.io en GitHub Issues, broncode), lege staat en foutstaat
+- `web/app/page.tsx` (voorpagina met plek voor de zaal), `web/app/over/page.tsx` (tekst goedgekeurd door Niels; de zin over het wijzigingslog komt terug met `methodiek-betrouwbaarheid`), `not-found.tsx`, `error.tsx`
+- `web/app/robots.ts`, `sitemap.ts`, `opengraph-image.tsx` (standaard deelafbeelding in het eigen palet), titel en beschrijving per pagina
+- `web/lib/api.ts`: lezen uit `api` (onder meer `api.laatst_bijgewerkt`); vergevingsgezind voor spaties en `/rest/v1` in de instelling
+- `web/scripts/controleer-build.mjs`: buildcontrole (E1-S6, overgenomen van `rechten`), in de CI: geen secret-sleutel, geen `service_role`, geen connectiestring met wachtwoord, en de publieke sleutel niet in de browsercode
+
+## Getest (24 oktober 2026)
+
+- 28 Vitest-tests (onder meer datumnotatie, en "onbekend" als de API onbereikbaar is), typecheck, build en buildcontrole, lokaal en in CI
+- Lokaal in de browser: voorpagina, Over, 404, robots.txt
+- Online: `/`, `/over`, `/sitemap.xml`, `/opengraph-image` geven 200, een onbekende pagina 404, robots.txt sluit alles uit, meta "noindex, nofollow", "Laatst ververst: 24 oktober 2026 om 10:55"
+- Gevonden en opgelost: de waarden in Vercel kwamen eerst niet goed aan (datum "onbekend"); na opnieuw invoeren en een redeploy wel
+- Niet getest: de database tijdelijk uitzetten om de laatste goede versie te zien (vraagt een testomgeving); het mechanisme is ISR van Next.js
 
 ## Schatting
 

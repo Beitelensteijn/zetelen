@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest tot en met `datakwaliteit`, plus `ontwerpsysteem` (frontend). R1 is uitgebreid met de coalitiebouwer (24 oktober 2026).
+Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest, plus `ontwerpsysteem` en `site-shell`. De site staat online op https://zetelen.vercel.app, niet geindexeerd tot de livegang. Repo in de organisatie Zetelen (`Zetelen/zetelen`).
 
 ## Afgerond
 
@@ -26,6 +26,7 @@ Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest tot en met
 - Component `cohesie-analyse` (24 oktober 2026): definitie goedgekeurd (`definitie-cohesie.md`), cohesie per fractiepaar, periode en variant, plus eensgezindheid binnen fracties, publiek via `api.cohesie` en `api.eensgezindheid`. Getest: 64 tests, berekening op de volledige data in 25 seconden
 - Component `datakwaliteit` (24 oktober 2026): vier controles na elke verversing, waaronder de grens van 150 zetels (harde fout) en de vergelijking van elke uitslag met de officiele uitslag in de bron (signaal: 8 van 60.133 besluiten). Steekproef per release voorbereid. Getest: 68 tests
 - Component `ontwerpsysteem` (24 oktober 2026): Next.js 16 in `web/`, tokens, basiscomponenten, voorbeeldpagina `/ontwerpsysteem`. Getest: 24 contrasttests, bekeken op telefoon en groot scherm, goedgekeurd door Niels
+- Component `site-shell` (24 oktober 2026): navigatie, voet, voorpagina, Over, lege staat en foutstaat, sitemap, robots, deelafbeelding, buildcontrole. Online op Vercel. Getest: 28 tests en online gecontroleerd
 
 ## Openstaand
 
@@ -40,7 +41,7 @@ Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest tot en met
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
 - Bewaking: de mail bij een uitblijvend signaal testen (healthchecks-periode tijdelijk op 1 minuut, zie `docs/onderhoud.md`). De fout-mails van GitHub en healthchecks zijn getest (23 oktober 2026)
-- Geplande workflows draaien niet: de verversing van 04:17 UTC op 24 oktober kwam niet. Tijdelijke workflow Planningstest (elk uur, zonder de stap die de workflow actief houdt) moet uitwijzen of het aan die stap ligt. Daarna Planningstest verwijderen
+- Geplande workflows: opgelost. Ververs draaide op 24 oktober om 08:54 UTC volgens planning (gepland 04:17) en Planningstest om 12:03 UTC; GitHub start geplande runs in een nieuwe repo pas na een tijd, en een vertraging van uren is mogelijk. Planningstest is verwijderd. De stap die Ververs actief houdt, blijft
 - Handmatige tabellen van `core-model` nakijken (Niels): kabinetten (Wikidata), Kamerperiodes (verkiezingsdata nog te controleren bij de Kiesraad) en de partijkoppeling (vier twijfelgevallen: GroenLinks-PvdA, PRO, DPK, Groep Markuszower)
 - Handmatige nacontrole van cohesie op 10 stemmingen (E2-S2, Niels): `db/controles/steekproef_cohesie.sql` in VS Code
 - Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API. Niet verklaard door een datum van voor 2010 (controle van `datakwaliteit`); oorzaak onbekend
@@ -104,4 +105,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `site-shell`. Daarnaast open: geplande workflows (morgenochtend controleren), de nacontrole van cohesie en de steekproef van uitslagen (Niels).
+Component `cohesie-pagina` (zaal, boog, matrix, periodekeuze en schakelaar, met de feedback van Niels op de schets). Daarnaast open voor Niels: de nacontrole van cohesie, de steekproef van uitslagen, de handmatige tabellen nakijken en de test met het uitblijvende signaal.

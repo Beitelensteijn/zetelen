@@ -26,8 +26,8 @@ describe("leesApi", () => {
     expect(await leesApi("kabinet")).toBeNull();
   });
 
-  it("stuurt het schema api en de sleutel mee", async () => {
-    vi.stubEnv("SUPABASE_URL", "https://nep.supabase.co/");
+  it("stuurt het schema api en de sleutel mee, ook met /rest/v1 en spaties in de instelling", async () => {
+    vi.stubEnv("SUPABASE_URL", " https://nep.supabase.co/rest/v1/ ");
     vi.stubEnv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_test");
     const nep = vi.fn().mockResolvedValue(new Response(JSON.stringify([{ laatst_bijgewerkt: "2026-10-24T04:31:00Z" }])));
     vi.stubGlobal("fetch", nep);
