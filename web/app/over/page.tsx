@@ -39,8 +39,7 @@ export default function Over() {
         <SectieKop>Een fout melden</SectieKop>
         <Tekst>
           Zie je een cijfer dat niet klopt? Mail <a href={`mailto:${SITE.contact}`}>{SITE.contact}</a> of meld het
-          op <a href={`${SITE.broncode}/issues`}>GitHub</a>. Noem de pagina en wat je verwachtte. Elke correctie
-          komt in een openbaar wijzigingslog.
+          op <a href={`${SITE.broncode}/issues`}>GitHub</a>. Noem de pagina en wat je verwachtte.
         </Tekst>
       </section>
     </Inhoud>
