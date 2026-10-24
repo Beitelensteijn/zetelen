@@ -123,6 +123,18 @@ def herbouw(conn, schema):
     print(f"{schema} herbouwd in {seconden} s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
 
 
+def herbouw_stemmatrix(conn):
+    """Stemmatrix per periode voor de coalitiebouwer (component coalitie-analyse)."""
+    start = time.monotonic()
+    oud = conn.execute("show statement_timeout").fetchone()[0]
+    conn.execute("set statement_timeout = '20min'")
+    try:
+        n = conn.execute("select analyses.herbouw_stemmatrix()").fetchone()[0]
+    finally:
+        conn.execute("select set_config('statement_timeout', %s, false)", (oud,))
+    print(f"stemmatrix herbouwd in {time.monotonic() - start:.0f} s: {getal(n)} perioden")
+
+
 class DatakwaliteitFout(Exception):
     pass
 
@@ -150,6 +162,7 @@ def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
                                        haal=haal, base=base, pauze=pauze) or 0
         herbouw(conn, "core")
         herbouw(conn, "analyses")
+        herbouw_stemmatrix(conn)
         controleer_datakwaliteit(conn)
     except Exception as e:
         try:
