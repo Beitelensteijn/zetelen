@@ -97,7 +97,7 @@ Besluit Niels, 22 oktober 2026. Twee periodesoorten, kabinet (standaard, herkenb
 
 ## Besluit: kabinet en zetels op /fracties
 
-Besluit Niels, 24 oktober 2026. De samenstelling van elk kabinet sinds Balkenende IV is vervroegd (was Later): tabel `core.coalitie` (migratie 011), met gedoogsteun en de datum waarop een fractie uit het kabinet stapte. Nog na te kijken door Niels: Schoof en Jetten komen uit Wikidata (partij van de bewindspersonen), de rest en alle datums uit de kennis van Claude. Op /fracties tellen de zetels bij het begin van de periode (bij Schoof stond anders de Kamer van na de verkiezingen van 2025); wie tijdens de periode overstapte, is een lichter deel van de balk (migratie 012, `analyses.overstap`, uit de zetels per persoon in de bron).
+Besluit Niels, 24 oktober 2026. De samenstelling van elk kabinet sinds Balkenende IV is vervroegd (was Later): tabel `core.coalitie` (migratie 011), met gedoogsteun en de datum waarop een fractie uit het kabinet stapte. Nog na te kijken door Niels: Schoof en Jetten komen uit Wikidata (partij van de bewindspersonen), de rest en alle datums uit de kennis van Claude. Op /fracties tellen de zetels bij het begin van de periode (bij Schoof stond anders de Kamer van na de verkiezingen van 2025); wie tijdens de periode overstapte, is een lichter deel van de balk (migratie 012, `analyses.overstap`, uit de zetels per persoon in de bron). Sinds 25 oktober 2026 (migratie 013) gemeten 30 dagen na het begin: bij de eerste stemming van Rutte IV hadden D66 en CDA nog lege zetels.
 
 ## Gebruiksvoorwaarden open data
 
