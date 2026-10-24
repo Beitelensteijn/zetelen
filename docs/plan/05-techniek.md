@@ -44,7 +44,7 @@ Reden voor de lagen: de zware berekening (cohesie over 2010 tot nu) staat in SQL
 
 ### GitHub Actions
 - Een geplande workflow in een publieke repo wordt na 60 dagen zonder repo-activiteit automatisch uitgeschakeld. De documentatie noemt hierbij geen manier om dat te voorkomen, wel dat je hem kunt heractiveren via de Actions-tab, de REST API of `gh workflow enable`. Gevolg zonder maatregel: de dagelijkse verversing stopt zonder dat iemand het merkt.
-- Maatregel (te testen): een melding bij falen en bij uitblijven van een run, plus een vaste onderhoudsroutine die repo-activiteit oplevert. Hoe repo-activiteit exact telt is niet gecontroleerd.
+- Maatregel (component `bewaking`, 23 oktober 2026): een externe controle via healthchecks.io die mailt bij een fout en na 2 dagen zonder geslaagde verversing, plus een stap die de workflow na elke run via de API opnieuw aanzet. Of die stap de teller reset, is niet gecontroleerd.
 
 ### Supabase
 - Free: 500 MB per project, pauzeert na een week zonder activiteit, beperkt tot twee actieve projecten.

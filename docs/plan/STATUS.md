@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `zetelen`; `repo-ci` en `api-check` zijn klaar; `ingest` is gebouwd en de eerste laad staat in Supabase Pro. Open bij `ingest`: de test van de melding bij een mislukte run (voorstel: bij `bewaking`).
+Fase 4: koppelen en bouwen (stap 9). `repo-ci`, `api-check`, `ingest` en `bewaking` zijn gebouwd en getest; de data staat in Supabase Pro en wordt dagelijks ververst. Bij `bewaking` staat alleen de test van een uitblijvend signaal nog open.
 
 ## Afgerond
 
@@ -20,6 +20,7 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Component `repo-ci` (23 oktober 2026): secret scan (gitleaks), CI-placeholder, README, pull request-sjabloon en `docs/onderhoud.md` met het onderhoudspad voor de 60-dagenregel. Getest: de scan faalt op een nepsleutel in een testbranch en slaagt op `main`
 - Component `api-check` (23 oktober 2026): `pipeline/api_check.py` met tests in CI, rapport in `api-check-rapport.md`. Getest: 6 pytest-tests lokaal en in CI, tellingen gelijk aan de handmatige check en aan losse aanroepen
 - Component `ingest` (23 oktober 2026): schema `raw`, eerste laad van de 14 entiteiten vanaf 2010 (ongeveer 4,1 miljoen rijen, twee runs, ongeveer 8 uur) en dagelijkse verversing om 04:17 UTC. Database 1.349 MB. Getest: 29 tests lokaal en in CI, aantallen per entiteit vergeleken met de API
+- Component `bewaking` (23 en 24 oktober 2026): logboek `beheer.verversing`, externe controle via healthchecks.io (mail bij een fout of na 2 dagen zonder geslaagde verversing), stap die de workflow actief houdt, runbook `docs/onderhoud.md`. Getest: 34 tests, fout-mails van GitHub en healthchecks aangekomen
 
 ## Openstaand
 
@@ -33,7 +34,7 @@ Fase 4: koppelen en bouwen (stap 9). Het plan en het ontwerp staan in de repo `z
 - Blijven rankings van individuele Kamerleden in scope
 - Gerichte controle op bestaande sites
 - R2 tot en met R4 en Later: componenten nog niet uitgewerkt
-- Melding bij een mislukte verversing testen (E1-S4); voorstel: bij `bewaking`, met een opzettelijk foute connectiestring
+- Bewaking: de mail bij een uitblijvend signaal testen (healthchecks-periode tijdelijk op 1 minuut, zie `docs/onderhoud.md`). De fout-mails van GitHub en healthchecks zijn getest (23 oktober 2026)
 - Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API: records die na de laad buiten het datumfilter vielen. De verversing ruimt die niet op; `core-model` filtert op datum. Uitzoeken welke rijen het zijn (voorstel: bij `datakwaliteit`)
 
 ## Uitkomst API-check (rapport)
@@ -90,4 +91,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `bewaking`, met daarin de test van de melding bij een mislukte run (open punt van `ingest`).
+Bewaking afronden (zie Openstaand), daarna component `core-model`.

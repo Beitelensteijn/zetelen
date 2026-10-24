@@ -1,6 +1,6 @@
 # Component: ingest
 
-Status: gebouwd en gedraaid (23 oktober 2026). Open: test van de melding bij een mislukte run (voorstel: bij `bewaking`)
+Status: klaar (24 oktober 2026). De melding bij een mislukte run is getest bij `bewaking`: mails van GitHub en healthchecks komen aan
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
 
 ## Doel
