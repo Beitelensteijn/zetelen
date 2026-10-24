@@ -1,5 +1,6 @@
 // Over de maker (E3-S7). Concepttekst van Claude; Niels keurt hem goed.
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Inhoud } from "@/components/Kader";
 import { HeroKop, Label, SectieKop, Tekst } from "@/components/Typografie";
 import { SITE } from "@/lib/site";
@@ -39,7 +40,8 @@ export default function Over() {
         <SectieKop>Een fout melden</SectieKop>
         <Tekst>
           Zie je een cijfer dat niet klopt? Mail <a href={`mailto:${SITE.contact}`}>{SITE.contact}</a> of meld het
-          op <a href={`${SITE.broncode}/issues`}>GitHub</a>. Noem de pagina en wat je verwachtte.
+          op <a href={`${SITE.broncode}/issues`}>GitHub</a>. Noem de pagina en wat je verwachtte. Elke
+          correctie komt in het <Link href="/wijzigingen">wijzigingslog</Link>.
         </Tekst>
       </section>
     </Inhoud>

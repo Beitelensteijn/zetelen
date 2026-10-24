@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { Woordmerk } from "./Typografie";
 import s from "./kader.module.css";
 
-// Alleen pagina's die bestaan; Lezingen en Methodiek komen met hun component
+// Alleen pagina's die bestaan; Lezingen komt met zijn component
 const MENU = [
   { href: "/verkenner", tekst: "Verkenner" },
   { href: "/fracties", tekst: "Fracties" },
+  { href: "/methodiek", tekst: "Methodiek" },
   { href: "/over", tekst: "Over" },
 ];
 

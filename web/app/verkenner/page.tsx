@@ -1,7 +1,9 @@
 // Cohesie-verkenner (component cohesie-pagina). Periode, periodesoort en variant staan in de URL
 // en worden op de server opgehaald; fractie en weergave regelt de verkenner in de browser.
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
+import { Bronregel } from "@/components/cohesie/Bronregel";
 import { Inhoud, LegeStaat } from "@/components/Kader";
 import { PeriodeKeuze } from "@/components/cohesie/PeriodeKeuze";
 import { Verkenner } from "@/components/cohesie/Verkenner";
@@ -47,6 +49,9 @@ export default async function VerkennerPagina({ searchParams }: Props) {
               <Verkenner fracties={ordenFracties(fracties, kaart)} paren={[...kaart.entries()]} periodeNaam={periode.naam} />
             </Suspense>
           )}
+          {periode && fracties?.length && kaart && (
+            <Bronregel toelichting={`${periode.naam} · ${variant === "alle" ? "alle stemmingen" : "alleen verdeelde stemmingen"}`} />
+          )}
         </div>
         <aside style={{ display: "flex", flexDirection: "column", gap: "var(--r-3)" }}>
           <Label>Zo lees je dit</Label>
@@ -61,7 +66,7 @@ export default async function VerkennerPagina({ searchParams }: Props) {
           </Tekst>
           <Tekst>
             Zaal, boog en tabel tonen dezelfde cijfers; de tabel is het meest precies.{" "}
-            <a href="https://github.com/Zetelen/zetelen/blob/main/docs/plan/definitie-cohesie.md">Hoe is dit berekend?</a>
+            <Link href="/methodiek#cohesie">Hoe is dit berekend?</Link>
           </Tekst>
         </aside>
       </div>
