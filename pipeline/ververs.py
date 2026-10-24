@@ -11,7 +11,8 @@ De log bevat alleen aantallen en duur.
 
 Na de raw-laag worden de core-laag (core.herbouw(), component core-model) en de
 analyse-laag (analyses.herbouw(), component cohesie-analyse) opnieuw opgebouwd,
-zodat de analyses altijd op de verse data draaien.
+zodat de analyses altijd op de verse data draaien. Daarna volgen de
+datakwaliteitscontroles (component datakwaliteit); een harde fout laat de run falen.
 
 Bewaking (component bewaking): elke run krijgt een rij in beheer.verversing, en
 het script stuurt signalen naar healthchecks.io (HEALTHCHECK_URL): /start bij
@@ -122,6 +123,23 @@ def herbouw(conn, schema):
     print(f"{schema} herbouwd in {seconden} s: " + ", ".join(f"{t} {getal(n)}" for t, n in aantallen))
 
 
+class DatakwaliteitFout(Exception):
+    pass
+
+
+def controleer_datakwaliteit(conn):
+    """Draait de datakwaliteitscontroles (component datakwaliteit) en logt ze.
+    Een oordeel 'fout' laat de verversing falen, zodat er een melding komt; 'signaal' niet."""
+    uitkomst = conn.execute(
+        "select controle, waarde, oordeel, toelichting from beheer.controleer_datakwaliteit()"
+    ).fetchall()
+    for controle, waarde, oordeel, _ in uitkomst:
+        print(f"Datakwaliteit {oordeel.upper():8} {controle}: {getal(waarde)}")
+    fouten = [c for c, _, oordeel, _ in uitkomst if oordeel == "fout"]
+    if fouten:
+        raise DatakwaliteitFout("; ".join(fouten))
+
+
 def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
     """Ververst alle entiteiten en logt de run in beheer.verversing. Geeft het totaal terug."""
     run_id = start_log(conn)
@@ -132,6 +150,7 @@ def ververs_alles(conn, meta, haal=http_json, base=BASE, pauze=PAUZE):
                                        haal=haal, base=base, pauze=pauze) or 0
         herbouw(conn, "core")
         herbouw(conn, "analyses")
+        controleer_datakwaliteit(conn)
     except Exception as e:
         try:
             eind_log(conn, run_id, "mislukt", fout=type(e).__name__)
