@@ -1,0 +1,36 @@
+# Draait een vaste, alleen lezende query uit db/controles/ op Supabase en zet de uitkomst in de log.
+# Alleen met de hand: gh workflow run controlequery.yml -f bestand=extra_rijen.sql
+# De log is publiek: queries in db/controles/ geven aantallen, geen namen.
+name: Controlequery
+
+on:
+  workflow_dispatch:
+    inputs:
+      bestand:
+        description: "Bestand in db/controles/"
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code ophalen
+        uses: actions/checkout@v7
+
+      - name: Python opzetten
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Afhankelijkheden installeren
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Query draaien
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          BESTAND: ${{ inputs.bestand }}
+        run: python pipeline/controlequery.py "$BESTAND"

@@ -13,6 +13,8 @@ node_modules/
 web/.next/
 web/out/
 web/*.tsbuildinfo
+# Wordt door Next.js zelf geschreven, anders bij dev dan bij build
+web/next-env.d.ts
 .vercel/
 
 .DS_Store
