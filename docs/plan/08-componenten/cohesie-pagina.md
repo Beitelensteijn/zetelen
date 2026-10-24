@@ -61,6 +61,11 @@ Verwacht:
 ## Aandachtspunten
 
 - De matrix toont "te weinig data" waar `cohesie-analyse` dat aangeeft, niet een getal
+- Uit de data (24 oktober 2026): de stemmen van 50PLUS sinds november 2025 staan in de bron op het oude fractierecord (inactief sinds 2021); het nieuwe record heeft geen stemmen. Koppel fracties per periode dus op de stemmen en de afkorting, niet alleen op `actief_van` en `actief_tot`; de zetels komen van het actuele record
+- Toon bij moties en amendementen het onderwerp van de zaak, niet de titel: de titel is die van het hele dossier (`docs/datamodel.md`)
+- De Data API geeft maximaal 1.000 rijen per verzoek: vraag per periode en variant op
+- Zaal, feedback Niels op de schets (24 oktober 2026): elke fractie als omlijnd vak met een label buiten de zaal (naam en percentage), zodat het beeld zonder hoveren leesbaar is; hover en klik lichten de hele fractie op, niet een losse zetel (binnen een fractie verschilt de score niet); het uitleesvak staat binnen het hoefijzer. Wijkt af van het ontwerp (uitleesvak per zetel); dit gaat voor
+- Volgorde van de fracties in de zaal: voorstel Claude, uit de data (eerste as van een schaling op 1 min cohesie, in de schets voor Jetten 64% van de verschillen), niet een eigen links-rechtsindeling. Te beslissen door Niels
 - Fracties worden getoond met naam en afkorting, zonder logo's of partijkleuren (besluit Niels). Fractienamen volgen de data, bijvoorbeeld Groep Markuszower en Lid Keijzer. Toon die zoals ze in de bron heten, met een korte uitleg bij een fractie die geen gevestigde partij is
 - Fracties kunnen in verschillende periodes verschillen; de matrix toont alleen de fracties van de gekozen periode
 - De grafiekbibliotheek is nog niet gekozen (D3, Observable Plot of ECharts); leg een keuze met reden voor aan Niels

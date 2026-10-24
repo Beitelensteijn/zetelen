@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest: data in Supabase Pro (rekencapaciteit Micro), dagelijks ververst met datakwaliteitscontroles, cohesie per fractiepaar berekend en voor bezoekers alleen leesbaar via schema `api`. Volgende lijn: de frontend.
+Fase 4: koppelen en bouwen (stap 9). Backend van R1 gebouwd en getest tot en met `datakwaliteit`, plus `ontwerpsysteem` (frontend). R1 is uitgebreid met de coalitiebouwer (24 oktober 2026).
 
 ## Afgerond
 
@@ -25,6 +25,7 @@ Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest: dat
 - Component `rechten` (24 oktober 2026): schema `api` als enige open schema, RLS op elke tabel, rechtencontrole in de database en een test als bezoeker via de Data API, beide na elke migratie. Getest: 56 tests, zes controles en tien proeven via de API op Supabase. De test op de frontendbuild is verplaatst naar `site-shell`
 - Component `cohesie-analyse` (24 oktober 2026): definitie goedgekeurd (`definitie-cohesie.md`), cohesie per fractiepaar, periode en variant, plus eensgezindheid binnen fracties, publiek via `api.cohesie` en `api.eensgezindheid`. Getest: 64 tests, berekening op de volledige data in 25 seconden
 - Component `datakwaliteit` (24 oktober 2026): vier controles na elke verversing, waaronder de grens van 150 zetels (harde fout) en de vergelijking van elke uitslag met de officiele uitslag in de bron (signaal: 8 van 60.133 besluiten). Steekproef per release voorbereid. Getest: 68 tests
+- Component `ontwerpsysteem` (24 oktober 2026): Next.js 16 in `web/`, tokens, basiscomponenten, voorbeeldpagina `/ontwerpsysteem`. Getest: 24 contrasttests, bekeken op telefoon en groot scherm, goedgekeurd door Niels
 
 ## Openstaand
 
@@ -43,7 +44,7 @@ Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest: dat
 - Handmatige tabellen van `core-model` nakijken (Niels): kabinetten (Wikidata), Kamerperiodes (verkiezingsdata nog te controleren bij de Kiesraad) en de partijkoppeling (vier twijfelgevallen: GroenLinks-PvdA, PRO, DPK, Groep Markuszower)
 - Handmatige nacontrole van cohesie op 10 stemmingen (E2-S2, Niels): `db/controles/steekproef_cohesie.sql` in VS Code
 - Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API. Niet verklaard door een datum van voor 2010 (controle van `datakwaliteit`); oorzaak onbekend
-- Datakwaliteit: de 8 besluiten in `beheer.afwijkende_uitslag` bekijken, en de steekproef van 10 besluiten tegen tweedekamer.nl uitvoeren (`docs/steekproeven/R1-uitslagen.md`, Niels)
+- Datakwaliteit: de 8 besluiten in `beheer.afwijkende_uitslag` bekijken (Niels, met de besluittekst). Al vastgesteld: bij 20 januari 2026 meldt de bron zelf dat de conclusie "aangenomen" fout was; de zetels in de database kloppen. De steekproef van 10 besluiten tegen tweedekamer.nl uitvoeren (`docs/steekproeven/R1-uitslagen.md`)
 
 ## Uitkomst API-check (rapport)
 
@@ -56,6 +57,10 @@ Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest: dat
 ## Besluit: laden en Supabase
 
 Besluit Niels, 23 oktober 2026, na het API-checkrapport. Alle 14 entiteiten uit het rapport worden geladen vanaf 2010 (Persoon, Fractie, FractieZetel, FractieZetelPersoon en Commissie volledig). Past de database niet in Supabase Free, dan wordt het Pro (25 dollar per maand). Gemeten bij `ingest`: 1.349 MB, dus Pro; Niels heeft Pro genomen (23 oktober 2026). Tegenspraak van Claude, vastgelegd: met een beperkte laad (vijf entiteiten voor R1) paste Free waarschijnlijk; niet gemeten. Stemmingen zonder datum via Agendapunt en Activiteit (5.766) tellen niet mee in de analyses. Afwijkend stemgedrag (E6-S1) blijft in R3, alleen over de hele Kamerperiode en met het label "alleen hoofdelijke stemmingen". Verwerkt in `05-techniek.md`, `06-epics.md`, `ingest.md`, `core-model.md` en `cohesie-analyse.md`.
+
+## Besluit: coalitiebouwer in R1
+
+Besluit Niels, 24 oktober 2026. Bezoekers stellen zelf een groep fracties samen, zien hun zetels en het totaal in de zaal, en zien voor een (fictief) minderheidskabinet bij welke fracties de groep in het verleden een meerderheid haalde. In R1, omdat de livegang geen haast heeft. Tegenspraak van Claude, vastgelegd: nieuwe analyse met eigen definitie en lezingen (grof 15 tot 25 uur), politiek gevoelig (leest snel als advies), en R1 wordt groter; advies was een R1.1 direct na de livegang. Verwerkt in `01-idee.md`, `06-epics.md` (E2-S7 tot en met E2-S10), `_overzicht.md` (componenten `coalitie-analyse` en `coalitie-pagina`) en `lezingen.md`. Cohesie door de tijd en een netwerk van indieners staan onder Later in `01-idee.md`.
 
 ## Besluit: extra databronnen
 
@@ -99,4 +104,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `ontwerpsysteem` (frontend). Eerst afronden wat open staat voor de backend: geplande workflows, de nacontrole van cohesie en de steekproef van uitslagen.
+Component `site-shell`. Daarnaast open: geplande workflows (morgenochtend controleren), de nacontrole van cohesie en de steekproef van uitslagen (Niels).

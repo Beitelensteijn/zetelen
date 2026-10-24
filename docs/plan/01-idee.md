@@ -25,6 +25,8 @@ Vier must-have analyses:
 3. Wetgevingsproces en aanname: aantal, aanname-percentage en doorlooptijd van moties en amendementen per partij en commissie
 4. Activiteitsprofiel per Kamerlid: moties, vragen en aanwezigheid, met een eigen profielpagina
 
+Toegevoegd aan R1 (besluit Niels, 24 oktober 2026): de coalitiebouwer. De bezoeker stelt zelf een groep fracties samen, ziet in de zaal hun zetels en het totaal, en ziet voor een (fictief) minderheidskabinet bij welke andere fracties de groep in het verleden een meerderheid haalde. Terugkijkend op echte stemmingen, geen voorspelling. De keuze blijft in de browser en de URL, net als de lens. Livegang heeft geen haast (Niels).
+
 Daarnaast (volgt uit "live en gebruikt"):
 
 - Deelbare URL's per partij en Kamerlid
@@ -60,6 +62,8 @@ Bij elke analyse komen twee lezingen naast elkaar, vanuit verschillende invalsho
 - **Nieuws en podcasts koppelen aan onderwerpen:** een extra datastroom (feeds, onderwerpkoppeling, podcast-afleveringen). Pas na de vier analyses. Auteursrecht beperken door alleen titel, bron en link te tonen. Een verkeerde koppeling onder Niels' eigen naam is zichtbaar, dus kwaliteit van de koppeling is een eis
 - **Eerste Kamer:** idee van Niels (22 oktober 2026). In de eerste zoekronde is geen vergelijkbare open data API gevonden, alleen verkiezingsuitslagen op data.overheid.nl; niet uitputtend onderzocht. De Eerste Kamer stemt vaker via de toerekenmethode, dus cohesie en afwijking rusten daar op minder harde data. Scrapen is zwaarder en juridisch gevoeliger. Eerste stap bij oppakken: een gerichte controle van de beschikbare bronnen
 - **Partijlogo's met toestemming:** alleen als per partij vooraf toestemming is gevraagd en gekregen. Niet gepland
+- **Cohesie door de tijd:** twee fracties per maand volgen in een lijngrafiek, om te zien of ze naar elkaar toe groeien of uit elkaar (idee Claude, 24 oktober 2026)
+- **Netwerk van indieners:** welke fracties dienen samen moties in (ZaakActor: indiener en medeindieners) (idee Claude, 24 oktober 2026)
 - **Extra databronnen** (opgesomd door Claude, 23 oktober 2026; licenties en beschikbaarheid niet gecontroleerd tenzij vermeld). Pas oppakken als een release ze nodig heeft:
   - Kamerstukdossier, Toezegging, CommissieZetel en Verslag uit de API van de Tweede Kamer. Kamerstukdossier is de kandidaat voor het filter op onderwerp (R2); CommissieZetel voor het wetgevingsproces per commissie (R2)
   - Kiesraad: verkiezingsuitslagen en verkiezingsdata (open data van de overheid). Kan de data voor de Kamerperioden leveren

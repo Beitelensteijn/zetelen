@@ -1,6 +1,6 @@
 # Component: ontwerpsysteem
 
-Status: niet gestart, ontwerp aangeleverd (23 oktober 2026)
+Status: gebouwd en getest (24 oktober 2026); Niels heeft de voorbeeldpagina bekeken en goedgekeurd
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../../ontwerp/HANDOVER.md`
 
 ## Doel
@@ -56,6 +56,22 @@ Het ontwerp is gemaakt op een eerdere versie van de design-prompt. Op deze vier 
 - Prestatie: korrel, gloed en de golf door de zaal mogen de norm uit `prestatie-audit` (E3-S8) niet breken; meet dat vroeg
 - Een design-skill voor frontend is op Niels' laptop beschikbaar; gebruik die waar het past
 - Letterwoordmerk Zetelen in Newsreader, kleine kapitalen, zonder logo. De toon van de microcopy staat in `../claude-design-prompt.md`
+
+## Gebouwd (24 oktober 2026)
+
+Keuzes (akkoord Niels, 24 oktober 2026): Next.js 16 met TypeScript in `web/`; tokens als CSS-variabelen in `web/styles/tokens.css` en CSS Modules per component, geen Tailwind; lettertypes via `next/font` (bij het bouwen meegeleverd, geen verbinding met Google voor bezoekers); geen grafiekbibliotheek, de zaal, boog en matrix worden eigen SVG (sluit het open punt "grafiekbibliotheek" voor R1).
+
+- `web/styles/tokens.css`, `web/lib/kleur.ts` (contrast, cohesieschaal, tekstkleur in een cel)
+- `web/components/`: koppen, tekst, label, datalabel, cijfer, woordmerk, kaart, segmentkeuze, uitleesvak, tabel, grafiekkader met bron, lezingenblok, schaallegenda, cohesiecel met arcering, korrel
+- `/ontwerpsysteem`: voorbeeldpagina met alle componenten, niet geindexeerd
+- CI: job `web` (installeren, testen, bouwen)
+
+## Getest (24 oktober 2026)
+
+- 24 tests: alle tekstkleuren op alle achtergronden halen 4,5; de schaal wordt monotoon lichter; tekst in elke schaalcel haalt 4,5; tokens in CSS en code zijn gelijk
+- Bekeken op 1280 en 375 px: geen horizontale scroll op de telefoon, knoppen 44 px, segmentkeuze werkt
+- Bevinding: `lijn-licht` haalt 3:1 op nacht-950, -900 en -800, niet op nacht-700 (2,81). Regel vastgelegd in de tokens en een test
+- Bevinding: Next.js zet bij elke build willekeurige sleutels in `web/.next` (niet in git). Meenemen in de buildtest van `site-shell`
 
 ## Schatting
 

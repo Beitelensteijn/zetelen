@@ -15,7 +15,7 @@ Regels in dit document:
 
 | Release | Inhoud | Wanneer klaar |
 |---|---|---|
-| R1 | Fundament, data, cohesie-matrix, lezingenformat op cohesie, basis van betrouwbaarheid | Eerste live-gang |
+| R1 | Fundament, data, cohesie-matrix, coalitiebouwer, lezingenformat op cohesie, basis van betrouwbaarheid | Eerste live-gang (geen haast, Niels 24 oktober 2026) |
 | R2 | Wetgevingsproces en aanname, met lezingen | Na R1 |
 | R3 | Kamerleden: activiteit en afwijkend stemgedrag, met lezingen | Na R2, afhankelijk van API-check |
 | R4 | Engelse versie | Pas als alle vier de analyses live zijn |
@@ -126,6 +126,31 @@ Als bezoeker wil ik per fractie een pagina met die fractie's cohesie met anderen
 - Elke fractie heeft een stabiele, deelbare URL
 - De pagina toont de cohesie met elke andere fractie, de periode en de bron
 
+**E2-S7 Definitie coalitiebouwer** (MVP, toegevoegd 24 oktober 2026)
+Als beheerder wil ik een exacte definitie van "bij wie haalt een groep een meerderheid", zodat elk cijfer navertelbaar is.
+- De definitie beantwoordt: wanneer stemt een groep eensgezind, welke zetels tellen (die van het moment van de stemming), wanneer heeft een andere fractie de groep aan een meerderheid geholpen, en wanneer was die fractie beslissend (zonder haar had de groep verloren)
+- Terugkijkend op echte stemmingen; nergens wordt een uitkomst voorspeld
+- Niels heeft de definitie goedgekeurd
+
+**E2-S8 Berekening coalitiebouwer** (MVP)
+Als bezoeker wil ik voor een zelf gekozen groep fracties en een periode zien bij wie de groep een meerderheid haalde.
+- Werkt voor elke combinatie van fracties die in de gekozen periode bestonden, zonder dat alle combinaties vooraf berekend zijn
+- Per andere fractie: hoe vaak die meestemde met de groep en hoe vaak die beslissend was, met het aantal onderliggende stemmingen
+- Een steekproef is met de hand nagerekend
+- Onder een minimaal aantal eensgezinde stemmingen toont de site "te weinig data" (drempel: voorstel 25, gelijk aan cohesie)
+
+**E2-S9 Coalitiebouwer in de zaal** (MVP)
+Als bezoeker wil ik fracties aanklikken en in de zaal hun zetels en het totaal zien, en daarna zien welke fracties het vaakst voor een meerderheid zorgden.
+- De zaal licht de gekozen fracties op en toont het totaal en het tekort of overschot ten opzichte van 76
+- De steunpartners staan in een rangorde en zijn in de zaal te zien
+- De keuze staat in de URL, zodat een combinatie deelbaar is
+- Met het toetsenbord te bedienen (lijst met knoppen, zoals bij de cohesiezaal)
+
+**E2-S10 Lezingen bij de coalitiebouwer** (MVP)
+Als bezoeker wil ik twee lezingen bij de uitkomst, zodat een rangorde van steunpartners niet als advies leest.
+- Twee onderbouwde invalshoeken (zie E4), door Niels gekozen
+- Een vaste tekst die uitlegt dat het terugkijken is, geen voorspelling of advies
+
 ## Epic 3: Site-fundament (R1)
 
 Doel: een site die er journalistiek en strak uitziet en vindbaar en deelbaar is.
@@ -211,6 +236,7 @@ Als beheerder wil ik dat een lezing pas live gaat na mijn goedkeuring.
 **E5-S1 Definitie aanname en doorlooptijd** (R2)
 Als beheerder wil ik exacte definities, zodat een motie die niet is gestemd niet als verworpen telt.
 - De definitie behandelt: gestemd en aangenomen, gestemd en verworpen, aangehouden, ingetrokken, en afgedaan zonder stemming
+- Uit `datakwaliteit` (24 oktober 2026): de officiele conclusie in de bron (aangenomen of verworpen) is bij een handvol besluiten fout; bij 20 januari 2026 meldt de bron dat zelf. Leid de uitkomst af uit de stemmen, of toon deze uitzonderingen expliciet
 - Doorlooptijd heeft een begin (indiening) en een eind (besluit), en wat er gebeurt als een motie geen besluit krijgt
 - Niels heeft de definitie goedgekeurd
 

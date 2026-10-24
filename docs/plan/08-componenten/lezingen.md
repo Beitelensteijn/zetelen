@@ -61,6 +61,8 @@ Verwacht: de cijfers uit `cohesie-analyse`, de pagina van `cohesie-pagina`.
 - Definieer de drempels voor de tekstvarianten voordat er code komt
 - Beide lezingen krijgen dezelfde opmaak en prominentie
 
+Toegevoegd (24 oktober 2026): E2-S10, lezingen bij de coalitiebouwer, met een vaste tekst dat het terugkijken is en geen voorspelling of advies.
+
 ## Schatting
 
 Middel, ca. 8 tot 14 uur van Niels (veel schrijven en beoordelen). Grove schatting, niet gemeten.

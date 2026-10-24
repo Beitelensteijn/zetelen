@@ -22,10 +22,12 @@ Opgesteld: 22 oktober 2026. Bron: `../06-epics.md`. Gedeelde regels: `_conventie
 | 14 | `analytics` | Frontend | E3-S6 | 2 tot 4 |
 | 15 | `deelplaatjes` | Frontend | E3-S5 | 4 tot 8 |
 | 16 | `prestatie-audit` | Frontend | E3-S8 | 2 tot 4 |
+| 17 | `coalitie-analyse` | Backend | E2-S7, E2-S8 | 8 tot 14 |
+| 18 | `coalitie-pagina` | Frontend | E2-S9 | 6 tot 12 |
 
-Alle 31 stories van R1 uit `../06-epics.md` zijn aan een component gekoppeld.
+Alle 35 stories van R1 uit `../06-epics.md` zijn aan een component gekoppeld. Componenten 17 en 18 en de stories E2-S7 tot en met E2-S10 zijn op 24 oktober 2026 toegevoegd (besluit Niels: coalitiebouwer in R1); E2-S10 hoort bij `lezingen`.
 
-De schatting is de tijd van Niels (kiezen, schrijven, beoordelen, testen), niet de rekentijd van Claude Code. Het zijn grove schattingen zonder meting; bijstellen na het eerste component. Totaal R1: 83 tot 152 uur. Bij 6 tot 10 uur per week is dat ruwweg 8 tot 25 weken, met een midden rond 15 weken. R2 tot en met R4 zitten daar niet in.
+De schatting is de tijd van Niels (kiezen, schrijven, beoordelen, testen), niet de rekentijd van Claude Code. Het zijn grove schattingen zonder meting; bijstellen na het eerste component. Totaal R1: 97 tot 178 uur (was 83 tot 152 voor de coalitiebouwer). Bij 6 tot 10 uur per week is dat ruwweg 10 tot 30 weken, met een midden rond 18 weken. R2 tot en met R4 zitten daar niet in.
 
 ## Afhankelijkheden
 
@@ -47,6 +49,8 @@ De schatting is de tijd van Niels (kiezen, schrijven, beoordelen, testen), niet 
 | `analytics` | `site-shell` | (geen) |
 | `deelplaatjes` | `cohesie-pagina` | (geen) |
 | `prestatie-audit` | `cohesie-pagina`, `lezingen`, `site-shell`, `methodiek-betrouwbaarheid` | (geen) |
+| `coalitie-analyse` | `cohesie-analyse`, `rechten` | `coalitie-pagina` |
+| `coalitie-pagina` | `coalitie-analyse`, `cohesie-pagina` | `lezingen`, `deelplaatjes` |
 
 ## Bouwvolgorde
 
@@ -63,11 +67,13 @@ Een component tegelijk. Dit is de volgorde, zodat elke afhankelijkheid al klaar 
 9. `ontwerpsysteem`
 10. `site-shell`
 11. `cohesie-pagina`
-12. `lezingen`
-13. `methodiek-betrouwbaarheid`
-14. `analytics`
-15. `deelplaatjes`
-16. `prestatie-audit`
+12. `coalitie-analyse`
+13. `coalitie-pagina` (hergebruikt de zaal uit `cohesie-pagina`)
+14. `lezingen`
+15. `methodiek-betrouwbaarheid`
+16. `analytics`
+17. `deelplaatjes`
+18. `prestatie-audit`
 
 Eerste live-gang (R1) kan pas als `methodiek-betrouwbaarheid` en `analytics` klaar zijn, en de gebruiksvoorwaarden van de open data zijn vastgelegd.
 
