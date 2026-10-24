@@ -168,15 +168,9 @@ export function CohesieCel({ procent }: { procent: number | null }) {
   );
 }
 
-// Korrel van ongeveer 3% over de pagina (SVG feTurbulence), geen afbeelding
+// Korrel van ongeveer 3% over de pagina: een klein, vooraf gemaakt ruisplaatje (public/korrel.png).
+// Eerder een SVG-filter met overvloeimodus; die moest de browser bij elke scrollbeweging opnieuw
+// tekenen, wat het scrollen schokkerig maakte (feedback Niels, 24 oktober 2026).
 export function Korrel() {
-  return (
-    <svg aria-hidden="true" className={s.korrel}>
-      <filter id="korrel">
-        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} stitchTiles="stitch" />
-        <feColorMatrix type="saturate" values="0" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#korrel)" />
-    </svg>
-  );
+  return <div aria-hidden="true" className={s.korrel} />;
 }
