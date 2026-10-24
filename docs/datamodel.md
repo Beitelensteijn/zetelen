@@ -16,6 +16,7 @@ erDiagram
     besluit ||--o{ besluit_zaak : "gaat over"
     zaak ||--o{ besluit_zaak : "is onderwerp van"
     fractie_partij ||--|| fractie : "koppelt partij aan"
+    kabinet ||--o{ coalitie : "bestaat uit"
 ```
 
 ## Handmatige tabellen
@@ -33,6 +34,10 @@ Een rij per zittingsperiode van de Tweede Kamer, van de installatie van de nieuw
 ### fractie_partij
 
 Koppelt een fractie aan een partij, of aan niets. Fractie en partij zijn niet hetzelfde: een groep of een afgesplitst Kamerlid vormt een fractie zonder partij. Bevat de fracties die op of na 1 januari 2010 actief waren; twijfelgevallen hebben een opmerking.
+
+### coalitie
+
+Welke fracties in welk kabinet zaten (rol `kabinet`) of het kabinet gedoogden (rol `gedoogsteun`), met een datum van uittreden als een fractie tussentijds opstapte. Gekoppeld op de afkorting van de fractie. Toegevoegd op 24 oktober 2026 (vervroegd op verzoek van Niels), bron per rij.
 
 ## Afgeleide tabellen
 

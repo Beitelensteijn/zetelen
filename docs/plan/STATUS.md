@@ -95,6 +95,10 @@ Besluit Niels, 22 oktober 2026. Cohesie is het percentage gezamenlijke stemminge
 
 Besluit Niels, 22 oktober 2026. Twee periodesoorten, kabinet (standaard, herkenbaarder voor het publiek) en Kamerperiode. Verwerkt in `06-epics.md` (E2-S4, nieuwe E1-S8), `core-model.md`, `cohesie-analyse.md`, `cohesie-pagina.md`. Kabinetten komen uit een handmatige tabel; de API bevat ze niet (handmatige API-check, 23 oktober 2026). Coalitie en oppositie als latere lezing is niet in R1.
 
+## Besluit: kabinet en zetels op /fracties
+
+Besluit Niels, 24 oktober 2026. De samenstelling van elk kabinet sinds Balkenende IV is vervroegd (was Later): tabel `core.coalitie` (migratie 011), met gedoogsteun en de datum waarop een fractie uit het kabinet stapte. Nog na te kijken door Niels: Schoof en Jetten komen uit Wikidata (partij van de bewindspersonen), de rest en alle datums uit de kennis van Claude. Op /fracties tellen de zetels bij het begin van de periode (bij Schoof stond anders de Kamer van na de verkiezingen van 2025); wie tijdens de periode overstapte, is een lichter deel van de balk (migratie 012, `analyses.overstap`, uit de zetels per persoon in de bron).
+
 ## Gebruiksvoorwaarden open data
 
 Op data.overheid.nl staat de dataset met licentie CC0 1.0 (22 oktober 2026). De licentielink in de sectie "Hergebruik" is daar leeg en de API-pagina op developer.overheid.nl vermeldt niets over licentie of limieten. Niet gecontroleerd: foto's van Kamerleden, tekst van documenten, persoonsgegevens. Voorstel voor de voetnoot: de bron noemen, ook al is dat niet verplicht.
