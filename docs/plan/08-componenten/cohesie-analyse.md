@@ -51,6 +51,7 @@ Verwacht: het core-model met stemmingen op fractieniveau.
 ## Aandachtspunten
 
 - Eerst de definitie vastleggen en door Niels laten goedkeuren, daarna pas de SQL
+- Uit `core-model` (24 oktober 2026): bij hoofdelijke stemmingen bestaat geen fractiestem, alleen stemmen per Kamerlid (ongeveer 100 besluiten per jaar). De definitie moet kiezen: weglaten of een fractiestem afleiden. Ook te kiezen: hoe stemmen met de vlag `vergissing` tellen
 - Periodesoorten besloten: kabinet (standaard) en Kamerperiode. Na de API-check (23 oktober 2026): 1.911 tot 4.749 besluiten met een stemming per jaar. In de variant "alle stemmingen" halen fractieparen de drempel van 25 dus ruim, ook in korte kabinetten, behalve fracties die maar enkele weken bestonden
 - Drempel "te weinig data": 25 gezamenlijke stemmingen per variant. Het aandeel verdeelde stemmingen is via de API niet te tellen; controleer bij de berekening hoeveel fractieparen in de variant "alleen verdeelde stemmingen" wegvallen
 
