@@ -1,6 +1,6 @@
 # Component: cohesie-analyse
 
-Status: niet gestart (22 oktober 2026)
+Status: gebouwd en getest (24 oktober 2026). Open: handmatige nacontrole van 10 stemmingen door Niels (E2-S2)
 Eerst lezen: `_conventies.md`, `_overzicht.md`, `../05-techniek.md`, `docs/plan/api-check-rapport.md`
 
 ## Doel
@@ -54,6 +54,23 @@ Verwacht: het core-model met stemmingen op fractieniveau.
 - Uit `core-model` (24 oktober 2026): bij hoofdelijke stemmingen bestaat geen fractiestem, alleen stemmen per Kamerlid (ongeveer 100 besluiten per jaar). De definitie moet kiezen: weglaten of een fractiestem afleiden. Ook te kiezen: hoe stemmen met de vlag `vergissing` tellen
 - Periodesoorten besloten: kabinet (standaard) en Kamerperiode. Na de API-check (23 oktober 2026): 1.911 tot 4.749 besluiten met een stemming per jaar. In de variant "alle stemmingen" halen fractieparen de drempel van 25 dus ruim, ook in korte kabinetten, behalve fracties die maar enkele weken bestonden
 - Drempel "te weinig data": 25 gezamenlijke stemmingen per variant. Het aandeel verdeelde stemmingen is via de API niet te tellen; controleer bij de berekening hoeveel fractieparen in de variant "alleen verdeelde stemmingen" wegvallen
+
+## Gebouwd (24 oktober 2026)
+
+- Definitie goedgekeurd door Niels (24 oktober 2026): `../definitie-cohesie.md`. Hoofdelijke stemmingen: fractiestem afgeleid uit de meerderheid van de leden; vergissingen tellen niet mee; verdeeld = minstens een fractie voor en een tegen
+- Nieuw op verzoek van Niels: eensgezindheid binnen een fractie (hoofdelijke stemmingen en afwijkers bij handopsteken). Alleen berekend en publiek via `api`; of en hoe het op de site komt, beslist Niels bij `cohesie-pagina`
+- `db/migrations/006_analyse_cohesie.sql`: schema `analyses` (`analyse` is een gereserveerd woord in Postgres) met `fractie_besluit_stem`, `cohesie` en `eensgezindheid` (unlogged), de functie `analyses.herbouw()` en de views `api.cohesie` (beide richtingen, met afkortingen) en `api.eensgezindheid`
+- De verversing bouwt na `core` ook `analyses` opnieuw op
+- `db/controles/steekproef_cohesie.sql`: query voor de handmatige nacontrole
+
+Interface naar `cohesie-pagina`: `api.cohesie` met `periodesoort`, `periode`, `variant` (`alle`, `verdeeld`), `fractie`, `fractie_afkorting`, `andere_fractie`, `andere_fractie_afkorting`, `gezamenlijk`, `gelijk`, `cohesie` (leeg bij te weinig data) en `te_weinig_data`. Let op: de Data API geeft standaard maximaal 1.000 rijen per verzoek; de site moet dus per periode en variant opvragen.
+
+## Getest (24 oktober 2026)
+
+- 64 tests slagen lokaal en in CI, met een scenario met bekende uitkomst: altijd gelijk geeft 100%, altijd tegengesteld 3,0% (een unaniem besluit was gelijk); niet deelgenomen, vergissing en gelijke stand binnen een fractie tellen niet; de variant verdeeld laat unanieme besluiten weg; onder 25 gezamenlijke stemmingen "te weinig data"; eensgezindheid telt de verdeelde hoofdelijke stemming en de afwijker; bezoekers lezen cohesie, niet de tussenstap
+- Op Supabase: berekening in 25 seconden. 897.076 fractiestemmen (inclusief afgeleid), 4.081 rijen cohesie (paren per periode en variant), 245 rijen eensgezindheid. Rechtencontrole en test via de API geslaagd
+- Voorbeeld via de API: onder Schoof stemde de VVD het vaakst gelijk met BBB (79,8%), CDA (79,7%) en NSC (79,2%), over ongeveer 7.000 gezamenlijke stemmingen
+- Niet gedaan: de handmatige nacontrole van 10 stemmingen (Niels, met de steekproefquery)
 
 ## Schatting
 
