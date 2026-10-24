@@ -4,7 +4,7 @@ Laatst bijgewerkt: 23 oktober 2026
 
 ## Huidige fase
 
-Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest tot en met `cohesie-analyse`: data in Supabase Pro (rekencapaciteit Micro), dagelijks ververst, cohesie per fractiepaar berekend en voor bezoekers alleen leesbaar via schema `api`.
+Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest: data in Supabase Pro (rekencapaciteit Micro), dagelijks ververst met datakwaliteitscontroles, cohesie per fractiepaar berekend en voor bezoekers alleen leesbaar via schema `api`. Volgende lijn: de frontend.
 
 ## Afgerond
 
@@ -24,6 +24,7 @@ Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest tot 
 - Component `core-model` (24 oktober 2026): schema `core` met de handmatige tabellen kabinet, kamerperiode en fractie_partij, en zeven afgeleide tabellen die na elke verversing opnieuw worden opgebouwd (unlogged). 60.133 besluiten en 899.200 fractiestemmen sinds 2010. Beschrijving in `docs/datamodel.md`. Getest: 48 tests
 - Component `rechten` (24 oktober 2026): schema `api` als enige open schema, RLS op elke tabel, rechtencontrole in de database en een test als bezoeker via de Data API, beide na elke migratie. Getest: 56 tests, zes controles en tien proeven via de API op Supabase. De test op de frontendbuild is verplaatst naar `site-shell`
 - Component `cohesie-analyse` (24 oktober 2026): definitie goedgekeurd (`definitie-cohesie.md`), cohesie per fractiepaar, periode en variant, plus eensgezindheid binnen fracties, publiek via `api.cohesie` en `api.eensgezindheid`. Getest: 64 tests, berekening op de volledige data in 25 seconden
+- Component `datakwaliteit` (24 oktober 2026): vier controles na elke verversing, waaronder de grens van 150 zetels (harde fout) en de vergelijking van elke uitslag met de officiele uitslag in de bron (signaal: 8 van 60.133 besluiten). Steekproef per release voorbereid. Getest: 68 tests
 
 ## Openstaand
 
@@ -41,7 +42,8 @@ Fase 4: koppelen en bouwen (stap 9). De backend van R1 is gebouwd en getest tot 
 - Geplande workflows draaien niet: de verversing van 04:17 UTC op 24 oktober kwam niet. Tijdelijke workflow Planningstest (elk uur, zonder de stap die de workflow actief houdt) moet uitwijzen of het aan die stap ligt. Daarna Planningstest verwijderen
 - Handmatige tabellen van `core-model` nakijken (Niels): kabinetten (Wikidata), Kamerperiodes (verkiezingsdata nog te controleren bij de Kiesraad) en de partijkoppeling (vier twijfelgevallen: GroenLinks-PvdA, PRO, DPK, Groep Markuszower)
 - Handmatige nacontrole van cohesie op 10 stemmingen (E2-S2, Niels): `db/controles/steekproef_cohesie.sql` in VS Code
-- Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API: records die na de laad buiten het datumfilter vielen. De verversing ruimt die niet op; `core-model` filtert op datum. Uitzoeken welke rijen het zijn (voorstel: bij `datakwaliteit`)
+- Agendapunt en Besluit hebben 5 en 4 rijen meer dan de API. Niet verklaard door een datum van voor 2010 (controle van `datakwaliteit`); oorzaak onbekend
+- Datakwaliteit: de 8 besluiten in `beheer.afwijkende_uitslag` bekijken, en de steekproef van 10 besluiten tegen tweedekamer.nl uitvoeren (`docs/steekproeven/R1-uitslagen.md`, Niels)
 
 ## Uitkomst API-check (rapport)
 
@@ -97,4 +99,4 @@ Geen openstaand.
 
 ## Eerstvolgende actie
 
-Component `datakwaliteit`, daarna de frontendlijn (`ontwerpsysteem`).
+Component `ontwerpsysteem` (frontend). Eerst afronden wat open staat voor de backend: geplande workflows, de nacontrole van cohesie en de steekproef van uitslagen.
